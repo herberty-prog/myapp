@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>岡﨑 デイリーダッシュボード</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3a;
+    --accent: #e8ff47;
+    --accent2: #47c8ff;
+    --accent3: #ff6b47;
+    --text: #e8e8f0;
+    --muted: #666680;
+    --success: #47ff8a;
+    --warning: #ffb347;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  .header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    background: linear-gradient(180deg, #0f0f1a 0%, var(--bg) 100%);
+  }
+
+  .header-left h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 3px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .header-left p {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .date-display {
+    text-align: right;
+  }
+
+  .date-display .day {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: var(--accent2);
+    line-height: 1;
+  }
+
+  .date-display .weekday {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Stats Bar */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat-item {
+    padding: 14px 16px;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-label {
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .stat-input {
+    background: none;
+    border: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+    width: 100%;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .stat-input::placeholder { color: var(--muted); }
+  .stat-unit { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+
+  /* Main Layout */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 140px);
+  }
+
+  /* Left Panel - Timeline */
+  .panel-left {
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+  }
+
+  .panel-right {
+    overflow-y: auto;
+  }
+
+  .panel-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+
+  .panel-header .label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 3px;
+    color: var(--muted);
+  }
+
+  .panel-header .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* Timeline */
+  .timeline {
+    padding: 12px 0;
+  }
+
+  .time-block {
+    display: flex;
+    align-items: stretch;
+    padding: 0 18px;
+    min-height: 52px;
+    position: relative;
+  }
+
+  .time-block:hover { background: rgba(255,255,255,0.02); }
+
+  .time-col {
+    width: 52px;
+    flex-shrink: 0;
+    padding-top: 14px;
+  }
+
+  .time-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    line-height: 1;
+  }
+
+  .timeline-line {
+    width: 1px;
+    background: var(--border);
+    margin: 0 14px;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    top: 14px;
+    left: -4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .event-content {
+    flex: 1;
+    padding: 10px 0 10px 4px;
+  }
+
+  .event-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .event-sub {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .event-tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-weight: 700;
+  }
+
+  /* Block types */
+  .type-drive .timeline-dot { background: var(--accent2); border-color: var(--accent2); }
+  .type-drive .event-title { color: var(--accent2); }
+  .type-drive .event-tag { background: rgba(71,200,255,0.15); color: var(--accent2); }
+
+  .type-work .timeline-dot { background: var(--muted); border-color: var(--muted); }
+  .type-work .event-title { color: var(--text); }
+  .type-work .event-tag { background: rgba(255,255,255,0.08); color: var(--muted); }
+
+  .type-train .timeline-dot { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .type-train .event-title { color: var(--accent); }
+  .type-train .event-tag { background: rgba(232,255,71,0.15); color: var(--accent); }
+
+  .type-meal .timeline-dot { background: var(--accent3); border-color: var(--accent3); }
+  .type-meal .event-title { color: var(--accent3); }
+  .type-meal .event-tag { background: rgba(255,107,71,0.15); color: var(--accent3); }
+
+  .type-sleep .timeline-dot { background: #8b5cf6; border-color: #8b5cf6; }
+  .type-sleep .event-title { color: #8b5cf6; }
+  .type-sleep .event-tag { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+
+  .type-health .timeline-dot { background: var(--success); border-color: var(--success); }
+  .type-health .event-title { color: var(--success); }
+  .type-health .event-tag { background: rgba(71,255,138,0.15); color: var(--success); }
+
+  /* Current time indicator */
+  .current-time-bar {
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    margin: 2px 0;
+  }
+
+  .current-time-bar .now-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--accent3);
+    width: 52px;
+    flex-shrink: 0;
+  }
+
+  .current-time-bar .now-line {
+    flex: 1;
+    height: 1px;
+    background: var(--accent3);
+    margin: 0 14px;
+    box-shadow: 0 0 6px var(--accent3);
+  }
+
+  /* Right Panel - Training */
+  .training-section {
+    padding: 0;
+  }
+
+  .training-day {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .training-day-header {
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background: var(--surface);
+    transition: background 0.2s;
+  }
+
+  .training-day-header:hover { background: var(--surface2); }
+
+  .day-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+  }
+
+  .day-type {
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .day-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .done-btn {
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--muted);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.65rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+
+  .done-btn.completed {
+    border-color: var(--success);
+    color: var(--success);
+    background: rgba(71,255,138,0.08);
+  }
+
+  .training-exercises {
+    padding: 0 18px 16px;
+    display: none;
+  }
+
+  .training-exercises.open { display: block; }
+
+  .exercise-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .exercise-row:last-child { border-bottom: none; }
+
+  .ex-name {
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .ex-spec {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent2);
+    text-align: right;
+  }
+
+  .ex-cal {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    text-align: right;
+    width: 45px;
+  }
+
+  .ex-check {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .ex-check.checked {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  .section-note {
+    font-size: 0.65rem;
+    color: var(--muted);
+    padding: 8px 0 2px;
+    border-top: 1px solid var(--border);
+    margin-top: 6px;
+  }
+
+  /* Weekly Progress */
+  .weekly-bar {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .weekly-label {
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .day-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .day-pill span {
+    font-size: 0.55rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .day-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.55rem;
+    color: var(--muted);
+  }
+
+  .day-circle.trained {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-weight: 700;
+  }
+
+  .day-circle.rest {
+    background: rgba(255,255,255,0.05);
+    border-color: var(--border);
+  }
+
+  /* BP Record */
+  .bp-section {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bp-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 8px;
+    align-items: end;
+    margin-top: 10px;
+  }
+
+  .bp-field label {
+    font-size: 0.55rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .bp-field input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    padding: 6px 8px;
+    width: 100%;
+    border-radius: 3px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .bp-field input:focus { border-color: var(--accent2); }
+
+  .save-btn {
+    padding: 7px 14px;
+    background: var(--accent);
+    border: none;
+    color: #000;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .save-btn:hover { opacity: 0.85; }
+
+  .bp-history {
+    margin-top: 10px;
+    max-height: 120px;
+    overflow-y: auto;
+  }
+
+  .bp-entry {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+  }
+
+  .bp-entry .bp-date { color: var(--muted); }
+  .bp-entry .bp-sys { color: var(--accent3); }
+  .bp-entry .bp-dia { color: var(--accent2); }
+  .bp-entry .bp-pulse { color: var(--muted); }
+
+  /* Memo */
+  .memo-section {
+    padding: 14px 18px;
+  }
+
+  .memo-area {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.75rem;
+    padding: 10px;
+    border-radius: 3px;
+    resize: vertical;
+    outline: none;
+    min-height: 70px;
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  .memo-area:focus { border-color: var(--accent2); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* Mobile responsive */
+  @media (max-width: 600px) {
+    .main { grid-template-columns: 1fr; }
+    .panel-left { border-right: none; border-bottom: 1px solid var(--border); }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .stats-bar .stat-item:nth-child(2) { border-right: none; }
+  }
+
+  .toggle-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+    color: var(--muted);
+  }
+
+  .toggle-arrow.open { transform: rotate(90deg); }
+
+  .calorie-total {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    padding: 6px 0 0;
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>OKAZAKI DAILY</h1>
+    <p>Schedule &amp; Training Dashboard</p>
+  </div>
+  <div class="date-display">
+    <div class="day" id="currentDay">--</div>
+    <div class="weekday" id="currentWeekday">---</div>
+  </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-label">WEIGHT</div>
+    <input class="stat-input" id="weightInput" type="number" step="0.1" placeholder="---" />
+    <div class="stat-unit">kg</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-label">BP 上</div>
+    <div class="stat-value" id="bpSysDisplay" style="color:var(--accent3)">---</div>
+    <div class="stat-unit">mmHg</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-label">BP 下</div>
+    <div class="stat-value" id="bpDiaDisplay" style="color:var(--accent2)">---</div>
+    <div class="stat-unit">mmHg</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-label">TODAY</div>
+    <div class="stat-value" id="todayLabel" style="color:var(--accent)">---</div>
+    <div class="stat-unit">消費目標</div>
+  </div>
+</div>
+
+<div class="main">
+  <!-- LEFT: Timeline -->
+  <div class="panel-left">
+    <div class="panel-header">
+      <div class="dot"></div>
+      <span class="label">DAILY TIMELINE</span>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+
+  <!-- RIGHT: Training + Records -->
+  <div class="panel-right">
+    <div class="panel-header">
+      <div class="dot" style="background:var(--accent)"></div>
+      <span class="label">TRAINING &amp; RECORDS</span>
+    </div>
+
+    <!-- Weekly Progress -->
+    <div class="weekly-bar">
+      <div class="weekly-label">
+        <span>WEEKLY TRAINING LOG</span>
+        <span id="weekCount" style="color:var(--accent)">0/6</span>
+      </div>
+      <div class="days-grid" id="daysGrid"></div>
+    </div>
+
+    <!-- BP Record -->
+    <div class="bp-section">
+      <div class="weekly-label"><span>BLOOD PRESSURE LOG</span></div>
+      <div class="bp-row">
+        <div class="bp-field">
+          <label>収縮期 (上)</label>
+          <input type="number" id="bpSys" placeholder="146">
+        </div>
+        <div class="bp-field">
+          <label>拡張期 (下)</label>
+          <input type="number" id="bpDia" placeholder="98">
+        </div>
+        <div class="bp-field">
+          <label>脈拍</label>
+          <input type="number" id="bpPulse" placeholder="75">
+        </div>
+        <button class="save-btn" onclick="saveBP()">記録</button>
+      </div>
+      <div class="bp-history" id="bpHistory"></div>
+    </div>
+
+    <!-- Training Menu -->
+    <div class="training-section" id="trainingSection"></div>
+
+    <!-- Memo -->
+    <div class="memo-section">
+      <div class="weekly-label"><span>TODAY'S MEMO</span></div>
+      <textarea class="memo-area" id="memoArea" placeholder="気づいたこと、体調、食事メモ…"></textarea>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const WEEKDAYS_JP = ['日','月','火','水','木','金','土'];
+const WEEKDAYS_EN = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+
+const TIMELINE_WEEKDAY = [
+  { time: '05:00', title: '起床・体重測定', sub: '血圧計で測定後、水500ml', type: 'health' },
+  { time: '05:10', title: 'コーヒー・準備', sub: 'ブラックコーヒー・前日準備の着替え', type: 'sleep' },
+  { time: '05:50', title: '出発 → 南大泉', sub: '長女と高速で練馬バーバへ', type: 'drive' },
+  { time: '07:15', title: '朝霞 職場到着', sub: '出勤・GruppeM業務開始', type: 'work' },
+  { time: '12:00', title: '昼食（第1食）', sub: 'サラダチキン+おにぎり1個 700-800kcal', type: 'meal' },
+  { time: '15:00', title: 'アーモンド', sub: '15粒 約90kcal・間食ルール', type: 'meal' },
+  { time: '17:30', title: '帰宅前プロテイン', sub: 'プロテインバー 約150kcal', type: 'meal' },
+  { time: '18:10', title: '退社 → 南大泉', sub: '長女お迎え', type: 'drive' },
+  { time: '19:30', title: '南大泉 出発', sub: '市川実家へ下道帰宅', type: 'drive' },
+  { time: '20:45', title: '帰宅・体重・血圧', sub: '夜の記録（朝との比較）', type: 'health' },
+  { time: '20:50', title: 'シャワー', sub: '疲労リセット・気持ち切替', type: 'sleep' },
+  { time: '21:15', title: '夕食（第2食）', sub: 'パターンA/B/Cから選択 600-700kcal', type: 'meal' },
+  { time: '21:45', title: 'トレーニング', sub: '45分・スクワット/腕立て/プランク等', type: 'train' },
+  { time: '22:30', title: '副業作業', sub: 'ヤフオク・3Dプリント・スライサー設定', type: 'work' },
+  { time: '23:00', title: '就寝', sub: '睡眠6h確保必須', type: 'sleep' },
+];
+
+const TIMELINE_SAT = [
+  { time: '06:30', title: '起床・体重測定', sub: '血圧計・水500ml', type: 'health' },
+  { time: '07:00', title: '3Dプリント作業', sub: '印刷セット・出品・在庫確認', type: 'work' },
+  { time: '09:00', title: '副業リサーチ', sub: 'Fusion360設計・ヤフオク分析', type: 'work' },
+  { time: '12:00', title: '昼食（第1食）', sub: 'しっかり食べる 700-800kcal', type: 'meal' },
+  { time: '13:00', title: '自由・休息', sub: '娘との時間・買い物など', type: 'sleep' },
+  { time: '14:30', title: 'ウォーキング', sub: '江戸川土手 速歩60-90分 400-500kcal消費', type: 'train' },
+  { time: '16:00', title: '作業再開', sub: '3Dプリント・ラムエア作業', type: 'work' },
+  { time: '19:00', title: '夕食（第2食）', sub: '早めに 600-700kcal', type: 'meal' },
+  { time: '21:30', title: '筋トレ（軽め）', sub: '30分・スクワット中心', type: 'train' },
+  { time: '22:30', title: '就寝', sub: '週末こそ睡眠優先', type: 'sleep' },
+];
+
+const TIMELINE_SUN = [
+  { time: '07:00', title: '起床・体重測定', sub: '血圧計・ゆっくり過ごす', type: 'health' },
+  { time: '07:30', title: '完全休息', sub: '心身リセット・趣味時間', type: 'sleep' },
+  { time: '09:00', title: 'DVカウンセリング', sub: '月1回・最優先予定', type: 'health' },
+  { time: '12:00', title: '昼食（第1食）', sub: '700-800kcal', type: 'meal' },
+  { time: '13:00', title: '娘との時間', sub: '最優先事項', type: 'sleep' },
+  { time: '15:00', title: 'ウォーキング', sub: '軽め・散歩程度 30-45分', type: 'train' },
+  { time: '16:30', title: '翌週の食材準備', sub: '買い出し・弁当用食材仕込み', type: 'meal' },
+  { time: '19:00', title: '夕食（第2食）', sub: '600-700kcal', type: 'meal' },
+  { time: '21:00', title: '自由時間', sub: '読書・動画・脳を休める', type: 'sleep' },
+  { time: '22:00', title: '就寝', sub: '月曜5:00起きに備え最優先', type: 'sleep' },
+];
+
+const TRAINING_MENUS = {
+  weekday: {
+    label: '平日メニュー',
+    type: '45分・代謝維持',
+    exercises: [
+      { name: 'ストレッチ（股関節・肩）', spec: '5分', cal: 15 },
+      { name: 'スクワット（浅め）', spec: '20回×4set', cal: 40 },
+      { name: '腕立て伏せ', spec: '15回×3set', cal: 25 },
+      { name: 'プランク', spec: '45秒×3set', cal: 15 },
+      { name: 'マウンテンクライマー', spec: '20回×3set', cal: 30 },
+      { name: '室内ウォーキング/踏み台', spec: '15分', cal: 80 },
+    ]
+  },
+  sat: {
+    label: '土曜メニュー',
+    type: '90分・有酸素重点',
+    exercises: [
+      { name: '屋外ウォーキング（速歩）', spec: '60-90分', cal: 450 },
+      { name: '腕立て伏せ（通常）', spec: '10回×3set', cal: 20 },
+      { name: 'ダンベルカール（or 2Lペットボトル）', spec: '15回×3set', cal: 20 },
+      { name: 'スクワット（深め）', spec: '20回×3set', cal: 35 },
+    ]
+  },
+  sun: {
+    label: '日曜メニュー',
+    type: '30-45分・回復重視',
+    exercises: [
+      { name: 'ウォーキング（軽め）', spec: '30-45分', cal: 200 },
+      { name: 'ストレッチ全身', spec: '15分', cal: 20 },
+    ]
+  }
+};
+
+// ===== STATE =====
+let state = {
+  weight: '',
+  bpRecords: [],
+  weeklyTraining: [false,false,false,false,false,false,false], // Sun-Sat
+  exerciseChecks: {},
+  memo: ''
+};
+
+// Load from localStorage safely
+function loadState() {
+  try {
+    const saved = localStorage.getItem('okazaki_state');
+    if (saved) state = { ...state, ...JSON.parse(saved) };
+  } catch(e) {}
+}
+
+function saveState() {
+  try { localStorage.setItem('okazaki_state', JSON.stringify(state)); } catch(e) {}
+}
+
+// ===== INIT =====
+function init() {
+  loadState();
+  updateHeader();
+  renderTimeline();
+  renderWeeklyGrid();
+  renderBPHistory();
+  renderTraining();
+  restoreInputs();
+}
+
+function updateHeader() {
+  const now = new Date();
+  document.getElementById('currentDay').textContent = now.getDate();
+  const dow = now.getDay();
+  document.getElementById('currentWeekday').textContent = WEEKDAYS_EN[dow];
+
+  const labels = ['日','月','火','水','木','金','土'];
+  const calGoals = ['400','500','500','500','500','500','500'];
+  document.getElementById('todayLabel').textContent = calGoals[dow] + 'kcal';
+}
+
+function restoreInputs() {
+  if (state.weight) document.getElementById('weightInput').value = state.weight;
+  const latest = state.bpRecords[0];
+  if (latest) {
+    document.getElementById('bpSysDisplay').textContent = latest.sys;
+    document.getElementById('bpDiaDisplay').textContent = latest.dia;
+  }
+  if (state.memo) document.getElementById('memoArea').value = state.memo;
+}
+
+// ===== TIMELINE =====
+function getTimeline() {
+  const dow = new Date().getDay();
+  if (dow === 6) return TIMELINE_SAT;
+  if (dow === 0) return TIMELINE_SUN;
+  return TIMELINE_WEEKDAY;
+}
+
+function renderTimeline() {
+  const tl = document.getElementById('timeline');
+  const data = getTimeline();
+  const now = new Date();
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+  let insertedNow = false;
+  let html = '';
+
+  data.forEach((block, i) => {
+    const [h, m] = block.time.split(':').map(Number);
+    const blockMins = h * 60 + m;
+
+    // Insert current time line
+    if (!insertedNow && blockMins > nowMins) {
+      insertedNow = true;
+      const nowStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+      html += `<div class="current-time-bar">
+        <span class="now-label">▶ ${nowStr}</span>
+        <div class="now-line"></div>
+      </div>`;
+    }
+
+    html += `<div class="time-block type-${block.type}">
+      <div class="time-col"><span class="time-text">${block.time}</span></div>
+      <div class="timeline-line"><div class="timeline-dot"></div></div>
+      <div class="event-content">
+        <div class="event-title">${block.title}</div>
+        <div class="event-sub">${block.sub}</div>
+        <span class="event-tag">${block.type.toUpperCase()}</span>
+      </div>
+    </div>`;
+  });
+
+  tl.innerHTML = html;
+}
+
+// ===== WEEKLY GRID =====
+function renderWeeklyGrid() {
+  const grid = document.getElementById('daysGrid');
+  const today = new Date().getDay();
+  let html = '';
+  let count = 0;
+
+  WEEKDAYS_JP.forEach((d, i) => {
+    const trained = state.weeklyTraining[i];
+    if (trained) count++;
+    const isToday = i === today;
+    html += `<div class="day-pill">
+      <span>${d}</span>
+      <div class="day-circle ${trained ? 'trained' : ''} ${isToday && !trained ? 'rest' : ''}"
+           onclick="toggleDay(${i})" title="${trained ? '完了' : 'タップで記録'}">
+        ${trained ? '✓' : (isToday ? '●' : '')}
+      </div>
+    </div>`;
+  });
+
+  grid.innerHTML = html;
+  document.getElementById('weekCount').textContent = count + '/6';
+}
+
+function toggleDay(i) {
+  state.weeklyTraining[i] = !state.weeklyTraining[i];
+  saveState();
+  renderWeeklyGrid();
+}
+
+// ===== BP =====
+function saveBP() {
+  const sys = document.getElementById('bpSys').value;
+  const dia = document.getElementById('bpDia').value;
+  const pulse = document.getElementById('bpPulse').value;
+  if (!sys || !dia) return;
+
+  const now = new Date();
+  const label = (now.getMonth()+1) + '/' + now.getDate() + ' ' +
+    now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+
+  state.bpRecords.unshift({ date: label, sys, dia, pulse: pulse || '-' });
+  if (state.bpRecords.length > 20) state.bpRecords.pop();
+
+  document.getElementById('bpSysDisplay').textContent = sys;
+  document.getElementById('bpDiaDisplay').textContent = dia;
+  document.getElementById('bpSys').value = '';
+  document.getElementById('bpDia').value = '';
+  document.getElementById('bpPulse').value = '';
+  saveState();
+  renderBPHistory();
+}
+
+function renderBPHistory() {
+  const container = document.getElementById('bpHistory');
+  if (!state.bpRecords.length) {
+    container.innerHTML = '<div style="font-size:0.65rem;color:var(--muted);padding:6px 0">記録なし</div>';
+    return;
+  }
+  container.innerHTML = state.bpRecords.slice(0,8).map(r =>
+    `<div class="bp-entry">
+      <span class="bp-date">${r.date}</span>
+      <span class="bp-sys">${r.sys}</span>
+      <span class="bp-dia">${r.dia}</span>
+      <span class="bp-pulse">${r.pulse}bpm</span>
+    </div>`
+  ).join('');
+}
+
+// ===== TRAINING =====
+function getTrainingMenu() {
+  const dow = new Date().getDay();
+  if (dow === 6) return { key: 'sat', ...TRAINING_MENUS.sat };
+  if (dow === 0) return { key: 'sun', ...TRAINING_MENUS.sun };
+  return { key: 'weekday', ...TRAINING_MENUS.weekday };
+}
+
+function renderTraining() {
+  const section = document.getElementById('trainingSection');
+  const menus = [
+    { key: 'weekday', ...TRAINING_MENUS.weekday },
+    { key: 'sat', ...TRAINING_MENUS.sat },
+    { key: 'sun', ...TRAINING_MENUS.sun },
+  ];
+
+  const todayKey = getTrainingMenu().key;
+  let html = '';
+
+  menus.forEach(menu => {
+    const isToday = menu.key === todayKey;
+    const totalCal = menu.exercises.reduce((s, e) => s + e.cal, 0);
+    const checks = state.exerciseChecks[menu.key] || {};
+    const doneCount = Object.values(checks).filter(Boolean).length;
+    const allDone = doneCount === menu.exercises.length;
+
+    html += `<div class="training-day">
+      <div class="training-day-header" onclick="toggleMenu('${menu.key}')">
+        <div>
+          <div class="day-label" style="color:${isToday ? 'var(--accent)' : 'var(--text)'}">${menu.label}</div>
+          <div class="day-type">${menu.type}</div>
+        </div>
+        <div class="day-status">
+          <button class="done-btn ${allDone ? 'completed' : ''}" onclick="event.stopPropagation();markAllDone('${menu.key}')">
+            ${allDone ? '✓ 完了' : '全完了'}
+          </button>
+          <span class="toggle-arrow" id="arrow_${menu.key}">▶</span>
+        </div>
+      </div>
+      <div class="training-exercises ${isToday ? 'open' : ''}" id="menu_${menu.key}">`;
+
+    menu.exercises.forEach((ex, i) => {
+      const checked = checks[i] || false;
+      html += `<div class="exercise-row">
+        <span class="ex-name">${ex.name}</span>
+        <span class="ex-spec">${ex.spec}</span>
+        <span class="ex-cal">~${ex.cal}kcal</span>
+        <div class="ex-check ${checked ? 'checked' : ''}" onclick="toggleExercise('${menu.key}', ${i})">${checked ? '✓' : ''}</div>
+      </div>`;
+    });
+
+    html += `<div class="calorie-total">消費目標 ~${totalCal}kcal</div>
+      <div class="section-note">⚠ 血圧160超の日はトレーニング中止。運動前に必ず血圧確認。</div>
+      </div>
+    </div>`;
+  });
+
+  section.innerHTML = html;
+
+  // Re-apply arrow states
+  menus.forEach(menu => {
+    const menuEl = document.getElementById(`menu_${menu.key}`);
+    const arrowEl = document.getElementById(`arrow_${menu.key}`);
+    if (menuEl && menuEl.classList.contains('open') && arrowEl) {
+      arrowEl.classList.add('open');
+    }
+  });
+}
+
+function toggleMenu(key) {
+  const el = document.getElementById('menu_' + key);
+  const arrow = document.getElementById('arrow_' + key);
+  el.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+function toggleExercise(menuKey, idx) {
+  if (!state.exerciseChecks[menuKey]) state.exerciseChecks[menuKey] = {};
+  state.exerciseChecks[menuKey][idx] = !state.exerciseChecks[menuKey][idx];
+  saveState();
+  renderTraining();
+}
+
+function markAllDone(menuKey) {
+  const menu = TRAINING_MENUS[menuKey];
+  if (!state.exerciseChecks[menuKey]) state.exerciseChecks[menuKey] = {};
+  const allDone = menu.exercises.every((_, i) => state.exerciseChecks[menuKey][i]);
+  menu.exercises.forEach((_, i) => {
+    state.exerciseChecks[menuKey][i] = !allDone;
+  });
+  if (!allDone) {
+    const today = new Date().getDay();
+    state.weeklyTraining[today] = true;
+  }
+  saveState();
+  renderTraining();
+  renderWeeklyGrid();
+}
+
+// ===== EVENT LISTENERS =====
+document.getElementById('weightInput').addEventListener('change', function() {
+  state.weight = this.value;
+  saveState();
+});
+
+document.getElementById('memoArea').addEventListener('input', function() {
+  state.memo = this.value;
+  saveState();
+});
+
+// Auto-refresh current time every minute
+setInterval(() => { renderTimeline(); }, 60000);
+
+// ===== START =====
+init();
+</script>
+</body>
+</html>
