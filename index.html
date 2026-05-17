@@ -433,7 +433,15 @@ canvas.cv{width:100%;height:100%}
     <div class="sc"><div class="sc-lbl">DAYS LOGGED</div><div class="sc-val am" id="daysLogged">--</div></div>
   </div>
   <div class="bp-card">
-    <div style="font-family:var(--fd);font-size:1.05rem;color:var(--ocean)">Blood Pressure Log</div>
+    <!-- 体重入力 -->
+    <div style="font-family:var(--fd);font-size:1.05rem;color:var(--palm);margin-bottom:12px">Weight Log</div>
+    <div class="bp-fs" style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)">
+      <div class="bf"><label>記録日</label><input type="date" id="wtDate" style="font-size:.72rem"></div>
+      <div class="bf"><label>体重 (kg)</label><input type="number" step="0.1" id="wtVal" placeholder="96.9"></div>
+      <button class="rec-btn" style="background:linear-gradient(135deg,var(--palm),var(--palm2))" onclick="saveWeight()">記録</button>
+    </div>
+    <div class="bp-hist" id="wtHist"></div>
+    <div style="font-family:var(--fd);font-size:1.05rem;color:var(--ocean);margin-top:4px">Blood Pressure Log</div>
     <div class="bp-fs"><div class="bf"><label>記録日</label><input type="date" id="bpDate" style="font-size:.72rem"></div><div class="bf"><label>収縮期 上</label><input type="number" id="bpSys" placeholder="121"></div><div class="bf"><label>拡張期 下</label><input type="number" id="bpDia" placeholder="96"></div><div class="bf"><label>脈拍</label><input type="number" id="bpPulse" placeholder="72"></div><button class="rec-btn" onclick="saveBP()">記録</button></div>
     <div class="bp-hist" id="bpHist"></div>
   </div>
@@ -811,6 +819,53 @@ function renderLog(){
   const circ=264;document.getElementById('ringFill').style.strokeDashoffset=circ-(circ*Math.min(total/T,1));
 }
 
+
+function saveWeight(){
+  const val=document.getElementById('wtVal').value;
+  const dateInput=document.getElementById('wtDate').value||today();
+  if(!val)return;
+  // localStorageに体重を保存
+  const data=gdd(dateInput);
+  data.weight=parseFloat(val);
+  sdd(dateInput,data);
+  // ヘッダーの体重欄を更新（今日の分なら）
+  if(dateInput===today()){
+    const el=document.getElementById('weightIn');
+    if(el) el.value=val;
+  }
+  document.getElementById('wtVal').value='';
+  renderWtHist();
+  renderGraphs();
+  alert('体重 '+val+'kg（'+dateInput+'）を記録しました');
+}
+
+function renderWtHist(){
+  const c=document.getElementById('wtHist');
+  if(!c)return;
+  const allDates=gall().sort((a,b)=>b.localeCompare(a));
+  const entries=[];
+  allDates.forEach(d=>{
+    const rec=gdd(d);
+    if(rec.weight) entries.push({date:d,weight:rec.weight});
+  });
+  // 固定データも追加
+  [{date:'2025-05-17',weight:96.9},{date:'2025-05-16',weight:97.7},{date:'2025-05-15',weight:100.0}].forEach(f=>{
+    if(!entries.find(e=>e.date===f.date)) entries.push(f);
+  });
+  entries.sort((a,b)=>b.date.localeCompare(a.date));
+  if(!entries.length){c.innerHTML='<div style="font-size:.66rem;color:var(--muted);padding:7px 0">記録なし</div>';return;}
+  c.innerHTML='<div style="margin-bottom:8px">'+entries.slice(0,8).map(e=>`
+    <div class="bp-row">
+      <span class="bpdt">${e.date.slice(5)}</span>
+      <span style="font-family:var(--fm);font-size:.72rem;font-weight:700;color:var(--palm)">${e.weight.toFixed(1)}</span>
+      <span style="font-size:.6rem;color:var(--muted)">kg</span>
+    </div>`).join('')+'</div>';
+}
+
+function initWtDate(){
+  const el=document.getElementById('wtDate');
+  if(el) el.value=today();
+}
 function saveBP(){
   const sys=document.getElementById('bpSys').value;
   const dia=document.getElementById('bpDia').value;
@@ -1156,7 +1211,7 @@ document.getElementById('weightIn').addEventListener('change',function(){const v
 });
 
 window.addEventListener('DOMContentLoaded',()=>{
-  load();initHeader();initDP();renderLog();renderBPH();renderRecipes();renderTraining();renderWeek();renderIrrLog();initBPDate();
+  load();initHeader();initDP();renderLog();renderBPH();renderRecipes();renderTraining();renderWeek();renderIrrLog();initBPDate();initWtDate();renderWtHist();
   // 初期血圧表示
   (function(){
     try{
