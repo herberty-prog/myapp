@@ -16,9 +16,9 @@
   --fd:'Pacifico',cursive;--fb:'Nunito',sans-serif;--fm:'JetBrains Mono',monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:var(--fb);min-height:100vh;max-width:430px;margin:0 auto;padding-bottom:90px;-webkit-font-smoothing:antialiased;overflow-x:hidden;background:var(--sand2);color:var(--text)}
+body{font-family:var(--fb);min-height:100vh;padding-bottom:90px;-webkit-font-smoothing:antialiased;overflow-x:hidden;background:var(--sand2);color:var(--text)}
 
-.ocean-bg{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,#87ceeb 0%,#b0e0f5 18%,#48cae4 32%,#0077b6 50%,#023e8a 64%,#f4e4c1 64%,#fdf6ee 100%)}
+.ocean-bg{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,#87ceeb 0%,#b0e0f5 18%,#48cae4 32%,#0077b6 50%,#023e8a 64%,#f4e4c1 64%,#fdf6ee 100%);width:100%;max-width:none}
 .ocean-bg::before{content:'';position:absolute;top:2%;right:12%;width:65px;height:65px;border-radius:50%;background:radial-gradient(circle,#fff9c4 0%,#ffd166 40%,#f77f00 100%);box-shadow:0 0 40px 18px rgba(255,209,102,.4);animation:sunP 4s ease-in-out infinite}
 @keyframes sunP{0%,100%{box-shadow:0 0 40px 18px rgba(255,209,102,.4)}50%{box-shadow:0 0 60px 28px rgba(255,209,102,.6)}}
 .ocean-bg::after{content:'';position:absolute;top:57%;left:-10%;right:-10%;height:55px;background:rgba(255,255,255,.13);border-radius:50% 50% 0 0/28px 28px 0 0;animation:wv 6s ease-in-out infinite}
@@ -44,7 +44,7 @@ body{font-family:var(--fb);min-height:100vh;max-width:430px;margin:0 auto;paddin
 @keyframes wvM{from{background-position:0 0}to{background-position:400px 0}}
 
 /* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(255,255,255,.96);backdrop-filter:blur(20px);border-top:1px solid rgba(0,119,182,.14);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom,0);box-shadow:0 -4px 18px rgba(0,119,182,.09)}
+.bnav{position:fixed;bottom:0;left:0;width:100%;background:rgba(255,255,255,.96);backdrop-filter:blur(20px);border-top:1px solid rgba(0,119,182,.14);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom,0);box-shadow:0 -4px 18px rgba(0,119,182,.09)}
 .nb{flex:1;padding:8px 3px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:none;position:relative;transition:all .2s}
 .nb::before{content:'';position:absolute;top:0;left:22%;right:22%;height:3px;background:linear-gradient(90deg,var(--ocean),var(--aqua));transform:scaleX(0);transition:transform .25s;border-radius:0 0 3px 3px}
 .nb.active::before{transform:scaleX(1)}
@@ -139,7 +139,7 @@ canvas.cv{width:100%;height:100%}
 .sc-val{font-family:var(--fm);font-size:1.6rem;font-weight:700;line-height:1}
 .sc-val.oc{color:var(--ocean)}.sc-val.gn{color:var(--palm)}.sc-val.rd{color:var(--hibiscus)}.sc-val.am{color:var(--sunset)}
 .bp-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow)}
-.bp-fs{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:7px;align-items:end;margin-top:9px}
+.bp-fs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:7px;align-items:end;margin-top:9px}
 .bf label{display:block;font-size:.56rem;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
 .bf input{width:100%;padding:8px 9px;border:1.5px solid rgba(0,119,182,.14);border-radius:9px;background:white;font-family:var(--fm);font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s}
 .bf input:focus{border-color:var(--aqua)}
@@ -287,6 +287,79 @@ canvas.cv{width:100%;height:100%}
 ::-webkit-scrollbar{width:2px;height:2px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(0,119,182,.2);border-radius:99px}
+
+
+  .page{padding:16px 80px 0}
+  .recipe-grid{grid-template-columns:repeat(4,1fr)}
+  .bnav{max-width:none;left:0;transform:none}
+}
+
+/* ── PC / TABLET RESPONSIVE ── */
+@media(min-width:700px){
+  body{
+    padding-bottom:80px;
+  }
+  .hero{
+    padding:52px 5% 0;
+  }
+  .hero-inner{
+    padding:24px 32px 20px;
+  }
+  .stat-strip{
+    grid-template-columns:repeat(3,280px);
+    justify-content:flex-start;
+    gap:12px;
+  }
+  .page{
+    padding:14px 5% 0;
+  }
+  .recipe-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+  .sg{
+    grid-template-columns:repeat(4,1fr);
+  }
+  .stats-summary{
+    grid-template-columns:repeat(4,1fr);
+  }
+  .bp-fs{
+    grid-template-columns:1fr 1fr 1fr 1fr auto;
+  }
+  .bnav{
+    max-width:none;
+  }
+  .wave-div{
+    margin:7px -5% 0;
+  }
+}
+@media(min-width:1000px){
+  .hero{
+    padding:52px 8% 0;
+  }
+  .page{
+    padding:14px 8% 0;
+  }
+  .recipe-grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+  .wave-div{
+    margin:7px -8% 0;
+  }
+}
+@media(min-width:1400px){
+  .hero{
+    padding:52px 12% 0;
+  }
+  .page{
+    padding:14px 12% 0;
+  }
+  .recipe-grid{
+    grid-template-columns:repeat(5,1fr);
+  }
+  .wave-div{
+    margin:7px -12% 0;
+  }
+}
 </style>
 </head>
 <body>
@@ -361,7 +434,7 @@ canvas.cv{width:100%;height:100%}
   </div>
   <div class="bp-card">
     <div style="font-family:var(--fd);font-size:1.05rem;color:var(--ocean)">Blood Pressure Log</div>
-    <div class="bp-fs"><div class="bf"><label>収縮期 上</label><input type="number" id="bpSys" placeholder="121"></div><div class="bf"><label>拡張期 下</label><input type="number" id="bpDia" placeholder="96"></div><div class="bf"><label>脈拍</label><input type="number" id="bpPulse" placeholder="72"></div><button class="rec-btn" onclick="saveBP()">記録</button></div>
+    <div class="bp-fs"><div class="bf"><label>記録日</label><input type="date" id="bpDate" style="font-size:.72rem"></div><div class="bf"><label>収縮期 上</label><input type="number" id="bpSys" placeholder="121"></div><div class="bf"><label>拡張期 下</label><input type="number" id="bpDia" placeholder="96"></div><div class="bf"><label>脈拍</label><input type="number" id="bpPulse" placeholder="72"></div><button class="rec-btn" onclick="saveBP()">記録</button></div>
     <div class="bp-hist" id="bpHist"></div>
   </div>
 </div>
@@ -739,19 +812,44 @@ function renderLog(){
 }
 
 function saveBP(){
-  const sys=document.getElementById('bpSys').value;const dia=document.getElementById('bpDia').value;const pulse=document.getElementById('bpPulse').value;
+  const sys=document.getElementById('bpSys').value;
+  const dia=document.getElementById('bpDia').value;
+  const pulse=document.getElementById('bpPulse').value;
+  const dateInput=document.getElementById('bpDate').value||today();
   if(!sys||!dia)return;
-  const now=new Date();const a=gbp();
-  a.unshift({date:today(),time:p2(now.getHours())+':'+p2(now.getMinutes()),sys:+sys,dia:+dia,pulse:+pulse||0});
+  const now=new Date();
+  const a=gbp();
+  a.unshift({date:dateInput,time:p2(now.getHours())+':'+p2(now.getMinutes()),sys:+sys,dia:+dia,pulse:+pulse||0});
+  a.sort((x,y)=>y.date.localeCompare(x.date)||y.time.localeCompare(x.time));
   if(a.length>60)a.pop();sbp(a);
-  document.getElementById('bpSys').value='';document.getElementById('bpDia').value='';document.getElementById('bpPulse').value='';
-  document.getElementById('bpDisp').textContent=sys+'/'+dia;renderBPH();renderGraphs();
+  // ヘッダー即時更新
+  setTimeout(function(){
+    var el=document.getElementById('bpDisp');
+    if(el) el.textContent=sys+'/'+dia;
+  },0);
+  document.getElementById('bpSys').value='';
+  document.getElementById('bpDia').value='';
+  document.getElementById('bpPulse').value='';
+  // ヘッダーに今日または最新の血圧を反映
+  updateBPHeader();
+  renderBPH();renderGraphs();
 }
+function updateBPHeader(){
+  try{
+    var stored=JSON.parse(localStorage.getItem('okz_bp')||'[]');
+    var el=document.getElementById('bpDisp');
+    if(!el)return;
+    if(stored&&stored.length>0){
+      el.textContent=stored[0].sys+'/'+stored[0].dia;
+    }
+  }catch(e){console.log('BP update error:',e);}
+}
+
 function bpSt(sys){return sys<120?{c:'good',t:'正常'}:sys<140?{c:'warn',t:'注意'}:{c:'high',t:'高め'}}
 function renderBPH(){
   const a=gbp();const c=document.getElementById('bpHist');
   if(!a.length){c.innerHTML='<div style="font-size:.66rem;color:var(--muted);padding:7px 0">記録なし</div>';return}
-  document.getElementById('bpDisp').textContent=a[0].sys+'/'+a[0].dia;
+  updateBPHeader();
   c.innerHTML=a.slice(0,8).map(r=>{const st=bpSt(r.sys);return`<div class="bp-row"><span class="bpdt">${r.date.slice(5)} ${r.time}</span><span class="bpsy">${r.sys}</span><span class="bpsp">/</span><span class="bpdi">${r.dia}</span><span class="bppu">${r.pulse}bpm</span><span class="bpbdg ${st.c}">${st.t}</span></div>`}).join('');
 }
 
@@ -1058,13 +1156,27 @@ document.getElementById('weightIn').addEventListener('change',function(){const v
 });
 
 window.addEventListener('DOMContentLoaded',()=>{
-  load();initHeader();initDP();renderLog();renderBPH();renderRecipes();renderTraining();renderWeek();renderIrrLog();
+  load();initHeader();initDP();renderLog();renderBPH();renderRecipes();renderTraining();renderWeek();renderIrrLog();initBPDate();
+  // 初期血圧表示
+  (function(){
+    try{
+      var stored=JSON.parse(localStorage.getItem('okz_bp')||'[]');
+      var el=document.getElementById('bpDisp');
+      if(el&&stored&&stored.length>0){
+        el.textContent=stored[0].sys+'/'+stored[0].dia;
+      }
+    }catch(e){}
+  })();
   const dow=new Date().getDay();const tabs=document.querySelectorAll('.tdt');
   if(dow===6){tabs.forEach(b=>b.classList.remove('on'));tabs[1].classList.add('on');trainDay='sat';renderTraining()}
   else if(dow===0){tabs.forEach(b=>b.classList.remove('on'));tabs[2].classList.add('on');trainDay='sun';renderTraining()}
-  const bp=gbp();if(bp.length)document.getElementById('bpDisp').textContent=bp[0].sys+'/'+bp[0].dia;
+  updateBPHeader();
 });
-window.addEventListener('resize',()=>{if(document.getElementById('page-graph').classList.contains('active'))renderGraphs()});
+function initBPDate(){
+  const el=document.getElementById('bpDate');
+  if(el) el.value=today();
+}
+window.addEventListener('resize',()=>{if(document.getElementById('page-graph').classList.contains('active'))renderGraphs();});
 </script>
 </body>
 </html>
