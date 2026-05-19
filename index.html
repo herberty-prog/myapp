@@ -640,52 +640,43 @@ canvas.cv{width:100%;height:100%}
 </div>
 
 <script>
-// ═══════════════════════════════
-// STORAGE（単一マスターキー保存）
-// ═══════════════════════════════
-const MK='okz5';
-
+// ═══════════════════
+// STORAGE
+// ═══════════════════
+var MK='okz5';
 function loadM(){
-  try{ return JSON.parse(localStorage.getItem(MK)||'{"days":{},"bp":[],"irr":[],"meta":{}}'); }
-  catch(e){ return {days:{},bp:[],irr:[],meta:{}}; }
+  try{return JSON.parse(localStorage.getItem(MK)||'{"days":{},"bp":[],"irr":[],"rtl":[],"meta":{},"sheetSettings":{}}');}
+  catch(e){return{days:{},bp:[],irr:[],rtl:[],meta:{},sheetSettings:{}};}
 }
 function saveM(m){
   try{
     localStorage.setItem(MK,JSON.stringify(m));
-    try{ sessionStorage.setItem(MK,JSON.stringify(m)); }catch(e){}
-  }catch(e){ console.error('save error',e); }
+    try{sessionStorage.setItem(MK,JSON.stringify(m));}catch(e){}
+  }catch(e){console.error('saveM error',e);}
 }
 function getM(){
-  let m=loadM();
-  // sessionStorageから復元試みる
-  if(!m.bp.length){
-    try{
-      const s=sessionStorage.getItem(MK);
-      if(s){ const sd=JSON.parse(s); if(sd.bp&&sd.bp.length){ m=sd; saveM(m); } }
-    }catch(e){}
+  var m=loadM();
+  if(!m.bp||!m.bp.length){
+    try{var s=sessionStorage.getItem(MK);if(s){var sd=JSON.parse(s);if(sd.bp&&sd.bp.length){m=sd;saveM(m);}}}catch(e){}
   }
   return m;
 }
+function gdd(d){return getM().days[d]||{lunch:[],snack:[],dinner:[]};}
+function sdd(d,data){var m=getM();m.days[d]=data;saveM(m);}
+function sdf(d,f,v){var data=gdd(d);data[f]=v;sdd(d,data);}
+function gbp(){return getM().bp||[];}
+function sbp(a){var m=getM();m.bp=a;saveM(m);}
+function girr(){return getM().irr||[];}
+function sirr(a){var m=getM();m.irr=a;saveM(m);}
+function grtl(){var m=getM();return m.rtl||[];}
+function srtl(a){var m=getM();m.rtl=a;saveM(m);}
+function gall(){return Object.keys(getM().days||{}).sort();}
+function today(){var d=new Date();return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}
+function p2(n){return String(n).padStart(2,'0');}
 
-// 食事データ
-function gdd(d){ return getM().days[d]||{lunch:[],snack:[],dinner:[]}; }
-function sdd(d,data){ const m=getM(); m.days[d]=data; saveM(m); }
-function sdf(d,f,v){ const data=gdd(d); data[f]=v; sdd(d,data); }
-
-// 血圧データ
-function gbp(){ return getM().bp||[]; }
-function sbp(a){ const m=getM(); m.bp=a; saveM(m); }
-
-// イレギュラートレーニング
-function girr(){ return getM().irr||[]; }
-function sirr(a){ const m=getM(); m.irr=a; saveM(m); }
-
-// 記録済み日付一覧
-function gall(){ return Object.keys(getM().days||{}).sort(); }
-
-// ═══════════════════════════════
-// RECIPES（昼15品・夜15品）
-// ═══════════════════════════════
+// ═══════════════════
+// RECIPES & TRAINING
+// ═══════════════════
 const RECIPES=[
   {id:1,type:'lunch',tags:['lunch','quick','lowsalt'],emoji:'🍱',bg:'linear-gradient(135deg,#e0f4ff,#0077b6)',
    name:'サラダチキン＋おにぎり＋野菜サラダ',kcal:620,time:'0分',
@@ -870,10 +861,6 @@ const RECIPES=[
    steps:['水300mlに鶏がらスープの素としょうがを入れて沸騰させる。','豆腐を崩しながら入れ、溶き卵を流し入れてかき玉にする。','ねぎをちらして完成。'],
    tip:'胃に優しく疲れた夜・体調が優れない日に最適。低塩分で血圧への負担も少ない。'}
 ];
-
-// ═══════════════════════════════
-// TRAINING DATA
-// ═══════════════════════════════
 const TRAINING={
   weekday:{note:'血圧160超の日はトレーニング中止。運動前に必ず血圧確認。',exercises:[
     {name:'ストレッチ（股関節・肩）',spec:'5〜8分',how:['床に座り両足の裏を合わせて股関節を開く。30秒×2セット。','壁に手をついて胸を張り肩甲骨を寄せる。10秒×5回。','首をゆっくり左右に傾け各20秒キープ。'],caution:'運転直後は股関節・肩が硬い。反動をつけずゆっくり伸ばす。痛みがあれば即中止。'},
@@ -895,31 +882,31 @@ const TRAINING={
   ]}
 };
 
-// ═══════════════════════════════
+// ═══════════════════
 // STATE
-// ═══════════════════════════════
-let logDate=today(),trainDay='weekday',period=7,exOpen={},exChecks={},weeklyDone=[false,false,false,false,false,false,false],irrCat='walk',rFilter='all',analysisPeriod=7;
+// ═══════════════════
+var logDate=today(),trainDay='weekday',period=7;
+var exOpen={},exChecks={},weeklyDone=[false,false,false,false,false,false,false];
+var irrCat='walk',rFilter='all',analysisPeriod=7,sheetPeriod=7,rtDay='weekday';
 
-function today(){const d=new Date();return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}
-function p2(n){return String(n).padStart(2,'0');}
-
+// ═══════════════════
+// LOAD / SAVE
+// ═══════════════════
 function load(){
   try{
-    const m=getM();
+    var m=getM();
     if(m.meta){
       if(m.meta.exChecks) exChecks=m.meta.exChecks;
       if(m.meta.weeklyDone) weeklyDone=m.meta.weeklyDone;
-      const w=m.meta.weight;
-      if(w){const el=document.getElementById('weightIn');if(el)el.value=w;}
+      if(m.meta.weight){var wi=document.getElementById('weightIn');if(wi)wi.value=m.meta.weight;}
     }
   }catch(e){console.error('load error',e);}
 }
-
 function save(){
   try{
-    const w=document.getElementById('weightIn').value;
+    var w=document.getElementById('weightIn').value;
     if(w) sdf(today(),'weight',parseFloat(w));
-    const m=getM();
+    var m=getM();
     m.meta=m.meta||{};
     m.meta.exChecks=exChecks;
     m.meta.weeklyDone=weeklyDone;
@@ -928,34 +915,30 @@ function save(){
   }catch(e){console.error('save error',e);}
 }
 
-// ═══════════════════════════════
+// ═══════════════════
 // HEADER
-// ═══════════════════════════════
+// ═══════════════════
 function initHeader(){
-  const d=new Date();
-  const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
-  const months=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  var d=new Date();
+  var days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  var months=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   document.getElementById('hDay').textContent=d.getDate();
   document.getElementById('hMeta').textContent=days[d.getDay()]+' / '+months[d.getMonth()];
 }
-
 function updateBPHeader(){
   try{
-    const a=gbp();
-    const el=document.getElementById('bpDisp');
-    if(!el) return;
-    if(a&&a.length>0){
-      el.textContent=a[0].sys+'/'+a[0].dia;
-    }
+    var a=gbp();
+    var el=document.getElementById('bpDisp');
+    if(el&&a&&a.length>0) el.textContent=a[0].sys+'/'+a[0].dia;
   }catch(e){}
 }
 
-// ═══════════════════════════════
+// ═══════════════════
 // NAVIGATION
-// ═══════════════════════════════
+// ═══════════════════
 function switchPage(id,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('active');});
   document.getElementById('page-'+id).classList.add('active');
   btn.classList.add('active');
   if(id==='graph') setTimeout(renderGraphs,60);
@@ -963,381 +946,412 @@ function switchPage(id,btn){
   if(id==='sheet'){loadSheetSettings();renderSheetPreview();initGASCode();}
 }
 
-// ═══════════════════════════════
+// ═══════════════════
 // DATE PICKER
-// ═══════════════════════════════
+// ═══════════════════
 function initDP(){
-  const dp=document.getElementById('logDate');
+  var dp=document.getElementById('logDate');
+  if(!dp)return;
   dp.value=logDate;
-  dp.addEventListener('change',()=>{logDate=dp.value;renderLog();});
+  dp.addEventListener('change',function(){logDate=dp.value;renderLog();});
 }
 function shiftDate(d){
-  const dt=new Date(logDate);dt.setDate(dt.getDate()+d);
+  var dt=new Date(logDate);
+  dt.setDate(dt.getDate()+d);
   logDate=dt.getFullYear()+'-'+p2(dt.getMonth()+1)+'-'+p2(dt.getDate());
   document.getElementById('logDate').value=logDate;
   renderLog();
 }
 
-// ═══════════════════════════════
+// ═══════════════════
 // FOOD LOG
-// ═══════════════════════════════
+// ═══════════════════
 function addFood(meal){
-  const f=document.getElementById('f-'+meal);
-  const k=document.getElementById('k-'+meal);
-  const name=f.value.trim();
-  const kcal=parseInt(k.value)||0;
-  if(!name) return;
-  const data=gdd(logDate);
-  data[meal].push({name,kcal});
+  var f=document.getElementById('f-'+meal);
+  var k=document.getElementById('k-'+meal);
+  var name=f.value.trim();
+  var kcal=parseInt(k.value)||0;
+  if(!name)return;
+  var data=gdd(logDate);
+  data[meal].push({name:name,kcal:kcal});
   sdd(logDate,data);
   f.value='';k.value='';
   renderLog();
 }
-
 function removeFood(meal,idx){
-  const data=gdd(logDate);
+  var data=gdd(logDate);
   data[meal].splice(idx,1);
   sdd(logDate,data);
   renderLog();
 }
-
 function renderLog(){
-  const data=gdd(logDate);const T=1600;let total=0;
-  const mm={lunch:['lNum','lBar'],snack:['sNum','sBar'],dinner:['dNum','dBar']};
-  
+  var data=gdd(logDate);
+  var T=1600;var total=0;
+  var mm={lunch:['lNum','lBar'],snack:['sNum','sBar'],dinner:['dNum','dBar']};
+  ['lunch','snack','dinner'].forEach(function(m){
+    var mt=data[m].reduce(function(s,e){return s+e.kcal;},0);
+    total+=mt;
+    document.getElementById('t-'+m).textContent=mt;
+    document.getElementById(mm[m][0]).textContent=mt;
+    document.getElementById(mm[m][1]).style.width=Math.min(mt/T*100,100)+'%';
+    var c=document.getElementById('e-'+m);
+    if(data[m].length){
+      c.innerHTML=data[m].map(function(e,i){
+        return '<div class="entry"><span class="enm">'+e.name+'</span><span class="ekc">'+e.kcal+'kcal</span><button class="edel" onclick="removeFood(''+m+'','+i+')">x</button></div>';
+      }).join('');
+    }else{
+      c.innerHTML='<div class="no-entry">まだ記録なし</div>';
+    }
+  });
   document.getElementById('ringNum').textContent=total;
   document.getElementById('hKcal').textContent=total;
-  const rem=T-total;
+  var rem=T-total;
   document.getElementById('ringRem').textContent=rem>0?rem+' rem':'OVER '+Math.abs(rem);
-  const circ=264;
+  var circ=264;
   document.getElementById('ringFill').style.strokeDashoffset=circ-(circ*Math.min(total/T,1));
 }
 
-// ═══════════════════════════════
+// ═══════════════════
 // BLOOD PRESSURE
-// ═══════════════════════════════
-function initBPDate(){
-  const el=document.getElementById('bpDate');
-  if(el) el.value=today();
-}
-
+// ═══════════════════
+function initBPDate(){var el=document.getElementById('bpDate');if(el)el.value=today();}
 function saveBP(){
-  const sys=document.getElementById('bpSys').value;
-  const dia=document.getElementById('bpDia').value;
-  const pulse=document.getElementById('bpPulse').value;
-  const dateInput=document.getElementById('bpDate').value||today();
-  if(!sys||!dia) return;
-  const now=new Date();
-  const a=gbp();
+  var sys=document.getElementById('bpSys').value;
+  var dia=document.getElementById('bpDia').value;
+  var pulse=document.getElementById('bpPulse').value;
+  var dateInput=document.getElementById('bpDate').value||today();
+  if(!sys||!dia)return;
+  var now=new Date();
+  var a=gbp();
   a.unshift({date:dateInput,time:p2(now.getHours())+':'+p2(now.getMinutes()),sys:+sys,dia:+dia,pulse:+pulse||0});
-  a.sort((x,y)=>y.date.localeCompare(x.date)||y.time.localeCompare(x.time));
-  if(a.length>60) a.pop();
+  a.sort(function(x,y){return y.date.localeCompare(x.date)||y.time.localeCompare(x.time);});
+  if(a.length>60)a.pop();
   sbp(a);
   document.getElementById('bpSys').value='';
   document.getElementById('bpDia').value='';
   document.getElementById('bpPulse').value='';
-  // ヘッダーに即反映
-  const el=document.getElementById('bpDisp');
-  if(el) el.textContent=sys+'/'+dia;
+  var el=document.getElementById('bpDisp');
+  if(el)el.textContent=sys+'/'+dia;
   renderBPH();
   renderGraphs();
 }
-
 function bpSt(sys){return sys<120?{c:'good',t:'正常'}:sys<140?{c:'warn',t:'注意'}:{c:'high',t:'高め'};}
-
 function renderBPH(){
-  const a=gbp();
-  const c=document.getElementById('bpHist');
-  if(!a.length){c.innerHTML='<div style="font-size:.66rem;color:var(--muted);padding:7px 0">記録なし</div>';return;}
-  // ヘッダー更新
-  const el=document.getElementById('bpDisp');
-  if(el) el.textContent=a[0].sys+'/'+a[0].dia;
-  c.innerHTML=a.slice(0,10).map(r=>{
-    const st=bpSt(r.sys);
-    return`<div class="bp-row"><span class="bpdt">${r.date.slice(5)} ${r.time}</span><span class="bpsy">${r.sys}</span><span class="bpsp">/</span><span class="bpdi">${r.dia}</span><span class="bppu">${r.pulse}bpm</span><span class="bpbdg ${st.c}">${st.t}</span></div>`;
-  }).join('');
-}
-
-// ═══════════════════════════════
-// WEIGHT LOG
-// ═══════════════════════════════
-function initWtDate(){
-  const el=document.getElementById('wtDate');
-  if(el) el.value=today();
-}
-
-function saveWeight(){
-  const val=document.getElementById('wtVal').value;
-  const dateInput=document.getElementById('wtDate').value||today();
-  if(!val) return;
-  sdf(dateInput,'weight',parseFloat(val));
-  // 今日の分はヘッダーにも反映
-  if(dateInput===today()){
-    const el=document.getElementById('weightIn');
-    if(el) el.value=val;
+  var a=gbp();
+  var c=document.getElementById('bpHist');
+  if(!a.length){if(c)c.innerHTML='<div style="font-size:.66rem;color:var(--muted);padding:7px 0">記録なし</div>';return;}
+  var el=document.getElementById('bpDisp');
+  if(el)el.textContent=a[0].sys+'/'+a[0].dia;
+  if(c){
+    c.innerHTML=a.slice(0,10).map(function(r){
+      var st=bpSt(r.sys);
+      return '<div class="bp-row"><span class="bpdt">'+r.date.slice(5)+' '+r.time+'</span><span class="bpsy">'+r.sys+'</span><span class="bpsp">/</span><span class="bpdi">'+r.dia+'</span><span class="bppu">'+r.pulse+'bpm</span><span class="bpbdg '+st.c+'">'+st.t+'</span></div>';
+    }).join('');
   }
+}
+
+// ═══════════════════
+// WEIGHT LOG
+// ═══════════════════
+function initWtDate(){var el=document.getElementById('wtDate');if(el)el.value=today();}
+function saveWeight(){
+  var val=document.getElementById('wtVal').value;
+  var dateInput=document.getElementById('wtDate').value||today();
+  if(!val)return;
+  sdf(dateInput,'weight',parseFloat(val));
+  if(dateInput===today()){var el=document.getElementById('weightIn');if(el)el.value=val;}
   document.getElementById('wtVal').value='';
   renderWtHist();
   renderGraphs();
 }
-
 function renderWtHist(){
-  const c=document.getElementById('wtHist');
-  if(!c) return;
-  const entries=[];
-  gall().forEach(d=>{
-    const rec=gdd(d);
-    if(rec.weight) entries.push({date:d,weight:rec.weight});
-  });
-  entries.sort((a,b)=>b.date.localeCompare(a.date));
+  var c=document.getElementById('wtHist');
+  if(!c)return;
+  var entries=[];
+  gall().forEach(function(d){var r=gdd(d);if(r.weight)entries.push({date:d,weight:r.weight});});
+  entries.sort(function(a,b){return b.date.localeCompare(a.date);});
   if(!entries.length){c.innerHTML='<div style="font-size:.66rem;color:var(--muted);padding:7px 0">記録なし</div>';return;}
-  c.innerHTML=entries.slice(0,8).map(e=>`
-    <div class="bp-row">
-      <span class="bpdt">${e.date.slice(5)}</span>
-      <span style="font-family:var(--fm);font-size:.75rem;font-weight:700;color:var(--palm)">${e.weight.toFixed(1)}</span>
-      <span style="font-size:.6rem;color:var(--muted)"> kg</span>
-    </div>`).join('');
+  c.innerHTML=entries.slice(0,8).map(function(e){
+    return '<div class="bp-row"><span class="bpdt">'+e.date.slice(5)+'</span><span style="font-family:var(--fm);font-size:.75rem;font-weight:700;color:var(--palm)">'+e.weight.toFixed(1)+'</span><span style="font-size:.6rem;color:var(--muted)"> kg</span></div>';
+  }).join('');
 }
 
-// ═══════════════════════════════
+// ═══════════════════
 // GRAPHS
-// ═══════════════════════════════
+// ═══════════════════
 function setPeriod(d,btn){
   period=d;
-  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.ptab').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
   renderGraphs();
 }
-
 function getWData(){
-  const all=[];
-  gall().forEach(d=>{const r=gdd(d);if(r.weight&&!all.find(x=>x.date===d)) all.push({date:d,weight:r.weight});});
-  return all.sort((a,b)=>a.date.localeCompare(b.date));
+  var all=[];
+  gall().forEach(function(d){var r=gdd(d);if(r.weight&&!all.find(function(x){return x.date===d;}))all.push({date:d,weight:r.weight});});
+  return all.sort(function(a,b){return a.date.localeCompare(b.date);});
 }
-
 function getBData(){
-  const all=[];
-  gbp().forEach(r=>{if(!all.find(x=>x.date===r.date)) all.push({date:r.date,sys:r.sys,dia:r.dia});});
-  return all.sort((a,b)=>a.date.localeCompare(b.date));
+  var all=[];
+  gbp().forEach(function(r){if(!all.find(function(x){return x.date===r.date;}))all.push({date:r.date,sys:r.sys,dia:r.dia});});
+  return all.sort(function(a,b){return a.date.localeCompare(b.date);});
 }
-
 function fp(arr,f){
-  if(!period) return arr;
-  const c=new Date();c.setDate(c.getDate()-period);
-  const cs=c.getFullYear()+'-'+p2(c.getMonth()+1)+'-'+p2(c.getDate());
-  return arr.filter(d=>d[f]>=cs);
+  if(!period)return arr;
+  var c=new Date();c.setDate(c.getDate()-period);
+  var cs=c.getFullYear()+'-'+p2(c.getMonth()+1)+'-'+p2(c.getDate());
+  return arr.filter(function(d){return d[f]>=cs;});
 }
-
 function drawChart(cvId,xlId,pts,c1,c2,lo,hi){
-  const cv=document.getElementById(cvId);if(!cv)return;
-  const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;
-  const W=cv.parentElement.getBoundingClientRect().width;const H=120;
+  var cv=document.getElementById(cvId);if(!cv)return;
+  var ctx=cv.getContext('2d');var dpr=window.devicePixelRatio||1;
+  var W=cv.parentElement.getBoundingClientRect().width;var H=120;
   cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+'px';cv.style.height=H+'px';
   ctx.scale(dpr,dpr);ctx.clearRect(0,0,W,H);
   if(pts.length<2){ctx.fillStyle='rgba(122,158,176,.5)';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText('データ不足',W/2,H/2);return;}
-  const pl=28,pr=7,pt=7,pb=19,cw=W-pl-pr,ch=H-pt-pb,range=hi-lo||1;
-  for(let i=0;i<=4;i++){
-    const y=pt+(ch/4)*i;
+  var pl=28,pr=7,pt=7,pb=19,cw=W-pl-pr,ch=H-pt-pb,range=hi-lo||1;
+  for(var i=0;i<=4;i++){
+    var y=pt+(ch/4)*i;
     ctx.strokeStyle='rgba(0,119,182,.07)';ctx.lineWidth=1;
     ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+cw,y);ctx.stroke();
-    const v=hi-(range/4)*i;
-    ctx.fillStyle='rgba(122,158,176,.75)';ctx.font=`${8*dpr/dpr}px JetBrains Mono,monospace`;ctx.textAlign='right';
+    var v=hi-(range/4)*i;
+    ctx.fillStyle='rgba(122,158,176,.75)';ctx.font=(8*dpr/dpr)+'px JetBrains Mono,monospace';ctx.textAlign='right';
     ctx.fillText(v.toFixed(1),pl-3,y+3);
   }
-  const xs=pts.map((_,i)=>pl+(i/(pts.length-1))*cw);
-  const ys=pts.map(p=>pt+(1-(p.v-lo)/range)*ch);
-  const grad=ctx.createLinearGradient(0,pt,0,pt+ch);
+  var xs=pts.map(function(_,i){return pl+(i/(pts.length-1))*cw;});
+  var ys=pts.map(function(p){return pt+(1-(p.v-lo)/range)*ch;});
+  var grad=ctx.createLinearGradient(0,pt,0,pt+ch);
   grad.addColorStop(0,c1+'48');grad.addColorStop(1,c1+'00');
   ctx.fillStyle=grad;ctx.beginPath();
-  xs.forEach((x,i)=>i===0?ctx.moveTo(x,ys[i]):ctx.lineTo(x,ys[i]));
+  xs.forEach(function(x,i){if(i===0)ctx.moveTo(x,ys[i]);else ctx.lineTo(x,ys[i]);});
   ctx.lineTo(xs[xs.length-1],pt+ch);ctx.lineTo(xs[0],pt+ch);ctx.closePath();ctx.fill();
-  const lg=ctx.createLinearGradient(pl,0,pl+cw,0);
+  var lg=ctx.createLinearGradient(pl,0,pl+cw,0);
   lg.addColorStop(0,c1);lg.addColorStop(1,c2||c1);
   ctx.strokeStyle=lg;ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.lineCap='round';
-  ctx.beginPath();xs.forEach((x,i)=>i===0?ctx.moveTo(x,ys[i]):ctx.lineTo(x,ys[i]));ctx.stroke();
-  pts.forEach((_,i)=>{ctx.beginPath();ctx.arc(xs[i],ys[i],3.5,0,Math.PI*2);ctx.fillStyle=c1;ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();});
-  const xl=document.getElementById(xlId);
-  if(xl){const step=Math.max(1,Math.floor(pts.length/5));xl.innerHTML=pts.filter((_,i)=>i%step===0||i===pts.length-1).map(p=>`<span>${p.label}</span>`).join('');}
+  ctx.beginPath();xs.forEach(function(x,i){if(i===0)ctx.moveTo(x,ys[i]);else ctx.lineTo(x,ys[i]);});ctx.stroke();
+  pts.forEach(function(_,i){ctx.beginPath();ctx.arc(xs[i],ys[i],3.5,0,Math.PI*2);ctx.fillStyle=c1;ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();});
+  var xl=document.getElementById(xlId);
+  if(xl){
+    var step=Math.max(1,Math.floor(pts.length/5));
+    xl.innerHTML=pts.filter(function(_,i){return i%step===0||i===pts.length-1;}).map(function(p){return '<span>'+p.label+'</span>';}).join('');
+  }
 }
-
 function renderGraphs(){
-  const wd=fp(getWData(),'date');
+  var wd=fp(getWData(),'date');
   if(wd.length){
-    const lt=wd[wd.length-1];
-    const fi=wd[0];
+    var lt=wd[wd.length-1];var fi=wd[0];
     document.getElementById('gW').innerHTML=lt.weight.toFixed(1)+'<span style="font-size:.95rem;color:var(--muted)">kg</span>';
-    const diff=lt.weight-fi.weight;
-    const gel=document.getElementById('gWd');
-    gel.textContent=(diff<0?'':'+')+''+diff.toFixed(1)+'kg';
+    var diff=lt.weight-fi.weight;var gel=document.getElementById('gWd');
+    gel.textContent=(diff<0?'':'+')+diff.toFixed(1)+'kg';
     gel.className='gc-diff '+(diff<=0?'good':'bad');
-    const vals=wd.map(d=>d.weight);
-    drawChart('cvW','xlW',wd.map(d=>({v:d.weight,label:d.date.slice(5)})),'#0077b6','#48cae4',Math.min(...vals)-1,Math.max(...vals)+.5);
-    const lossVal=fi.weight-lt.weight;
-    document.getElementById('totalLoss').textContent=(lossVal>0?'-':'+')+Math.abs(lossVal).toFixed(1)+'kg';
-    const sw=document.getElementById('startWeight');
+    var vals=wd.map(function(d){return d.weight;});
+    drawChart('cvW','xlW',wd.map(function(d){return{v:d.weight,label:d.date.slice(5)};}),
+      '#0077b6','#48cae4',Math.min.apply(null,vals)-1,Math.max.apply(null,vals)+.5);
+    var loss=fi.weight-lt.weight;
+    document.getElementById('totalLoss').textContent=(loss>0?'-':'+')+Math.abs(loss).toFixed(1)+'kg';
+    var sw=document.getElementById('startWeight');
     if(sw) sw.innerHTML=fi.weight.toFixed(1)+'<span style="font-size:.75rem">kg</span>';
   }
-  const bd=fp(getBData(),'date');
+  var bd=fp(getBData(),'date');
   if(bd.length){
-    const lt=bd[bd.length-1];
-    const fi=bd[0];
-    document.getElementById('gB').innerHTML=lt.sys+'<span style="font-size:.95rem;color:var(--muted)">mmHg</span>';
-    const diff=lt.sys-fi.sys;
-    const gel=document.getElementById('gBd');
-    gel.textContent=(diff<0?'':'+')+''+diff+'mmHg';
-    gel.className='gc-diff '+(diff<=0?'good':'bad');
-    const vals=bd.map(d=>d.sys);
-    drawChart('cvB','xlB',bd.map(d=>({v:d.sys,label:d.date.slice(5)})),'#e63946','#f77f00',Math.min(...vals)-5,Math.max(...vals)+5);
-    const sbp=document.getElementById('startBP');
-    if(sbp&&fi) sbp.innerHTML=fi.sys+'/'+fi.dia+'<span style="font-size:.75rem">mmHg</span>';
+    var lt2=bd[bd.length-1];var fi2=bd[0];
+    document.getElementById('gB').innerHTML=lt2.sys+'<span style="font-size:.95rem;color:var(--muted)">mmHg</span>';
+    var diff2=lt2.sys-fi2.sys;var gel2=document.getElementById('gBd');
+    gel2.textContent=(diff2<0?'':'+')+diff2+'mmHg';
+    gel2.className='gc-diff '+(diff2<=0?'good':'bad');
+    var vals2=bd.map(function(d){return d.sys;});
+    drawChart('cvB','xlB',bd.map(function(d){return{v:d.sys,label:d.date.slice(5)};}),
+      '#e63946','#f77f00',Math.min.apply(null,vals2)-5,Math.max.apply(null,vals2)+5);
+    var sbpEl=document.getElementById('startBP');
+    if(sbpEl&&fi2) sbpEl.innerHTML=fi2.sys+'/'+fi2.dia+'<span style="font-size:.75rem">mmHg</span>';
   }
   document.getElementById('daysLogged').textContent=gall().length;
 }
 
-
+// ═══════════════════
+// RECIPES
+// ═══════════════════
 function filterR(f,btn){
   rFilter=f;
-  document.querySelectorAll('.rf-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.rf-btn').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
   renderRecipes();
 }
-
 function renderRecipes(){
-  const grid=document.getElementById('recipeGrid');
-  const list=rFilter==='all'?RECIPES:RECIPES.filter(r=>r.tags.includes(rFilter));
-  grid.innerHTML=list.map(r=>`
-    <div class="recipe-card" onclick="openRecipe(${r.id})">
-      <div class="rc-thumb" style="background:${r.bg}">
-        <span style="font-size:2.2rem">${r.emoji}</span>
-        <span class="rc-tag ${r.type}">${r.type==='lunch'?'昼食':'夕食'}</span>
-      </div>
-      <div class="rc-body">
-        <div class="rc-name">${r.name}</div>
-        <div class="rc-footer">
-          <span class="rc-kcal">${r.kcal} kcal</span>
-          <span class="rc-time">${r.time}</span>
-        </div>
-      </div>
-    </div>`).join('');
+  var grid=document.getElementById('recipeGrid');
+  var list=rFilter==='all'?RECIPES:RECIPES.filter(function(r){return r.tags.indexOf(rFilter)>=0;});
+  grid.innerHTML=list.map(function(r){
+    return '<div class="recipe-card" onclick="openRecipe('+r.id+')">'
+      +'<div class="rc-thumb" style="background:'+r.bg+'">'
+      +'<span style="font-size:2.2rem">'+r.emoji+'</span>'
+      +'<span class="rc-tag '+r.type+'">'+(r.type==='lunch'?'昼食':'夕食')+'</span>'
+      +'</div>'
+      +'<div class="rc-body">'
+      +'<div class="rc-name">'+r.name+'</div>'
+      +'<div class="rc-footer">'
+      +'<span class="rc-kcal">'+r.kcal+' kcal</span>'
+      +'<span class="rc-time">'+r.time+'</span>'
+      +'</div></div></div>';
+  }).join('');
 }
-
 function openRecipe(id){
-  const r=RECIPES.find(x=>x.id===id);if(!r)return;
-  const modal=document.getElementById('recipeModalContent');
-  modal.innerHTML=`
-    <div class="mhandle"></div>
-    <div style="background:${r.bg};border-radius:14px;padding:16px;margin-bottom:14px">
-      <div style="font-size:2.5rem;margin-bottom:6px">${r.emoji}</div>
-      <div style="font-family:var(--fd);font-size:1.2rem;color:var(--text);line-height:1.2">${r.name}</div>
-      <div style="font-size:.58rem;font-weight:800;color:rgba(0,0,0,.5);margin-top:3px;letter-spacing:1px">${r.time}</div>
-    </div>
-    <div class="rm-nutr">
-      <div class="rm-nc"><span class="rm-nv">${r.nutr.kcal}</span><span class="rm-nl">kcal</span></div>
-      <div class="rm-nc"><span class="rm-nv">${r.nutr.p}</span><span class="rm-nl">タンパク質</span></div>
-      <div class="rm-nc"><span class="rm-nv">${r.nutr.f}</span><span class="rm-nl">脂質</span></div>
-      <div class="rm-nc"><span class="rm-nv">${r.nutr.c}</span><span class="rm-nl">糖質</span></div>
-    </div>
-    <div style="font-size:.6rem;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:7px">材料</div>
-    <div style="margin-bottom:14px">${r.ingr.map(i=>`<div class="rm-ingr"><span>${i.n}</span><span class="rm-amt">${i.a}</span></div>`).join('')}</div>
-    <div style="font-size:.6rem;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:7px">作り方</div>
-    <div style="margin-bottom:12px">${r.steps.map((s,i)=>`<div class="rm-step"><div class="rm-sn">${i+1}</div><div class="rm-st">${s}</div></div>`).join('')}</div>
-    <div class="rm-tip">${r.tip}</div>
-    <button class="print-btn" onclick="printRecipe(${r.id})">印刷 / PDF保存</button>`;
+  var r=RECIPES.find(function(x){return x.id===id;});if(!r)return;
+  var modal=document.getElementById('recipeModalContent');
+  var nutrHtml='<div class="rm-nutr">'
+    +'<div class="rm-nc"><span class="rm-nv">'+r.nutr.kcal+'</span><span class="rm-nl">kcal</span></div>'
+    +'<div class="rm-nc"><span class="rm-nv">'+r.nutr.p+'</span><span class="rm-nl">タンパク質</span></div>'
+    +'<div class="rm-nc"><span class="rm-nv">'+r.nutr.f+'</span><span class="rm-nl">脂質</span></div>'
+    +'<div class="rm-nc"><span class="rm-nv">'+r.nutr.c+'</span><span class="rm-nl">糖質</span></div>'
+    +'</div>';
+  var ingrHtml=r.ingr.map(function(i){return '<div class="rm-ingr"><span>'+i.n+'</span><span class="rm-amt">'+i.a+'</span></div>';}).join('');
+  var stepHtml=r.steps.map(function(s,i){return '<div class="rm-step"><div class="rm-sn">'+(i+1)+'</div><div class="rm-st">'+s+'</div></div>';}).join('');
+  modal.innerHTML='<div class="mhandle"></div>'
+    +'<div style="background:'+r.bg+';border-radius:14px;padding:16px;margin-bottom:14px">'
+    +'<div style="font-size:2.5rem;margin-bottom:6px">'+r.emoji+'</div>'
+    +'<div style="font-family:var(--fd);font-size:1.2rem;color:var(--text);line-height:1.2">'+r.name+'</div>'
+    +'<div style="font-size:.58rem;font-weight:800;color:rgba(0,0,0,.5);margin-top:3px">'+r.time+'</div>'
+    +'</div>'+nutrHtml
+    +'<div style="font-size:.6rem;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:7px">材料</div>'
+    +'<div style="margin-bottom:14px">'+ingrHtml+'</div>'
+    +'<div style="font-size:.6rem;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:7px">作り方</div>'
+    +'<div style="margin-bottom:12px">'+stepHtml+'</div>'
+    +'<div class="rm-tip">'+r.tip+'</div>'
+    +'<button class="print-btn" onclick="printRecipe('+r.id+')">印刷 / PDF保存</button>';
   document.getElementById('recipeModal').classList.add('open');
 }
-
-function closeRM(e){if(e.target===document.getElementById('recipeModal')) document.getElementById('recipeModal').classList.remove('open');}
-
+function closeRM(e){if(e.target===document.getElementById('recipeModal'))document.getElementById('recipeModal').classList.remove('open');}
 function printRecipe(id){
-  const r=RECIPES.find(x=>x.id===id);if(!r)return;
-  const win=window.open('','_blank','width=600,height=800');
-  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${r.name}</title><style>body{font-family:'Hiragino Sans',sans-serif;padding:24px;color:#1a3a4a;max-width:500px;margin:0 auto}h1{font-size:1.3rem;margin-bottom:4px;color:#0077b6}h2{font-size:.85rem;color:#7a9eb0;margin:14px 0 5px;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #e0f4ff;padding-bottom:4px}.nutr{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:#e0f4ff;border-radius:8px;padding:12px;margin-bottom:14px;text-align:center}.nv{font-size:1.1rem;font-weight:700;color:#0077b6;display:block}.nl{font-size:.55rem;color:#7a9eb0;text-transform:uppercase}.ingr{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed #e0f4ff;font-size:.82rem}.amt{color:#f77f00;font-weight:700}.step{display:flex;gap:8px;margin-bottom:6px;font-size:.8rem}.sn{background:#0077b6;color:white;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;flex-shrink:0}.tip{background:#e0f7ff;border-left:3px solid #48cae4;padding:8px 10px;font-size:.75rem;border-radius:0 6px 6px 0;margin-top:10px}</style></head><body>`);
-  win.document.write(`<div style="font-size:2rem;margin-bottom:6px">${r.emoji}</div><h1>${r.name}</h1><p style="font-size:.7rem;color:#7a9eb0">${r.time} / ${r.type==='lunch'?'昼食向け':'夕食向け'}</p><div class="nutr"><div><span class="nv">${r.nutr.kcal}</span><span class="nl">kcal</span></div><div><span class="nv">${r.nutr.p}</span><span class="nl">タンパク質</span></div><div><span class="nv">${r.nutr.f}</span><span class="nl">脂質</span></div><div><span class="nv">${r.nutr.c}</span><span class="nl">糖質</span></div></div><h2>材料</h2>${r.ingr.map(i=>`<div class="ingr"><span>${i.n}</span><span class="amt">${i.a}</span></div>`).join('')}<h2>作り方</h2>${r.steps.map((s,i)=>`<div class="step"><div class="sn">${i+1}</div><span>${s}</span></div>`).join('')}<div class="tip">${r.tip}</div></body></html>`);
-  win.document.close();setTimeout(()=>win.print(),500);
+  var r=RECIPES.find(function(x){return x.id===id;});if(!r)return;
+  var win=window.open('','_blank','width=600,height=800');
+  var css='body{font-family:sans-serif;padding:24px;color:#1a3a4a;max-width:500px;margin:0 auto}'
+    +'h1{font-size:1.3rem;margin-bottom:4px;color:#0077b6}'
+    +'h2{font-size:.85rem;color:#7a9eb0;margin:14px 0 5px;border-bottom:1px solid #e0f4ff;padding-bottom:4px}'
+    +'.nutr{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:#e0f4ff;border-radius:8px;padding:12px;margin-bottom:14px;text-align:center}'
+    +'.nv{font-size:1.1rem;font-weight:700;color:#0077b6;display:block}'
+    +'.nl{font-size:.55rem;color:#7a9eb0;text-transform:uppercase}'
+    +'.ingr{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed #e0f4ff;font-size:.82rem}'
+    +'.amt{color:#f77f00;font-weight:700}'
+    +'.step{display:flex;gap:8px;margin-bottom:6px;font-size:.8rem}'
+    +'.sn{background:#0077b6;color:white;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;flex-shrink:0}'
+    +'.tip{background:#e0f7ff;border-left:3px solid #48cae4;padding:8px 10px;font-size:.75rem;border-radius:0 6px 6px 0;margin-top:10px}';
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+r.name+'</title><style>'+css+'</style></head><body>'
+    +'<div style="font-size:2rem;margin-bottom:6px">'+r.emoji+'</div>'
+    +'<h1>'+r.name+'</h1>'
+    +'<p style="font-size:.7rem;color:#7a9eb0">'+r.time+' / '+(r.type==='lunch'?'昼食向け':'夕食向け')+'</p>'
+    +'<div class="nutr">'
+    +'<div><span class="nv">'+r.nutr.kcal+'</span><span class="nl">kcal</span></div>'
+    +'<div><span class="nv">'+r.nutr.p+'</span><span class="nl">タンパク質</span></div>'
+    +'<div><span class="nv">'+r.nutr.f+'</span><span class="nl">脂質</span></div>'
+    +'<div><span class="nv">'+r.nutr.c+'</span><span class="nl">糖質</span></div>'
+    +'</div>'
+    +'<h2>材料</h2>'
+    +r.ingr.map(function(i){return '<div class="ingr"><span>'+i.n+'</span><span class="amt">'+i.a+'</span></div>';}).join('')
+    +'<h2>作り方</h2>'
+    +r.steps.map(function(s,i){return '<div class="step"><div class="sn">'+(i+1)+'</div><span>'+s+'</span></div>';}).join('')
+    +'<div class="tip">'+r.tip+'</div>'
+    +'</body></html>';
+  win.document.write(html);
+  win.document.close();
+  setTimeout(function(){win.print();},500);
 }
 
-// ═══════════════════════════════
+// ═══════════════════
 // TRAINING
-// ═══════════════════════════════
+// ═══════════════════
 function setTD(day,btn){
   trainDay=day;
-  document.querySelectorAll('.tdt').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.tdt').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
   renderTraining();
 }
-function toggleEx(i){const k=trainDay+'_'+i;exOpen[k]=!exOpen[k];renderTraining();}
+function toggleEx(i){
+  var k=trainDay+'_'+i;exOpen[k]=!exOpen[k];renderTraining();
+}
 function toggleChk(i){
-  const k=trainDay+'_'+i;exChecks[k]=!exChecks[k];
-  if(exChecks[k]) weeklyDone[new Date().getDay()]=true;
+  var k=trainDay+'_'+i;exChecks[k]=!exChecks[k];
+  if(exChecks[k])weeklyDone[new Date().getDay()]=true;
   save();renderTraining();renderWeek();
 }
 function renderTraining(){
-  const menu=TRAINING[trainDay];const c=document.getElementById('trainContent');
-  let html=`<div class="cs" style="margin-bottom:10px"><p>${menu.note}</p></div>`;
-  menu.exercises.forEach((ex,i)=>{
-    const k=trainDay+'_'+i;const open=exOpen[k]||false;const ck=exChecks[k]||false;
-    html+=`<div class="exc${open?' open':''}${ck?' done-c':''}"><div class="exhd" onclick="toggleEx(${i})"><div class="exnb">${i+1}</div><div class="exmt"><div class="exnm">${ex.name}</div><div class="exsp">${ex.spec}</div></div><span class="exdb">完了!</span><span class="exch">▼</span></div><div class="exbody"><div class="exsl">やり方</div>${ex.how.map((h,j)=>`<div class="hstep"><div class="hn">${j+1}</div><div class="ht">${h}</div></div>`).join('')}<div class="cs"><p><strong>注意点：</strong>${ex.caution}</p></div><div class="cr${ck?' ck':''}" onclick="toggleChk(${i})"><div class="crb">${ck?'✓':''}</div><span class="crl">${ck?'完了！':'完了としてマーク'}</span></div></div></div>`;
+  var menu=TRAINING[trainDay];
+  var c=document.getElementById('trainContent');
+  var html='<div class="cs" style="margin-bottom:10px"><p>'+menu.note+'</p></div>';
+  menu.exercises.forEach(function(ex,i){
+    var k=trainDay+'_'+i;
+    var open=exOpen[k]||false;
+    var ck=exChecks[k]||false;
+    var howHtml=ex.how.map(function(h,j){
+      return '<div class="hstep"><div class="hn">'+(j+1)+'</div><div class="ht">'+h+'</div></div>';
+    }).join('');
+    html+='<div class="exc'+(open?' open':'')+(ck?' done-c':'')+'"><div class="exhd" onclick="toggleEx('+i+')">'
+      +'<div class="exnb">'+(i+1)+'</div>'
+      +'<div class="exmt"><div class="exnm">'+ex.name+'</div><div class="exsp">'+ex.spec+'</div></div>'
+      +'<span class="exdb">完了!</span><span class="exch">▼</span>'
+      +'</div><div class="exbody">'
+      +'<div class="exsl">やり方</div>'+howHtml
+      +'<div class="cs"><p><strong>注意点：</strong>'+ex.caution+'</p></div>'
+      +'<div class="cr'+(ck?' ck':'')+'" onclick="toggleChk('+i+')">'
+      +'<div class="crb">'+(ck?'✓':'')+'</div>'
+      +'<span class="crl">'+(ck?'完了！':'完了としてマーク')+'</span>'
+      +'</div></div></div>';
   });
   c.innerHTML=html;
 }
 function renderWeek(){
-  const labels=['日','月','火','水','木','金','土'];const td=new Date().getDay();
-  document.getElementById('weekCells').innerHTML=labels.map((l,i)=>`<div class="wci"><span class="wcd">${l}</span><div class="wdot${i===td?' today':''}${weeklyDone[i]?' done':''}" onclick="toggleWD(${i})">${weeklyDone[i]?'✓':''}</div></div>`).join('');
+  var labels=['日','月','火','水','木','金','土'];
+  var td=new Date().getDay();
+  document.getElementById('weekCells').innerHTML=labels.map(function(l,i){
+    return '<div class="wci"><span class="wcd">'+l+'</span>'
+      +'<div class="wdot'+(i===td?' today':'')+(weeklyDone[i]?' done':'')+'" onclick="toggleWD('+i+')">'
+      +(weeklyDone[i]?'✓':'')+'</div></div>';
+  }).join('');
 }
 function toggleWD(i){weeklyDone[i]=!weeklyDone[i];save();renderWeek();}
 
-// ═══════════════════════════════
+// ═══════════════════
 // IRREGULAR
-// ═══════════════════════════════
+// ═══════════════════
 function openIrr(){document.getElementById('iDate').value=today();document.getElementById('irrModal').classList.add('open');}
-function closeIrr(e){if(e.target===document.getElementById('irrModal')) document.getElementById('irrModal').classList.remove('open');}
-function selCat(btn,cat){document.querySelectorAll('.cch').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');irrCat=cat;}
+function closeIrr(e){if(e.target===document.getElementById('irrModal'))document.getElementById('irrModal').classList.remove('open');}
+function selCat(btn,cat){
+  document.querySelectorAll('#irrModal .cch').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');irrCat=cat;
+}
 function saveIrr(){
-  const note=document.getElementById('iNote').value.trim();
-  const min=document.getElementById('iMin').value;
-  const date=document.getElementById('iDate').value||today();
-  const detail=document.getElementById('iDetail').value.trim();
-  if(!note) return;
-  const a=girr();
-  a.unshift({id:Date.now(),cat:irrCat,note,min:+min||0,date,detail});
+  var note=document.getElementById('iNote').value.trim();
+  var min=document.getElementById('iMin').value;
+  var date=document.getElementById('iDate').value||today();
+  var detail=document.getElementById('iDetail').value.trim();
+  if(!note)return;
+  var a=girr();
+  a.unshift({id:Date.now(),cat:irrCat,note:note,min:+min||0,date:date,detail:detail});
   sirr(a);
   weeklyDone[new Date().getDay()]=true;save();renderWeek();
-  document.getElementById('iNote').value='';document.getElementById('iMin').value='';document.getElementById('iDetail').value='';
+  document.getElementById('iNote').value='';
+  document.getElementById('iMin').value='';
+  document.getElementById('iDetail').value='';
   document.getElementById('irrModal').classList.remove('open');
   renderIrrLog();
-  renderRoutineLog();
-  loadSheetSettings();
 }
-const CAT={walk:'ウォーキング',muscle:'筋トレ',stretch:'ストレッチ',cardio:'有酸素',other:'その他'};
+var CAT={walk:'ウォーキング',muscle:'筋トレ',stretch:'ストレッチ',cardio:'有酸素',other:'その他'};
 function renderIrrLog(){
-  const a=girr();const c=document.getElementById('irrLog');
+  var a=girr();var c=document.getElementById('irrLog');
   if(!a.length){c.innerHTML='<div style="font-size:.68rem;color:var(--muted);padding:9px 0;text-align:center">イレギュラーの記録なし</div>';return;}
-  c.innerHTML=a.slice(0,20).map(r=>`<div class="irre"><span class="icat ${r.cat}">${CAT[r.cat]||r.cat}</span><div class="ict"><div class="ictnm">${r.note}</div>${r.detail?`<div class="ictdt">${r.detail}</div>`:''}<div class="icttm">${r.date}${r.min?' · '+r.min+'分':''}</div></div><button class="idel" onclick="delIrr(${r.id})">×</button></div>`).join('');
+  c.innerHTML=a.slice(0,20).map(function(r){
+    return '<div class="irre"><span class="icat '+r.cat+'">'+(CAT[r.cat]||r.cat)+'</span>'
+      +'<div class="ict"><div class="ictnm">'+r.note+'</div>'
+      +(r.detail?'<div class="ictdt">'+r.detail+'</div>':'')
+      +'<div class="icttm">'+r.date+(r.min?' · '+r.min+'分':'')+'</div>'
+      +'</div><button class="idel" onclick="delIrr('+r.id+')">x</button></div>';
+  }).join('');
 }
-function delIrr(id){sirr(girr().filter(r=>r.id!==id));renderIrrLog();
-  renderRoutineLog();
-  loadSheetSettings();}
+function delIrr(id){
+  sirr(girr().filter(function(r){return r.id!==id;}));renderIrrLog();
+}
 
-// ═══════════════════════════════
+// ═══════════════════
 // ROUTINE LOG
-// ═══════════════════════════════
-let rtDay='weekday';
-
-function grtl(){try{return JSON.parse(localStorage.getItem('okz_rtl')||'[]');}catch(e){return[];}}
-function srtl(a){
-  try{
-    localStorage.setItem('okz_rtl',JSON.stringify(a));
-    // マスターにも保存
-    const m=getM();m.rtl=a;saveM(m);
-  }catch(e){}
-}
-function loadRtl(){
-  // マスターから復元
-  const m=getM();
-  if(m.rtl&&m.rtl.length) return m.rtl;
-  return grtl();
-}
-
+// ═══════════════════
+var RT_LABEL={weekday:'平日メニュー',sat:'土曜メニュー',sun:'日曜メニュー'};
 function openRoutineLog(){
   document.getElementById('rtDate').value=today();
   document.getElementById('routineModal').classList.add('open');
@@ -1347,414 +1361,316 @@ function closeRoutineModal(e){
     document.getElementById('routineModal').classList.remove('open');
 }
 function selRtDay(btn,day){
-  document.querySelectorAll('#routineModal .cch').forEach(b=>b.classList.remove('sel'));
+  document.querySelectorAll('#routineModal .cch').forEach(function(b){b.classList.remove('sel');});
   btn.classList.add('sel');rtDay=day;
 }
-
-const RT_LABEL={weekday:'平日メニュー',sat:'土曜メニュー',sun:'日曜メニュー'};
-
 function saveRoutineLog(){
-  const date=document.getElementById('rtDate').value||today();
-  const note=document.getElementById('rtNote').value.trim();
-  const min=parseInt(document.getElementById('rtMin').value)||0;
-  const memo=document.getElementById('rtMemo').value.trim();
-  const a=loadRtl();
-  a.unshift({id:Date.now(),date,day:rtDay,note,min,memo});
-  a.sort((x,y)=>y.date.localeCompare(x.date));
+  var date=document.getElementById('rtDate').value||today();
+  var note=document.getElementById('rtNote').value.trim();
+  var min=parseInt(document.getElementById('rtMin').value)||0;
+  var memo=document.getElementById('rtMemo').value.trim();
+  var a=grtl();
+  a.unshift({id:Date.now(),date:date,day:rtDay,note:note,min:min,memo:memo});
+  a.sort(function(x,y){return y.date.localeCompare(x.date);});
   srtl(a);
-  // 週間ヒートマップにも反映
-  const d=new Date(date);
-  const dow=d.getDay();
-  weeklyDone[dow]=true;
-  save();renderWeek();
+  var d2=new Date(date);weeklyDone[d2.getDay()]=true;save();renderWeek();
   document.getElementById('rtNote').value='';
   document.getElementById('rtMin').value='';
   document.getElementById('rtMemo').value='';
   document.getElementById('routineModal').classList.remove('open');
   renderRoutineLog();
 }
-
 function renderRoutineLog(){
-  const a=loadRtl();
-  const c=document.getElementById('routineLogList');
+  var a=grtl();var c=document.getElementById('routineLogList');
   if(!c)return;
-  if(!a.length){
-    c.innerHTML='<div style="font-size:.68rem;color:var(--muted);padding:9px 0;text-align:center">ルーティン記録なし</div>';
-    return;
-  }
-  c.innerHTML=a.slice(0,20).map(r=>`
-    <div class="irre">
-      <span class="icat muscle" style="background:rgba(0,119,182,.12);color:var(--ocean)">${RT_LABEL[r.day]||r.day}</span>
-      <div class="ict">
-        <div class="ictnm">${r.note||'ルーティントレーニング完了'}</div>
-        ${r.memo?`<div class="ictdt">${r.memo}</div>`:''}
-        <div class="icttm">${r.date}${r.min?' · '+r.min+'分':''}</div>
-      </div>
-      <button class="idel" onclick="delRtl(${r.id})">×</button>
-    </div>`).join('');
+  if(!a.length){c.innerHTML='<div style="font-size:.68rem;color:var(--muted);padding:9px 0;text-align:center">ルーティン記録なし</div>';return;}
+  c.innerHTML=a.slice(0,20).map(function(r){
+    return '<div class="irre">'
+      +'<span class="icat muscle" style="background:rgba(0,119,182,.12);color:var(--ocean)">'+(RT_LABEL[r.day]||r.day)+'</span>'
+      +'<div class="ict"><div class="ictnm">'+(r.note||'ルーティントレーニング完了')+'</div>'
+      +(r.memo?'<div class="ictdt">'+r.memo+'</div>':'')
+      +'<div class="icttm">'+r.date+(r.min?' · '+r.min+'分':'')+'</div>'
+      +'</div><button class="idel" onclick="delRtl('+r.id+')">x</button></div>';
+  }).join('');
 }
+function delRtl(id){srtl(grtl().filter(function(r){return r.id!==id;}));renderRoutineLog();}
 
-function delRtl(id){
-  srtl(loadRtl().filter(r=>r.id!==id));
-  renderRoutineLog();
-}
-
-// ═══════════════════════════════
+// ═══════════════════
 // ANALYSIS
-// ═══════════════════════════════
+// ═══════════════════
 function setAnalysisPeriod(d,btn){
   analysisPeriod=d;
-  document.querySelectorAll('.ps-btn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  renderAnalysis();
+  document.querySelectorAll('.ps-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');renderAnalysis();
 }
 function getDateRange(){
-  const dates=[];const end=new Date();const start=new Date();
-  if(analysisPeriod>0) start.setDate(end.getDate()-analysisPeriod+1);
-  else start.setFullYear(2025,4,15);
-  for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
+  var dates=[];var end=new Date();var start=new Date();
+  if(analysisPeriod>0)start.setDate(end.getDate()-analysisPeriod+1);
+  else{var all=gall();if(all.length)start.setTime(new Date(all[0]).getTime());}
+  for(var d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
     dates.push(d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()));
   }
   return dates;
 }
 function renderAnalysis(){
-  const dates=getDateRange();
-  const wData=getWData();const bpData=getBData();const irrData=girr();
-  let daysWithData=0,totalKcal=0;
-  const foodLog=[];
-  dates.forEach(d=>{
-    const rec=gdd(d);const meals=[...rec.lunch,...rec.snack,...rec.dinner];
-    if(meals.length>0){daysWithData++;const dayKcal=meals.reduce((s,e)=>s+e.kcal,0);totalKcal+=dayKcal;foodLog.push({date:d,kcal:dayKcal,items:meals.map(e=>e.name)});}
+  var dates=getDateRange();
+  var wData=getWData();var bpData=getBData();var irrData=girr();
+  var daysWithData=0,totalKcal=0;var foodLog=[];
+  dates.forEach(function(d){
+    var rec=gdd(d);var meals=rec.lunch.concat(rec.snack,rec.dinner);
+    if(meals.length>0){
+      daysWithData++;
+      var dayKcal=meals.reduce(function(s,e){return s+e.kcal;},0);
+      totalKcal+=dayKcal;
+      foodLog.push({date:d,kcal:dayKcal,items:meals.map(function(e){return e.name;})});
+    }
   });
-  const periodW=wData.filter(d=>dates.includes(d.date));
-  const firstW=periodW[0];const lastW=periodW[periodW.length-1];
-  if(firstW){const sw=document.getElementById('startWeight');if(sw)sw.innerHTML=firstW.weight.toFixed(1)+'<span style="font-size:.75rem">kg</span>';}
-  const wChange=firstW&&lastW?(lastW.weight-firstW.weight).toFixed(1):'--';
-  const irrInPeriod=irrData.filter(r=>dates.includes(r.date));
-  document.getElementById('analysisSummary').innerHTML=`
-    <div class="ss-cell"><div class="ss-lbl">記録日数</div><div class="ss-val">${daysWithData}/${dates.length}日</div></div>
-    <div class="ss-cell"><div class="ss-lbl">平均摂取</div><div class="ss-val">${daysWithData>0?Math.round(totalKcal/daysWithData):0}kcal</div></div>
-    <div class="ss-cell"><div class="ss-lbl">体重変化</div><div class="ss-val" style="color:${parseFloat(wChange)<0?'var(--palm)':'var(--hibiscus)'}">${wChange}kg</div></div>
-    <div class="ss-cell"><div class="ss-lbl">運動回数</div><div class="ss-val">${irrInPeriod.length}回</div></div>`;
-  let foodSummary='';
-  foodLog.slice(0,7).forEach(d=>{foodSummary+=`  ${d.date}（${d.kcal}kcal）: ${d.items.slice(0,4).join('、')}${d.items.length>4?'など':''}\n`;});
-  let wSummary='';periodW.forEach(d=>{wSummary+=`  ${d.date}: ${d.weight}kg\n`;});
-  let bpSummary='';bpData.filter(d=>dates.includes(d.date)).forEach(d=>{bpSummary+=`  ${d.date}: ${d.sys}/${d.dia}mmHg\n`;});
-  let irrSummary='';irrInPeriod.forEach(r=>{irrSummary+=`  ${r.date}（${CAT[r.cat]}）: ${r.note}${r.min?' '+r.min+'分':''}\n`;});
-  const avgKcal=daysWithData>0?Math.round(totalKcal/daysWithData):0;
-  const prompt=`あなたは健康管理の専門家です。以下は私（岡﨑）の${analysisPeriod>0?analysisPeriod+'日間':'全期間'}の健康記録データです。現状の分析と改善提案をお願いします。
+  var periodW=wData.filter(function(d){return dates.indexOf(d.date)>=0;});
+  var firstW=periodW[0];var lastW=periodW[periodW.length-1];
+  var wChange=firstW&&lastW?(lastW.weight-firstW.weight).toFixed(1):'--';
+  var irrInPeriod=irrData.filter(function(r){return dates.indexOf(r.date)>=0;});
+  document.getElementById('analysisSummary').innerHTML=
+    '<div class="ss-cell"><div class="ss-lbl">記録日数</div><div class="ss-val">'+daysWithData+'/'+dates.length+'日</div></div>'
+    +'<div class="ss-cell"><div class="ss-lbl">平均摂取</div><div class="ss-val">'+(daysWithData>0?Math.round(totalKcal/daysWithData):0)+'kcal</div></div>'
+    +'<div class="ss-cell"><div class="ss-lbl">体重変化</div><div class="ss-val" style="color:'+(parseFloat(wChange)<0?'var(--palm)':'var(--hibiscus)')+'">'+wChange+'kg</div></div>'
+    +'<div class="ss-cell"><div class="ss-lbl">運動回数</div><div class="ss-val">'+irrInPeriod.length+'回</div></div>';
+  var foodSummary='';
+  foodLog.slice(0,7).forEach(function(d){
+    foodSummary+='  '+d.date+'('+d.kcal+'kcal): '+d.items.slice(0,4).join('、')+(d.items.length>4?'など':'')+'
+';
+  });
+  var wSummary='';periodW.forEach(function(d){wSummary+='  '+d.date+': '+d.weight+'kg
+';});
+  var bpSummary='';bpData.filter(function(d){return dates.indexOf(d.date)>=0;}).forEach(function(d){bpSummary+='  '+d.date+': '+d.sys+'/'+d.dia+'mmHg
+';});
+  var irrSummary='';irrInPeriod.forEach(function(r){irrSummary+='  '+r.date+'('+( CAT[r.cat]||r.cat)+'): '+r.note+(r.min?' '+r.min+'分':'')+'
+';});
+  var avgKcal=daysWithData>0?Math.round(totalKcal/daysWithData):0;
+  var prompt='あなたは健康管理の専門家です。以下は私の'+(analysisPeriod>0?analysisPeriod+'日間':'全期間')+'の健康記録データです。現状の分析と改善提案をお願いします。
 
-【基本プロフィール】
+'
+    +'【基本プロフィール】
 - 年齢：40代 / 身長：168cm
-- 開始時体重：100.0kg（2025年5月15日）
-- 開始時血圧：146/98mmHg / 尿蛋白：+（要経過観察）
-- 目標：月4〜5kg減量、血圧正常化
 - 食事プラン：1日2食（昼12時・夜21時）、目標1,600kcal
 
-【期間内の食事記録（${daysWithData}日分）】
-${foodSummary||'  記録なし'}平均摂取カロリー：${avgKcal}kcal/日
+'
+    +'【食事記録（'+daysWithData+'日分）】
+'+( foodSummary||'  記録なし
+')+'平均：'+avgKcal+'kcal/日
 
-【体重推移】
-${wSummary||'  記録なし'}${firstW&&lastW?`変化：${firstW.weight}kg → ${lastW.weight}kg（${wChange}kg）`:''}
-
-【血圧推移】
-${bpSummary||'  記録なし'}
-
-【イレギュラートレーニング記録】
-${irrSummary||'  記録なし'}
-
-【分析してほしい内容】
-1. カロリー摂取の傾向と問題点
-2. 体重・血圧の改善状況の評価
-3. 食事内容のバランス（タンパク質・塩分・野菜）
-4. トレーニング継続状況の評価
-5. 今後1週間の具体的な改善アドバイス
-6. 特に注意すべき点（尿蛋白・高血圧を踏まえて）
-
-できるだけ具体的な数値や食品名を使って回答してください。`;
+'
+    +'【体重推移】
+'+(wSummary||'  記録なし
+')+(firstW&&lastW?'変化：'+firstW.weight+'→'+lastW.weight+'kg('+wChange+'kg)
+':'')+'
+'
+    +'【血圧推移】
+'+(bpSummary||'  記録なし
+')+'
+'
+    +'【運動記録】
+'+(irrSummary||'  記録なし
+')+'
+'
+    +'【分析してほしい内容】
+1. カロリー摂取の傾向
+2. 体重・血圧の改善状況
+3. 食事バランス
+4. 運動継続状況
+5. 今後1週間の具体的改善アドバイス
+6. 特に注意すべき点';
   document.getElementById('promptBox').textContent=prompt;
 }
 function copyPrompt(){
-  const text=document.getElementById('promptBox').textContent;
-  const btn=document.getElementById('copyBtn');
+  var text=document.getElementById('promptBox').textContent;
+  var btn=document.getElementById('copyBtn');
   if(navigator.clipboard){
-    navigator.clipboard.writeText(text).then(()=>{btn.textContent='✓ コピーしました！';btn.classList.add('copied');setTimeout(()=>{btn.innerHTML='📋 プロンプトをコピー';btn.classList.remove('copied');},2500);});
-  }else{
-    const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
-    btn.textContent='✓ コピーしました！';btn.classList.add('copied');setTimeout(()=>{btn.innerHTML='📋 プロンプトをコピー';btn.classList.remove('copied');},2500);
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent='✓ コピーしました！';btn.classList.add('copied');
+      setTimeout(function(){btn.innerHTML='📋 プロンプトをコピー';btn.classList.remove('copied');},2500);
+    });
   }
 }
 
-// ═══════════════════════════════
-// ═══════════════════════════════
-
-
-// ═══════════════════════════════
-
-});
-
-// ═══════════════════════════════
-// INIT
-// ═══════════════════════════════
-
-
-
-// ═══════════════════════════════
-// SPREADSHEET機能
-// ═══════════════════════════════
-let sheetPeriod=7;
-
+// ═══════════════════
+// SPREADSHEET
+// ═══════════════════
 function saveSheetSettings(){
-  const user=document.getElementById('sheetUser').value.trim();
-  const url=document.getElementById('sheetUrl').value.trim();
-  const m=getM();
-  m.sheetSettings={user,url};
-  saveM(m);
-  document.getElementById('sheetSettingStatus').textContent='✓ 設定を保存しました';
-  setTimeout(()=>{document.getElementById('sheetSettingStatus').textContent='';},2000);
+  var user=document.getElementById('sheetUser').value.trim();
+  var url=document.getElementById('sheetUrl').value.trim();
+  var m=getM();m.sheetSettings={user:user,url:url};saveM(m);
+  var st=document.getElementById('sheetSettingStatus');
+  if(st){st.textContent='✓ 設定を保存しました';setTimeout(function(){st.textContent='';},2000);}
 }
-
 function loadSheetSettings(){
-  const m=getM();
+  var m=getM();
   if(m.sheetSettings){
-    const u=document.getElementById('sheetUser');
-    const s=document.getElementById('sheetUrl');
-    if(u&&m.sheetSettings.user) u.value=m.sheetSettings.user;
-    if(s&&m.sheetSettings.url) s.value=m.sheetSettings.url;
+    var u=document.getElementById('sheetUser');
+    var s=document.getElementById('sheetUrl');
+    if(u&&m.sheetSettings.user)u.value=m.sheetSettings.user;
+    if(s&&m.sheetSettings.url)s.value=m.sheetSettings.url;
   }
 }
-
 function setSheetPeriod(d,btn){
   sheetPeriod=d;
-  document.querySelectorAll('#page-sheet .ps-btn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  renderSheetPreview();
+  document.querySelectorAll('#page-sheet .ps-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');renderSheetPreview();
 }
-
 function getSheetDates(){
-  const dates=[];const end=new Date();const start=new Date();
-  if(sheetPeriod>0) start.setDate(end.getDate()-sheetPeriod+1);
-  else{ const all=gall();if(all.length) start.setTime(new Date(all[0]).getTime()); }
-  for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
+  var dates=[];var end=new Date();var start=new Date();
+  if(sheetPeriod>0)start.setDate(end.getDate()-sheetPeriod+1);
+  else{var all=gall();if(all.length)start.setTime(new Date(all[0]).getTime());}
+  for(var d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
     dates.push(d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()));
   }
   return dates;
 }
-
 function buildSheetRows(){
-  const dates=getSheetDates();
-  const bpMap={};gbp().forEach(r=>{if(!bpMap[r.date]) bpMap[r.date]=r;});
-  const rows=[];
-  dates.forEach(d=>{
-    const food=gdd(d);
-    const lunchKcal=food.lunch.reduce((s,e)=>s+e.kcal,0);
-    const snackKcal=food.snack.reduce((s,e)=>s+e.kcal,0);
-    const dinnerKcal=food.dinner.reduce((s,e)=>s+e.kcal,0);
-    const totalKcal=lunchKcal+snackKcal+dinnerKcal;
-    const lunchItems=food.lunch.map(e=>e.name).join('・')||'';
-    const snackItems=food.snack.map(e=>e.name).join('・')||'';
-    const dinnerItems=food.dinner.map(e=>e.name).join('・')||'';
-    const bp=bpMap[d];
-    const wt=food.weight;
-    rows.push({
-      date:d,
-      weight:wt?wt.toFixed(1):'',
-      bpSys:bp?bp.sys:'',
-      bpDia:bp?bp.dia:'',
-      pulse:bp?bp.pulse:'',
-      lunchKcal:lunchKcal||'',
-      lunchItems,
-      snackKcal:snackKcal||'',
-      snackItems,
-      dinnerKcal:dinnerKcal||'',
-      dinnerItems,
-      totalKcal:totalKcal||''
-    });
+  var dates=getSheetDates();
+  var bpMap={};gbp().forEach(function(r){if(!bpMap[r.date])bpMap[r.date]=r;});
+  var rows=[];
+  dates.forEach(function(d){
+    var food=gdd(d);
+    var lk=food.lunch.reduce(function(s,e){return s+e.kcal;},0);
+    var sk=food.snack.reduce(function(s,e){return s+e.kcal;},0);
+    var dk=food.dinner.reduce(function(s,e){return s+e.kcal;},0);
+    var tk=lk+sk+dk;
+    var li=food.lunch.map(function(e){return e.name;}).join('・');
+    var si=food.snack.map(function(e){return e.name;}).join('・');
+    var di=food.dinner.map(function(e){return e.name;}).join('・');
+    var bp=bpMap[d];var wt=food.weight;
+    rows.push({date:d,weight:wt?wt.toFixed(1):'',bpSys:bp?bp.sys:'',bpDia:bp?bp.dia:'',pulse:bp?bp.pulse:'',lunchKcal:lk||'',lunchItems:li,snackKcal:sk||'',snackItems:si,dinnerKcal:dk||'',dinnerItems:di,totalKcal:tk||''});
   });
   return rows;
 }
-
 function renderSheetPreview(){
-  const rows=buildSheetRows();
-  const tbl=document.getElementById('sheetPreview');
+  var rows=buildSheetRows();
+  var tbl=document.getElementById('sheetPreview');
   if(!tbl)return;
-  const headers=['日付','体重(kg)','血圧上','血圧下','脈拍','昼kcal','昼食内容','間食kcal','間食内容','夜kcal','夕食内容','合計kcal'];
-  const thStyle='background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;padding:8px 10px;text-align:center;font-size:.62rem;font-weight:800;white-space:nowrap;';
-  const tdStyle='padding:7px 8px;font-size:.65rem;border-bottom:1px solid rgba(0,119,182,.1);text-align:center;color:var(--text);';
-  const tdStyleL='padding:7px 8px;font-size:.65rem;border-bottom:1px solid rgba(0,119,182,.1);text-align:left;color:var(--text);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
-
-  let html=`<thead><tr>${headers.map(h=>`<th style="${thStyle}">${h}</th>`).join('')}</tr></thead><tbody>`;
-  rows.forEach((r,i)=>{
-    const bg=i%2===0?'background:rgba(255,255,255,.9)':'background:rgba(0,119,182,.03)';
-    const totalColor=r.totalKcal>1600?'color:var(--hibiscus);font-weight:800':r.totalKcal>0?'color:var(--palm);font-weight:800':'';
-    html+=`<tr style="${bg}">
-      <td style="${tdStyle}font-weight:700;color:var(--ocean)">${r.date.slice(5)}</td>
-      <td style="${tdStyle}font-weight:700;color:var(--palm)">${r.weight}</td>
-      <td style="${tdStyle}color:var(--hibiscus);font-weight:700">${r.bpSys}</td>
-      <td style="${tdStyle}color:var(--ocean);font-weight:700">${r.bpDia}</td>
-      <td style="${tdStyle}">${r.pulse}</td>
-      <td style="${tdStyle}color:var(--sunset)">${r.lunchKcal}</td>
-      <td style="${tdStyleL}">${r.lunchItems}</td>
-      <td style="${tdStyle}color:var(--sunset)">${r.snackKcal}</td>
-      <td style="${tdStyleL}">${r.snackItems}</td>
-      <td style="${tdStyle}color:var(--sunset)">${r.dinnerKcal}</td>
-      <td style="${tdStyleL}">${r.dinnerItems}</td>
-      <td style="${tdStyle};${totalColor}">${r.totalKcal}</td>
-    </tr>`;
+  var headers=['日付','体重(kg)','血圧上','血圧下','脈拍','昼kcal','昼食内容','間食kcal','間食内容','夜kcal','夕食内容','合計kcal'];
+  var th='background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;padding:8px 10px;text-align:center;font-size:.62rem;font-weight:800;white-space:nowrap;';
+  var td='padding:7px 8px;font-size:.65rem;border-bottom:1px solid rgba(0,119,182,.1);text-align:center;color:var(--text);';
+  var tdl='padding:7px 8px;font-size:.65rem;border-bottom:1px solid rgba(0,119,182,.1);text-align:left;color:var(--text);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+  var html='<thead><tr>'+headers.map(function(h){return '<th style="'+th+'">'+h+'</th>';}).join('')+'</tr></thead><tbody>';
+  rows.forEach(function(r,i){
+    var bg=i%2===0?'background:rgba(255,255,255,.9)':'background:rgba(0,119,182,.03)';
+    var tc=r.totalKcal>1600?'color:var(--hibiscus);font-weight:800':r.totalKcal>0?'color:var(--palm);font-weight:800':'';
+    html+='<tr style="'+bg+'">'
+      +'<td style="'+td+'font-weight:700;color:var(--ocean)">'+r.date.slice(5)+'</td>'
+      +'<td style="'+td+'font-weight:700;color:var(--palm)">'+r.weight+'</td>'
+      +'<td style="'+td+'color:var(--hibiscus);font-weight:700">'+r.bpSys+'</td>'
+      +'<td style="'+td+'color:var(--ocean);font-weight:700">'+r.bpDia+'</td>'
+      +'<td style="'+td+'">'+r.pulse+'</td>'
+      +'<td style="'+td+'color:var(--sunset)">'+r.lunchKcal+'</td>'
+      +'<td style="'+tdl+'">'+r.lunchItems+'</td>'
+      +'<td style="'+td+'color:var(--sunset)">'+r.snackKcal+'</td>'
+      +'<td style="'+tdl+'">'+r.snackItems+'</td>'
+      +'<td style="'+td+'color:var(--sunset)">'+r.dinnerKcal+'</td>'
+      +'<td style="'+tdl+'">'+r.dinnerItems+'</td>'
+      +'<td style="'+td+tc+'">'+r.totalKcal+'</td>'
+      +'</tr>';
   });
   html+='</tbody>';
   tbl.innerHTML=html;
 }
-
 function exportCSV(){
-  const rows=buildSheetRows();
-  const user=getM().sheetSettings?.user||'user';
-  const headers=['日付','体重(kg)','血圧上','血圧下','脈拍','昼kcal','昼食内容','間食kcal','間食内容','夜kcal','夕食内容','合計kcal'];
-  let csv='﻿'; // BOM for Excel
-  csv+=headers.join(',')+'
+  var rows=buildSheetRows();
+  var m=getM();var user=(m.sheetSettings&&m.sheetSettings.user)||'user';
+  var headers=['日付','体重(kg)','血圧上','血圧下','脈拍','昼kcal','昼食内容','間食kcal','間食内容','夜kcal','夕食内容','合計kcal'];
+  var csv='﻿'+headers.join(',')+'
 ';
-  rows.forEach(r=>{
-    csv+=[
-      r.date,r.weight,r.bpSys,r.bpDia,r.pulse,
-      r.lunchKcal,`"${r.lunchItems}"`,
-      r.snackKcal,`"${r.snackItems}"`,
-      r.dinnerKcal,`"${r.dinnerItems}"`,
-      r.totalKcal
-    ].join(',')+'
+  rows.forEach(function(r){
+    csv+=[r.date,r.weight,r.bpSys,r.bpDia,r.pulse,r.lunchKcal,'"'+r.lunchItems+'"',r.snackKcal,'"'+r.snackItems+'"',r.dinnerKcal,'"'+r.dinnerItems+'"',r.totalKcal].join(',')+'
 ';
   });
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download=`health_${user}_${p2(new Date().getMonth()+1)}${p2(new Date().getDate())}.csv`;
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download='health_'+user+'_'+p2(new Date().getMonth()+1)+p2(new Date().getDate())+'.csv';
   a.click();URL.revokeObjectURL(url);
 }
-
 function copySheetData(){
-  const rows=buildSheetRows();
-  const headers=['日付','体重(kg)','血圧上','血圧下','脈拍','昼kcal','昼食内容','間食kcal','間食内容','夜kcal','夕食内容','合計kcal'];
-  let text=headers.join('	')+'
+  var rows=buildSheetRows();
+  var headers=['日付','体重(kg)','血圧上','血圧下','脈拍','昼kcal','昼食内容','間食kcal','間食内容','夜kcal','夕食内容','合計kcal'];
+  var text=headers.join('	')+'
 ';
-  rows.forEach(r=>{
-    text+=[
-      r.date,r.weight,r.bpSys,r.bpDia,r.pulse,
-      r.lunchKcal,r.lunchItems,
-      r.snackKcal,r.snackItems,
-      r.dinnerKcal,r.dinnerItems,
-      r.totalKcal
-    ].join('	')+'
+  rows.forEach(function(r){
+    text+=[r.date,r.weight,r.bpSys,r.bpDia,r.pulse,r.lunchKcal,r.lunchItems,r.snackKcal,r.snackItems,r.dinnerKcal,r.dinnerItems,r.totalKcal].join('	')+'
 ';
   });
   if(navigator.clipboard){
-    navigator.clipboard.writeText(text).then(()=>{
-      const btn=event.target;btn.textContent='✓ コピーしました！';
-      setTimeout(()=>{btn.innerHTML='📋 Googleスプレッドシート貼り付け用コピー';},2500);
+    navigator.clipboard.writeText(text).then(function(){
+      var btn=document.querySelector('[onclick="copySheetData()"]');
+      if(btn){btn.textContent='✓ コピーしました！';setTimeout(function(){btn.innerHTML='📋 Googleスプレッドシート貼り付け用コピー';},2500);}
     });
   }
 }
-
 function openGoogleSheet(){
-  const m=getM();
-  const url=m.sheetSettings?.url;
-  if(url){window.open(url,'_blank');}
-  else{window.open('https://docs.google.com/spreadsheets/create','_blank');}
+  var m=getM();var url=m.sheetSettings&&m.sheetSettings.url;
+  if(url)window.open(url,'_blank');
+  else window.open('https://docs.google.com/spreadsheets/create','_blank');
 }
-
+function initGASCode(){
+  var el=document.getElementById('gasCode');
+  if(!el)return;
+  var lines=[
+    '// Health OKZ - Google Apps Script',
+    'var SHEET_NAME = "Health Log";',
+    'function doPost(e) {',
+    '  try {',
+    '    var data = JSON.parse(e.postData.contents);',
+    '    var ss = SpreadsheetApp.getActiveSpreadsheet();',
+    '    var sheet = ss.getSheetByName(SHEET_NAME);',
+    '    if (!sheet) {',
+    '      sheet = ss.insertSheet(SHEET_NAME);',
+    '      var h = ["日付","体重","血圧上","血圧下","脈拍","昼kcal","昼食","間食kcal","間食","夜kcal","夕食","合計","記録者"];',
+    '      sheet.getRange(1,1,1,h.length).setValues([h]);',
+    '      sheet.getRange(1,1,1,h.length).setBackground("#0077b6").setFontColor("#fff").setFontWeight("bold");',
+    '      sheet.setFrozenRows(1);',
+    '    }',
+    '    sheet.appendRow([data.date,data.weight,data.bpSys,data.bpDia,data.pulse,',
+    '      data.lunchKcal,data.lunchItems,data.snackKcal,data.snackItems,',
+    '      data.dinnerKcal,data.dinnerItems,data.totalKcal,data.user||"?"]);',
+    '    sheet.autoResizeColumns(1,13);',
+    '    return ContentService.createTextOutput(JSON.stringify({status:"ok"})).setMimeType(ContentService.MimeType.JSON);',
+    '  } catch(err) {',
+    '    return ContentService.createTextOutput(JSON.stringify({status:"error",msg:err.toString()})).setMimeType(ContentService.MimeType.JSON);',
+    '  }',
+    '}',
+    'function doGet(e) {',
+    '  return ContentService.createTextOutput("Health OKZ GAS OK").setMimeType(ContentService.MimeType.TEXT);',
+    '}'
+  ];
+  el.textContent=lines.join('
+');
+}
 function copyGAS(){
-  const gasCode=document.getElementById('gasCode').textContent;
+  var text=document.getElementById('gasCode').textContent;
   if(navigator.clipboard){
-    navigator.clipboard.writeText(gasCode).then(()=>{
-      const btn=event.target;btn.textContent='✓ コピーしました！';
-      setTimeout(()=>{btn.innerHTML='📋 GASコードをコピー';},2500);
+    navigator.clipboard.writeText(text).then(function(){
+      var btn=document.querySelector('[onclick="copyGAS()"]');
+      if(btn){btn.textContent='✓ コピーしました！';setTimeout(function(){btn.innerHTML='📋 GASコードをコピー';},2500);}
     });
   }
 }
 
-function initGASCode(){
-  const el=document.getElementById('gasCode');
-  if(!el)return;
-  el.textContent=`// Health OKZ - Google Apps Script
-// スプレッドシートにデータを自動記録するスクリプト
-
-const SHEET_NAME = 'Health Log';
-
-function doPost(e) {
-  try {
-    const data = JSON.parse(e.postData.contents);
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
-    let sheet = ss.getSheetByName(SHEET_NAME);
-    
-    // シートがなければ作成してヘッダーを追加
-    if (!sheet) {
-      sheet = ss.insertSheet(SHEET_NAME);
-      const headers = ['日付','体重(kg)','血圧上','血圧下','脈拍',
-                       '昼kcal','昼食内容','間食kcal','間食内容',
-                       '夜kcal','夕食内容','合計kcal','記録者'];
-      sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-      // ヘッダーのスタイル設定
-      const headerRange = sheet.getRange(1, 1, 1, headers.length);
-      headerRange.setBackground('#0077b6');
-      headerRange.setFontColor('#ffffff');
-      headerRange.setFontWeight('bold');
-      sheet.setFrozenRows(1);
-    }
-    
-    // データを追加
-    const row = [
-      data.date, data.weight, data.bpSys, data.bpDia, data.pulse,
-      data.lunchKcal, data.lunchItems,
-      data.snackKcal, data.snackItems,
-      data.dinnerKcal, data.dinnerItems,
-      data.totalKcal, data.user || 'unknown'
-    ];
-    sheet.appendRow(row);
-    
-    // 列幅の自動調整
-    sheet.autoResizeColumns(1, 13);
-    
-    return ContentService
-      .createTextOutput(JSON.stringify({status:'success'}))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch(err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({status:'error',message:err.toString()}))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-function doGet(e) {
-  return ContentService
-    .createTextOutput('Health OKZ GAS is running.')
-    .setMimeType(ContentService.MimeType.TEXT);
-}`;
-}
-
-
-
-window.addEventListener('resize',()=>{
-  if(document.getElementById('page-graph').classList.contains('active')) renderGraphs();
-});
-
-// ═══════════════════════════════
-// INITIALIZATION
-// ═══════════════════════════════
+// ═══════════════════
+// INIT
+// ═══════════════════
 window.addEventListener('DOMContentLoaded', function() {
-  // フォームのEnterキー対応
+  // EnterキーでフォームをナビゲートADD実行
   ['lunch','snack','dinner'].forEach(function(m) {
-    var fi = document.getElementById('f-'+m);
-    var ki = document.getElementById('k-'+m);
-    if(fi) fi.addEventListener('keydown', function(e){ if(e.key==='Enter' && ki) ki.focus(); });
-    if(ki) ki.addEventListener('keydown', function(e){ if(e.key==='Enter') addFood(m); });
+    var fi=document.getElementById('f-'+m);
+    var ki=document.getElementById('k-'+m);
+    if(fi) fi.addEventListener('keydown',function(e){if(e.key==='Enter'&&ki)ki.focus();});
+    if(ki) ki.addEventListener('keydown',function(e){if(e.key==='Enter')addFood(m);});
   });
-
-  // 体重入力（ヘッダー）
-  var wi = document.getElementById('weightIn');
-  if(wi) wi.addEventListener('change', function() {
-    var v = parseFloat(this.value);
-    if(v) { sdf(today(), 'weight', v); save(); }
+  // 体重ヘッダー入力
+  var wi=document.getElementById('weightIn');
+  if(wi) wi.addEventListener('change',function(){
+    var v=parseFloat(this.value);if(v){sdf(today(),'weight',v);save();}
   });
-
-  // 初期化処理
+  // 初期化
   load();
   initHeader();
   initDP();
@@ -1770,34 +1686,29 @@ window.addEventListener('DOMContentLoaded', function() {
   renderRoutineLog();
   updateBPHeader();
   loadSheetSettings();
-
   // 今日の体重をヘッダーに反映
-  var todayRec = gdd(today());
-  if(todayRec.weight) {
-    var el = document.getElementById('weightIn');
-    if(el) el.value = todayRec.weight;
+  var todayRec=gdd(today());
+  if(todayRec.weight){
+    var el=document.getElementById('weightIn');if(el)el.value=todayRec.weight;
   }
-
   // 曜日に応じたトレーニングメニュー
-  var dow = new Date().getDay();
-  var tabs = document.querySelectorAll('.tdt');
-  if(dow === 6 && tabs.length > 1) {
-    tabs.forEach(function(b){ b.classList.remove('on'); });
-    tabs[1].classList.add('on');
-    trainDay = 'sat';
-    renderTraining();
-  } else if(dow === 0 && tabs.length > 2) {
-    tabs.forEach(function(b){ b.classList.remove('on'); });
-    tabs[2].classList.add('on');
-    trainDay = 'sun';
-    renderTraining();
+  var dow=new Date().getDay();
+  var tabs=document.querySelectorAll('.tdt');
+  if(dow===6&&tabs.length>1){
+    tabs.forEach(function(b){b.classList.remove('on');});
+    tabs[1].classList.add('on');trainDay='sat';renderTraining();
+  } else if(dow===0&&tabs.length>2){
+    tabs.forEach(function(b){b.classList.remove('on');});
+    tabs[2].classList.add('on');trainDay='sun';renderTraining();
   }
 });
 
-window.addEventListener('resize', function() {
-  if(document.getElementById('page-graph') &&
-     document.getElementById('page-graph').classList.contains('active')) {
+window.addEventListener('resize',function(){
+  if(document.getElementById('page-graph')&&
+     document.getElementById('page-graph').classList.contains('active')){
     renderGraphs();
-  }</script>
+  }
+});
+</script>
 </body>
 </html>
