@@ -2,82 +2,72 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <link rel="apple-touch-icon" sizes="180x180" href="icon.png">
-<link rel="icon" type="image/png" href="icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Health OKZ">
 <meta name="theme-color" content="#0077b6">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>OKZ — Health OKZ</title>
+<title>Health OKZ</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
 
-:root {
-  --ocean:#0077b6;--sky:#00b4d8;--aqua:#48cae4;--foam:#90e0ef;
-  --sand:#f4e4c1;--sand2:#fdf6ee;--palm:#2d6a4f;--palm2:#52b788;
-  --sunset:#f77f00;--hibiscus:#e63946;--coral:#ff6b6b;--lemon:#ffd166;
-  --white:#ffffff;--text:#1a3a4a;--muted:#7a9eb0;--border:rgba(0,119,182,0.12);
-  --card:rgba(255,255,255,0.88);--shadow:0 4px 20px rgba(0,119,182,0.12);
-  --fd:'Pacifico',cursive;--fb:'Nunito',sans-serif;--fm:'JetBrains Mono',monospace;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+:root{
+  --ocean:#0077b6;--sky:#00b4d8;--aqua:#48cae4;--sand:#f4e4c1;--sand2:#fdf6ee;
+  --palm:#2d6a4f;--palm2:#52b788;--sunset:#f77f00;--hibiscus:#e63946;
+  --coral:#ff6b6b;--lemon:#ffd166;--text:#1a3a4a;--muted:#7a9eb0;
+  --border:rgba(0,119,182,0.12);--card:rgba(255,255,255,0.88);
+  --shadow:0 4px 20px rgba(0,119,182,0.12);
+  --fd:'Noto Sans JP',sans-serif;--fb:'Noto Sans JP',sans-serif;--fm:'JetBrains Mono',monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:var(--fb);min-height:100vh;padding-bottom:90px;-webkit-font-smoothing:antialiased;overflow-x:hidden;background:var(--sand2);color:var(--text)}
-
-.ocean-bg{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,#87ceeb 0%,#b0e0f5 18%,#48cae4 32%,#0077b6 50%,#023e8a 64%,#f4e4c1 64%,#fdf6ee 100%);width:100%;max-width:none}
+.ocean-bg{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,#87ceeb 0%,#b0e0f5 18%,#48cae4 32%,#0077b6 50%,#023e8a 64%,#f4e4c1 64%,#fdf6ee 100%)}
 .ocean-bg::before{content:'';position:absolute;top:2%;right:12%;width:65px;height:65px;border-radius:50%;background:radial-gradient(circle,#fff9c4 0%,#ffd166 40%,#f77f00 100%);box-shadow:0 0 40px 18px rgba(255,209,102,.4);animation:sunP 4s ease-in-out infinite}
 @keyframes sunP{0%,100%{box-shadow:0 0 40px 18px rgba(255,209,102,.4)}50%{box-shadow:0 0 60px 28px rgba(255,209,102,.6)}}
 .ocean-bg::after{content:'';position:absolute;top:57%;left:-10%;right:-10%;height:55px;background:rgba(255,255,255,.13);border-radius:50% 50% 0 0/28px 28px 0 0;animation:wv 6s ease-in-out infinite}
 @keyframes wv{0%,100%{transform:translateX(-3%) scaleY(1)}50%{transform:translateX(3%) scaleY(1.15)}}
-
 /* HERO */
 .hero{padding:50px 16px 0;position:relative;z-index:1}
-.hero-inner{background:linear-gradient(135deg,rgba(0,180,216,.92) 0%,rgba(0,119,182,.96) 60%,rgba(2,62,138,.96) 100%);border-radius:24px;padding:20px 18px 16px;position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(0,119,182,.3)}
-.hero-inner::before{content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.07);pointer-events:none}
-.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
-.brand-name{font-family:var(--fd);font-size:2rem;color:#fff;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,.2)}
-.brand-sub{font-size:.58rem;color:rgba(255,255,255,.6);letter-spacing:2px;text-transform:uppercase;margin-top:3px;font-weight:700}
-.hero-dn{font-family:var(--fm);font-size:2.6rem;font-weight:700;color:#fff;line-height:.88;text-align:right}
-.hero-dm{font-size:.55rem;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase;text-align:right;margin-top:3px;font-weight:700}
+.hero-inner{background:linear-gradient(135deg,rgba(0,180,216,.92) 0%,rgba(0,119,182,.96) 60%,rgba(2,62,138,.96) 100%);border-radius:22px;padding:18px 16px 14px;position:relative;overflow:hidden;box-shadow:0 8px 28px rgba(0,119,182,.3)}
+.hero-inner::before{content:'';position:absolute;top:-30px;right:-30px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.07);pointer-events:none}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.brand-name{font-family:'Noto Sans JP',sans-serif;font-size:1.7rem;font-weight:900;color:#fff;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,.2);letter-spacing:1px}
+.brand-sub{font-size:.54rem;color:rgba(255,255,255,.6);letter-spacing:2px;text-transform:uppercase;margin-top:3px;font-weight:700}
+.hero-dn{font-family:var(--fm);font-size:2.5rem;font-weight:700;color:#fff;line-height:.88;text-align:right}
+.hero-dm{font-size:.52rem;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase;text-align:right;margin-top:3px;font-weight:700}
 .stat-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
 .sp{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px 11px 8px;backdrop-filter:blur(8px)}
-.sp-lbl{font-size:.54rem;font-weight:800;letter-spacing:1.5px;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:2px}
+.sp-lbl{font-size:.52rem;font-weight:800;letter-spacing:1.5px;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:2px}
 .sp-val{font-family:var(--fm);font-size:1.1rem;font-weight:700;color:#fff;line-height:1}
-.sp-val input{background:none;border:none;font-family:var(--fm);font-size:1.1rem;font-weight:700;color:var(--lemon);width:100%;outline:none}
-.sp-val input::placeholder{color:rgba(255,255,255,.3)}
-.sp-unit{font-size:.5rem;color:rgba(255,255,255,.48);margin-top:2px;font-weight:700}
+.sp-val input{background:none;border:none;font-family:var(--fm);font-size:1.1rem;font-weight:700;color:#fff;width:100%;outline:none}
+.sp-val input::placeholder{color:rgba(255,255,255,.35)}
+.sp-unit{font-size:.5rem;color:rgba(255,255,255,.5);margin-top:2px;font-weight:700}
 .wave-div{height:11px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 11'%3E%3Cpath d='M0,5.5 C50,0 100,11 150,5.5 C200,0 250,11 300,5.5 C350,0 400,11 400,5.5 L400,11 L0,11 Z' fill='rgba(0,119,182,0.07)'/%3E%3C/svg%3E");background-size:400px 11px;margin:7px -16px 0;animation:wvM 8s linear infinite}
 @keyframes wvM{from{background-position:0 0}to{background-position:400px 0}}
-
-/* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:0;width:100%;background:rgba(255,255,255,.96);backdrop-filter:blur(20px);border-top:1px solid rgba(0,119,182,.14);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom,0);box-shadow:0 -4px 18px rgba(0,119,182,.09)}
-.nb{flex:1;padding:8px 3px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:none;position:relative;transition:all .2s}
+/* NAV */
+.bnav{position:fixed;bottom:0;left:0;width:100%;background:rgba(255,255,255,.96);backdrop-filter:blur(20px);border-top:1px solid rgba(0,119,182,.14);display:flex;z-index:9999;padding-bottom:env(safe-area-inset-bottom,0);box-shadow:0 -4px 18px rgba(0,119,182,.09)}
+.nb{flex:1;padding:8px 3px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:none;position:relative}
 .nb::before{content:'';position:absolute;top:0;left:22%;right:22%;height:3px;background:linear-gradient(90deg,var(--ocean),var(--aqua));transform:scaleX(0);transition:transform .25s;border-radius:0 0 3px 3px}
 .nb.active::before{transform:scaleX(1)}
-.nb-ic{font-size:1rem;filter:grayscale(1)opacity(.4);transition:all .2s}
+.nb-ic{font-size:1rem;filter:grayscale(1) opacity(.4);transition:all .2s}
 .nb.active .nb-ic{filter:none;transform:scale(1.12) translateY(-1px)}
-.nb-lb{font-size:.56rem;font-weight:800;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;transition:color .2s}
+.nb-lb{font-size:.55rem;font-weight:800;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;transition:color .2s}
 .nb.active .nb-lb{color:var(--ocean)}
-
 /* PAGES */
 .page{display:none;padding:10px 14px 0;position:relative;z-index:1}
 .page.active{display:block;animation:fadeUp .28s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* COMMON */
+/* COMMON COMPONENTS */
 .shd{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px}
-.shd-title{font-family:var(--fd);font-size:1.35rem;color:var(--ocean);line-height:1}
+.shd-title{font-family:var(--fd);font-size:1.3rem;color:var(--ocean);line-height:1}
 .shd-meta{font-size:.6rem;font-weight:700;color:var(--muted);letter-spacing:1px}
 .card{background:var(--card);border:1px solid var(--border);border-radius:18px;margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow);backdrop-filter:blur(10px)}
-
-/* DATE NAV */
 .dnb{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:13px;padding:9px 13px;margin-bottom:10px;box-shadow:var(--shadow)}
-.dnb label{font-size:.58rem;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;white-space:nowrap}
+.dnb label{font-size:.56rem;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;white-space:nowrap}
 .dnb input[type=date]{flex:1;background:none;border:none;color:var(--ocean);font-family:var(--fm);font-size:.8rem;outline:none;cursor:pointer}
-.dnav-b{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--ocean),var(--aqua));border:none;color:white;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.dnav-b{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--ocean),var(--aqua));border:none;color:white;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .dnav-b:active{transform:scale(.92)}
-
 /* RING */
 .ring-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;margin-bottom:10px;display:flex;gap:14px;align-items:center;box-shadow:var(--shadow)}
 .ring-outer{position:relative;width:90px;height:90px;flex-shrink:0}
@@ -89,7 +79,7 @@ body{font-family:var(--fb);min-height:100vh;padding-bottom:90px;-webkit-font-smo
 .ring-sm{font-size:.48rem;color:var(--muted);font-weight:700}
 .ring-info{flex:1;min-width:0}
 .ring-tr-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
-.ring-tr-lbl{font-size:.58rem;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase}
+.ring-tr-lbl{font-size:.56rem;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase}
 .ring-rem{font-family:var(--fm);font-size:.65rem;color:var(--palm);font-weight:700}
 .mbars{display:flex;flex-direction:column;gap:6px}
 .mbar-r{display:flex;flex-direction:column;gap:2px}
@@ -97,7 +87,6 @@ body{font-family:var(--fb);min-height:100vh;padding-bottom:90px;-webkit-font-smo
 .mbar-l{color:var(--muted)}
 .mbar-track{height:4px;background:rgba(0,119,182,.08);border-radius:99px;overflow:hidden}
 .mbar-fill{height:100%;border-radius:99px;transition:width .5s ease}
-
 /* MEAL */
 .mc{background:var(--card);border:1px solid var(--border);border-radius:18px;margin-bottom:9px;overflow:hidden;box-shadow:var(--shadow)}
 .mc-hd{display:flex;align-items:center;gap:9px;padding:12px 14px;border-bottom:1px solid rgba(0,119,182,.07)}
@@ -109,26 +98,25 @@ body{font-family:var(--fb);min-height:100vh;padding-bottom:90px;-webkit-font-smo
 .mc-tm{font-family:var(--fm);font-size:.56rem;color:var(--muted)}
 .mc-kc{font-family:var(--fm);font-size:.95rem;font-weight:700;color:var(--ocean)}
 .entries{padding:3px 14px 5px;min-height:26px}
-.entry{display:flex;align-items:center;gap:7px;padding:6px 0;border-bottom:1px solid rgba(0,119,182,.06);animation:fadeUp .15s ease}
+.entry{display:flex;align-items:center;gap:7px;padding:6px 0;border-bottom:1px solid rgba(0,119,182,.06)}
 .entry:last-child{border-bottom:none}
 .enm{flex:1;font-size:.76rem;font-weight:600}
 .ekc{font-family:var(--fm);font-size:.64rem;font-weight:700;color:var(--sunset);white-space:nowrap}
-.edel{width:19px;height:19px;border-radius:5px;background:rgba(230,57,70,.1);color:var(--hibiscus);border:none;cursor:pointer;font-size:.68rem;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.edel{width:22px;height:22px;border-radius:5px;background:rgba(230,57,70,.1);color:var(--hibiscus);border:none;cursor:pointer;font-size:.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .edel:active{background:var(--hibiscus);color:#fff}
 .no-entry{padding:9px 0;font-size:.68rem;color:var(--muted);font-style:italic}
-.madd{display:flex;flex-wrap:nowrap;gap:5px;padding:9px 10px 12px;border-top:1px solid rgba(0,119,182,.07);background:rgba(144,224,239,.07);align-items:center}
-@media(max-width:380px){.madd{flex-wrap:wrap}.mi{flex:1;min-width:0;padding:9px 8px;border:1.5px solid rgba(0,119,182,.2);border-radius:9px;background:#ffffff;font-family:var(--fb);font-size:.78rem;color:#1a3a4a;outline:none;transition:border-color .2s}.madd-btn{width:100%;margin-top:4px}}
-.mi{flex:1;min-width:0;padding:9px 8px;border:1.5px solid rgba(0,119,182,.2);border-radius:9px;background:#ffffff;font-family:var(--fb);font-size:.78rem;color:#1a3a4a;outline:none;transition:border-color .2s}
+.no-hist{padding:7px 0;font-size:.66rem;color:var(--muted)}
+.madd{display:flex;align-items:center;gap:6px;padding:9px 12px 12px;border-top:1px solid rgba(0,119,182,.07);background:rgba(144,224,239,.06)}
+.mi{flex:1;min-width:0;padding:9px 10px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:#fff;font-family:var(--fb);font-size:.78rem;color:#1a3a4a;outline:none}
 .mi:focus{border-color:var(--aqua)}
-.ki{width:70px;padding:9px 7px;border:1.5px solid rgba(0,119,182,.2);border-radius:9px;background:#ffffff;font-family:var(--fm);font-size:.8rem;color:#c04a00;outline:none;transition:border-color .2s;-webkit-appearance:none;flex-shrink:0}
+.ki{width:68px;flex-shrink:0;padding:9px 7px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:#fff;font-family:var(--fm);font-size:.76rem;color:#c04a00;outline:none}
 .ki:focus{border-color:var(--lemon)}
-.madd-btn{padding:9px 14px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;border:none;border-radius:9px;font-family:var(--fb);font-size:.82rem;font-weight:800;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.madd-btn{flex-shrink:0;padding:9px 14px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;border:none;border-radius:9px;font-family:var(--fb);font-size:.82rem;font-weight:800;cursor:pointer;white-space:nowrap}
 .madd-btn:active{transform:scale(.94)}
-
 /* GRAPH */
 .ptabs{display:flex;gap:5px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none}
 .ptabs::-webkit-scrollbar{display:none}
-.ptab{padding:6px 12px;border-radius:99px;border:1.5px solid rgba(0,119,182,.18);background:white;font-size:.68rem;font-weight:800;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s}
+.ptab{padding:6px 12px;border-radius:99px;border:1.5px solid rgba(0,119,182,.18);background:white;font-size:.68rem;font-weight:800;color:var(--muted);cursor:pointer;white-space:nowrap}
 .ptab.on{background:linear-gradient(135deg,var(--ocean),var(--aqua));border-color:transparent;color:white}
 .gc{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px 14px 11px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
 .gc-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
@@ -139,7 +127,7 @@ body{font-family:var(--fb);min-height:100vh;padding-bottom:90px;-webkit-font-smo
 .gc-diff.bad{background:rgba(230,57,70,.1);color:var(--hibiscus)}
 .chart-a{position:relative;height:120px;margin:0;overflow:hidden}
 canvas.cv{width:100%;height:100%}
-.chart-xl{display:flex;justify-content:space-between;margin-top:4px;padding:0 2px}
+.chart-xl{display:flex;justify-content:space-between;margin-top:4px}
 .chart-xl span{font-family:var(--fm);font-size:.5rem;color:var(--muted)}
 .sg{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:10px}
 .sc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;box-shadow:var(--shadow)}
@@ -147,34 +135,34 @@ canvas.cv{width:100%;height:100%}
 .sc-val{font-family:var(--fm);font-size:1.6rem;font-weight:700;line-height:1}
 .sc-val.oc{color:var(--ocean)}.sc-val.gn{color:var(--palm)}.sc-val.rd{color:var(--hibiscus)}.sc-val.am{color:var(--sunset)}
 .bp-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow)}
-.bp-fs{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:end;margin-top:9px}
-.bp-fs .rec-btn{grid-column:1/-1;width:100%;padding:11px}
+.bp-fs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.bp-fs .rec-btn-wrap{grid-column:1/-1}
 .bf label{display:block;font-size:.56rem;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
-.bf input{width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.2);border-radius:9px;background:#ffffff;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.bf input{width:100%;padding:10px 10px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:#fff;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none}
 .bf input:focus{border-color:var(--aqua)}
-.rec-btn{padding:8px 11px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;border:none;border-radius:9px;font-family:var(--fb);font-size:.8rem;font-weight:800;cursor:pointer;white-space:nowrap;transition:all .15s}
+.rec-btn{width:100%;padding:11px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;border:none;border-radius:9px;font-family:var(--fb);font-size:.88rem;font-weight:800;cursor:pointer}
 .rec-btn:active{transform:scale(.94)}
-.bp-hist{margin-top:9px}
-.bp-row{display:flex;align-items:center;gap:4px;padding:6px 0;border-bottom:1px solid rgba(0,119,182,.06);font-family:var(--fm);font-size:.62rem}
+.bp-hist{margin-top:10px}
+.bp-row{display:flex;align-items:center;gap:5px;padding:6px 0;border-bottom:1px solid rgba(0,119,182,.06);font-family:var(--fm);font-size:.62rem;flex-wrap:wrap}
 .bp-row:last-child{border-bottom:none}
-.bpdt{color:var(--muted);min-width:65px}.bpsy{color:var(--hibiscus);font-weight:700;min-width:24px}.bpsp{color:var(--muted)}.bpdi{color:var(--ocean);font-weight:700;min-width:24px}.bppu{color:var(--muted);flex:1}
-.bpbdg{padding:2px 6px;border-radius:5px;font-size:.56rem;font-weight:800;white-space:nowrap}
+.bpdt{color:var(--muted);min-width:60px}.bpsy{color:var(--hibiscus);font-weight:700}.bpsp{color:var(--muted)}.bpdi{color:var(--ocean);font-weight:700}.bppu{color:var(--muted);flex:1}
+.wt-val{font-weight:700;color:var(--palm);flex:1}
+.bpbdg{padding:2px 6px;border-radius:5px;font-size:.58rem;font-weight:800;white-space:nowrap}
 .bpbdg.good{background:rgba(45,106,79,.1);color:var(--palm)}.bpbdg.warn{background:rgba(247,127,0,.1);color:var(--sunset)}.bpbdg.high{background:rgba(230,57,70,.1);color:var(--hibiscus)}
-
 /* TRAINING */
 .whm{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:13px 12px;margin-bottom:10px;box-shadow:var(--shadow)}
 .whm-lbl{font-size:.58rem;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:9px}
 .wcells{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .wci{display:flex;flex-direction:column;align-items:center;gap:3px}
-.wcd{font-size:.56rem;font-weight:800;color:var(--muted);text-transform:uppercase}
-.wdot{width:31px;height:31px;border-radius:9px;border:1.5px solid rgba(0,119,182,.14);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s}
+.wcd{font-size:.62rem;font-weight:800;color:var(--muted)}
+.wdot{width:31px;height:31px;border-radius:9px;border:1.5px solid rgba(0,119,182,.14);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:var(--muted);cursor:pointer}
 .wdot.today{border-color:var(--ocean);color:var(--ocean);background:rgba(0,119,182,.06)}
 .wdot.done{background:linear-gradient(135deg,var(--palm),var(--palm2));border-color:transparent;color:white}
 .tdtabs{display:flex;gap:7px;margin-bottom:11px;overflow-x:auto;scrollbar-width:none}
 .tdtabs::-webkit-scrollbar{display:none}
-.tdt{padding:6px 14px;border-radius:99px;border:1.5px solid rgba(0,119,182,.18);background:white;font-size:.7rem;font-weight:800;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s}
+.tdt{padding:6px 14px;border-radius:99px;border:1.5px solid rgba(0,119,182,.18);background:white;font-size:.7rem;font-weight:800;color:var(--muted);cursor:pointer;white-space:nowrap}
 .tdt.on{background:linear-gradient(135deg,var(--ocean),var(--aqua));border-color:transparent;color:white}
-.exc{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow);transition:all .2s}
+.exc{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow)}
 .exc.done-c{border-color:rgba(45,106,79,.28)}.exc.open{border-color:rgba(0,119,182,.28)}
 .exhd{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer}
 .exnb{width:31px;height:31px;border-radius:9px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;font-family:var(--fm);font-size:.84rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -182,10 +170,10 @@ canvas.cv{width:100%;height:100%}
 .exmt{flex:1;min-width:0}
 .exnm{font-size:.88rem;font-weight:800;color:var(--text);margin-bottom:2px}
 .exsp{font-family:var(--fm);font-size:.58rem;color:var(--ocean);font-weight:700}
-.exdb{font-size:.56rem;font-weight:800;padding:2px 6px;border-radius:5px;background:rgba(45,106,79,.1);color:var(--palm);opacity:0;transition:opacity .2s}
+.exdb{font-size:.56rem;font-weight:800;padding:2px 6px;border-radius:5px;background:rgba(45,106,79,.1);color:var(--palm);opacity:0}
 .exc.done-c .exdb{opacity:1}
-.exch{font-size:.66rem;color:var(--muted);transition:transform .2s;flex-shrink:0}
-.exc.open .exch{transform:rotate(180deg);color:var(--ocean)}
+.exch{font-size:.66rem;color:var(--muted);flex-shrink:0}
+.exc.open .exch{color:var(--ocean)}
 .exbody{display:none;padding:0 14px 14px;border-top:1px solid rgba(0,119,182,.07)}
 .exc.open .exbody{display:block}
 .exsl{font-size:.56rem;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin:11px 0 6px}
@@ -194,12 +182,13 @@ canvas.cv{width:100%;height:100%}
 .ht{font-size:.73rem;line-height:1.6;color:#4a6a7a;padding-top:1px}
 .cs{background:rgba(230,57,70,.06);border-left:3px solid var(--coral);border-radius:0 7px 7px 0;padding:8px 10px;margin-top:8px}
 .cs p{font-size:.68rem;color:#c0392b;line-height:1.55}
-.cr{display:flex;align-items:center;gap:8px;margin-top:10px;padding:9px 10px;border-radius:9px;background:rgba(0,119,182,.04);cursor:pointer;transition:all .2s;user-select:none}
+.cr{display:flex;align-items:center;gap:8px;margin-top:10px;padding:9px 10px;border-radius:9px;background:rgba(0,119,182,.04);cursor:pointer;user-select:none}
 .cr.ck{background:rgba(45,106,79,.07)}
-.crb{width:20px;height:20px;border-radius:5px;border:2px solid rgba(0,119,182,.18);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:transparent;transition:all .15s;flex-shrink:0}
+.crb{width:20px;height:20px;border-radius:5px;border:2px solid rgba(0,119,182,.18);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:transparent;flex-shrink:0}
 .cr.ck .crb{background:linear-gradient(135deg,var(--palm),var(--palm2));border-color:transparent;color:white}
 .crl{font-size:.8rem;font-weight:800;color:var(--muted)}
 .cr.ck .crl{color:var(--palm)}
+/* IRREGULAR */
 .irr-log-list{margin-top:10px}
 .irre{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:7px;display:flex;align-items:flex-start;gap:9px;box-shadow:var(--shadow)}
 .icat{padding:3px 8px;border-radius:5px;font-size:.6rem;font-weight:800;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
@@ -208,77 +197,79 @@ canvas.cv{width:100%;height:100%}
 .ictnm{font-size:.85rem;font-weight:800;color:var(--text);margin-bottom:2px}
 .ictdt{font-size:.66rem;color:var(--muted);line-height:1.4}
 .icttm{font-family:var(--fm);font-size:.54rem;color:var(--muted);margin-top:2px}
-.idel{width:20px;height:20px;border-radius:5px;background:rgba(230,57,70,.08);color:var(--hibiscus);border:none;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.idel{width:20px;height:20px;border-radius:5px;background:rgba(230,57,70,.08);color:var(--hibiscus);border:none;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .idel:active{background:var(--hibiscus);color:#fff}
-
-/* RECIPE */
-.recipe-filters{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none}
-.recipe-filters::-webkit-scrollbar{display:none}
-.rf-btn{padding:6px 13px;border-radius:99px;border:1.5px solid rgba(0,119,182,.18);background:white;font-size:.68rem;font-weight:800;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s}
-.rf-btn.on{background:linear-gradient(135deg,var(--ocean),var(--aqua));border-color:transparent;color:white}
-.recipe-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.recipe-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:all .22s}
-.recipe-card:active{transform:scale(.97)}
-.rc-thumb{height:72px;display:flex;align-items:center;justify-content:center;font-size:1.9rem;position:relative}
-.rc-tag{position:absolute;top:6px;right:6px;padding:2px 7px;border-radius:5px;font-size:.54rem;font-weight:800;text-transform:uppercase}
-.rc-tag.lunch{background:rgba(0,119,182,.85);color:white}
-.rc-tag.dinner{background:rgba(45,106,79,.85);color:white}
-.rc-body{padding:10px 11px 12px}
-.rc-name{font-size:.8rem;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:5px}
-.rc-footer{display:flex;justify-content:space-between;align-items:center}
-.rc-kcal{font-family:var(--fm);font-size:.72rem;font-weight:700;color:var(--ocean)}
-.rc-time{font-size:.6rem;color:var(--muted);font-weight:700}
-
 /* MODAL */
-.mover{display:none;position:fixed;inset:0;background:rgba(0,50,100,.5);backdrop-filter:blur(10px);z-index:300;align-items:flex-end;justify-content:center}
+.mover{display:none;position:fixed;inset:0;background:rgba(0,50,100,.5);backdrop-filter:blur(10px);z-index:99999;align-items:flex-end;justify-content:center}
 .mover.open{display:flex}
-.msheet{background:var(--sand2);border:1px solid var(--border);border-radius:22px 22px 0 0;padding:18px 18px 38px;width:100%;max-width:430px;animation:sup .3s cubic-bezier(.4,0,.2,1);max-height:88vh;overflow-y:auto}
+.msheet{background:var(--sand2);border:1px solid var(--border);border-radius:22px 22px 0 0;padding:18px 18px 40px;width:100%;max-width:600px;animation:sup .3s cubic-bezier(.4,0,.2,1);max-height:88vh;overflow-y:auto}
 @keyframes sup{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .mhandle{width:36px;height:4px;background:rgba(0,119,182,.18);border-radius:99px;margin:0 auto 16px}
 .mttl{font-family:var(--fd);font-size:1.4rem;color:var(--ocean);margin-bottom:3px}
 .msub{font-size:.64rem;color:var(--muted);margin-bottom:14px;font-weight:700}
 .ifield{margin-bottom:10px}
 .ifield label{display:block;font-size:.56rem;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
-.iinput{width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.2);border-radius:11px;background:#ffffff;font-family:var(--fb);font-size:.85rem;color:#1a3a4a;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.iinput{width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:11px;background:white;font-family:var(--fb);font-size:.82rem;color:#1a3a4a;outline:none}
 .iinput:focus{border-color:var(--aqua)}
 .irow{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .cc{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
-.cch{padding:5px 12px;border-radius:99px;border:1.5px solid rgba(0,119,182,.14);background:white;font-size:.66rem;font-weight:800;color:var(--muted);cursor:pointer;transition:all .15s}
+.cch{padding:5px 12px;border-radius:99px;border:1.5px solid rgba(0,119,182,.14);background:white;font-size:.68rem;font-weight:800;color:var(--muted);cursor:pointer}
 .cch.sel{background:linear-gradient(135deg,var(--ocean),var(--aqua));border-color:transparent;color:white}
-.isave{width:100%;padding:13px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;border:none;border-radius:12px;font-family:var(--fb);font-size:.95rem;font-weight:800;cursor:pointer;margin-top:12px;transition:all .15s}
+.isave{width:100%;padding:13px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;border:none;border-radius:12px;font-family:var(--fb);font-size:.95rem;font-weight:800;cursor:pointer;margin-top:12px}
 .isave:active{transform:scale(.97)}
-
-/* RECIPE MODAL */
-.rm-nutr{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:rgba(0,119,182,.05);border-radius:12px;padding:12px;margin-bottom:14px}
+/* RECIPE */
+.recipe-filters{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none}
+.recipe-filters::-webkit-scrollbar{display:none}
+.rf-btn{padding:6px 12px;border-radius:99px;border:1.5px solid rgba(0,119,182,.18);background:white;font-size:.68rem;font-weight:800;color:var(--muted);cursor:pointer;white-space:nowrap}
+.rf-btn.on{background:linear-gradient(135deg,var(--ocean),var(--aqua));border-color:transparent;color:white}
+.recipe-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.recipe-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer}
+.recipe-card:active{transform:scale(.97)}
+.rc-thumb{height:70px;display:flex;align-items:center;justify-content:center;position:relative}
+.rc-tag{position:absolute;top:5px;right:5px;padding:2px 6px;border-radius:4px;font-size:.54rem;font-weight:800;text-transform:uppercase}
+.rc-tag.breakfast{background:rgba(255,167,38,.9);color:white}
+.rc-tag.lunch{background:rgba(0,119,182,.85);color:white}
+.rc-tag.dinner{background:rgba(45,106,79,.85);color:white}
+.rc-body{padding:9px 10px 11px}
+.rc-name{font-size:.78rem;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:5px}
+.rc-footer{display:flex;justify-content:space-between;align-items:center}
+.rc-kcal{font-family:var(--fm);font-size:.7rem;font-weight:700;color:var(--ocean)}
+.rc-time{font-size:.6rem;color:var(--muted);font-weight:700}
+.rm-nutr{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;background:rgba(0,119,182,.05);border-radius:11px;padding:11px;margin-bottom:12px}
 .rm-nc{text-align:center}
-.rm-nv{font-family:var(--fm);font-size:.95rem;font-weight:700;color:var(--ocean);display:block}
-.rm-nl{font-size:.54rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700}
-.rm-ingr{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(0,119,182,.1);font-size:.76rem}
+.rm-nv{font-family:var(--fm);font-size:.9rem;font-weight:700;color:var(--ocean);display:block}
+.rm-nl{font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.rm-ingr{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed rgba(0,119,182,.1);font-size:.74rem}
 .rm-ingr:last-child{border-bottom:none}
-.rm-amt{font-family:var(--fm);font-size:.68rem;font-weight:700;color:var(--sunset)}
-.rm-step{display:flex;gap:9px;margin-bottom:7px;align-items:flex-start}
-.rm-sn{width:20px;height:20px;border-radius:99px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;font-size:.62rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.rm-st{font-size:.76rem;line-height:1.6;color:#4a6a7a;padding-top:1px}
-.rm-tip{background:linear-gradient(135deg,rgba(0,180,216,.08),rgba(82,183,136,.08));border-left:3px solid var(--aqua);border-radius:0 9px 9px 0;padding:9px 11px;font-size:.72rem;color:#3a6a7a;line-height:1.55}
-.print-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--palm),var(--palm2));color:white;border:none;border-radius:11px;font-family:var(--fb);font-size:.9rem;font-weight:800;cursor:pointer;margin-top:12px;transition:all .15s}
-.print-btn:active{transform:scale(.97)}
-
+.rm-amt{font-family:var(--fm);font-size:.66rem;font-weight:700;color:var(--sunset)}
+.rm-step{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start}
+.rm-sn{width:19px;height:19px;border-radius:99px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rm-st{font-size:.74rem;line-height:1.6;color:#4a6a7a;padding-top:1px}
+.rm-tip{background:linear-gradient(135deg,rgba(0,180,216,.08),rgba(82,183,136,.08));border-left:3px solid var(--aqua);border-radius:0 9px 9px 0;padding:9px 11px;font-size:.7rem;color:#3a6a7a;line-height:1.55}
+.print-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--palm),var(--palm2));color:white;border:none;border-radius:11px;font-family:var(--fb);font-size:.88rem;font-weight:800;cursor:pointer;margin-top:12px}
 /* ANALYSIS */
 .period-sel{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-.ps-btn{padding:6px 13px;border-radius:99px;border:1.5px solid rgba(0,119,182,.18);background:white;font-size:.68rem;font-weight:800;color:var(--muted);cursor:pointer;transition:all .2s}
+.ps-btn{padding:6px 13px;border-radius:99px;border:1.5px solid rgba(0,119,182,.18);background:white;font-size:.68rem;font-weight:800;color:var(--muted);cursor:pointer}
 .ps-btn.on{background:linear-gradient(135deg,var(--ocean),var(--aqua));border-color:transparent;color:white}
 .analysis-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:10px;box-shadow:var(--shadow)}
-.analysis-title{font-family:var(--fd);font-size:1.1rem;color:var(--ocean);margin-bottom:4px}
-.analysis-sub{font-size:.65rem;color:var(--muted);font-weight:700;margin-bottom:12px}
-.prompt-box{background:rgba(0,119,182,.04);border:1.5px solid rgba(0,119,182,.15);border-radius:12px;padding:12px;font-size:.72rem;color:var(--text);line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:320px;overflow-y:auto;margin-bottom:10px;font-family:var(--fm)}
-.copy-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;border:none;border-radius:11px;font-family:var(--fb);font-size:.9rem;font-weight:800;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.prompt-box{background:rgba(0,119,182,.04);border:1.5px solid rgba(0,119,182,.15);border-radius:12px;padding:12px;font-size:.68rem;color:var(--text);line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:300px;overflow-y:auto;margin-bottom:10px;font-family:var(--fm)}
+.copy-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;border:none;border-radius:11px;font-family:var(--fb);font-size:.88rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
 .copy-btn:active{transform:scale(.97)}
-.copy-btn.copied{background:linear-gradient(135deg,var(--palm),var(--palm2))}
 .stats-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:12px}
 .ss-cell{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px;box-shadow:var(--shadow)}
-.ss-lbl{font-size:.55rem;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.ss-lbl{font-size:.54rem;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
 .ss-val{font-family:var(--fm);font-size:1.1rem;font-weight:700;color:var(--ocean)}
-
+/* SHEET */
+/* SETTINGS */
+.settings-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:10px;box-shadow:var(--shadow)}
+.sf{margin-bottom:12px}
+.sf label{display:block;font-size:.56rem;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.sf input,.sf textarea,.sf select{width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:10px;background:white;font-family:var(--fb);font-size:.82rem;color:#1a3a4a;outline:none}
+.sf input:focus,.sf textarea:focus{border-color:var(--aqua)}
+.sf textarea{resize:vertical;min-height:70px}
+.save-settings-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;border:none;border-radius:12px;font-family:var(--fb);font-size:.95rem;font-weight:800;cursor:pointer}
+.save-settings-btn:active{transform:scale(.97)}
+.saved-msg{display:none;text-align:center;color:var(--palm);font-size:.75rem;font-weight:800;padding:8px 0}
 /* HUNGER */
 .hcard{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:9px;overflow:hidden;box-shadow:var(--shadow)}
 .habar{height:3px}
@@ -292,83 +283,28 @@ canvas.cv{width:100%;height:100%}
 .hlist li:last-child{border-bottom:none}
 .hdot{width:5px;height:5px;border-radius:99px;background:var(--aqua);flex-shrink:0;margin-top:6px}
 .hkc{font-family:var(--fm);font-size:.58rem;color:var(--sunset);font-weight:700;white-space:nowrap}
-
+/* RESPONSIVE */
+@media(min-width:700px){
+  .hero{padding:52px 5% 0}
+  .page{padding:12px 5% 0}
+  .wave-div{margin:7px -5% 0}
+  .recipe-grid{grid-template-columns:repeat(3,1fr)}
+  .sg{grid-template-columns:repeat(4,1fr)}
+  .stats-summary{grid-template-columns:repeat(4,1fr)}
+  .bp-fs{grid-template-columns:1fr 1fr 1fr 1fr}
+  .bp-fs .rec-btn-wrap{grid-column:auto}
+  .madd{flex-wrap:nowrap}
+}
+@media(min-width:1024px){
+  .hero{padding:52px 8% 0}
+  .page{padding:12px 8% 0}
+  .wave-div{margin:7px -8% 0}
+  .recipe-grid{grid-template-columns:repeat(4,1fr)}
+}
 ::-webkit-scrollbar{width:2px;height:2px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(0,119,182,.2);border-radius:99px}
 
-
-  .page{padding:16px 80px 0}
-  .recipe-grid{grid-template-columns:repeat(4,1fr)}
-  .bnav{max-width:none;left:0;transform:none}
-}
-
-/* ── PC / TABLET RESPONSIVE ── */
-@media(min-width:700px){
-  body{
-    padding-bottom:80px;
-  }
-  .hero{
-    padding:52px 5% 0;
-  }
-  .hero-inner{
-    padding:24px 32px 20px;
-  }
-  .stat-strip{
-    grid-template-columns:repeat(3,280px);
-    justify-content:flex-start;
-    gap:12px;
-  }
-  .page{
-    padding:14px 5% 0;
-  }
-  .recipe-grid{
-    grid-template-columns:repeat(3,1fr);
-  }
-  .sg{
-    grid-template-columns:repeat(4,1fr);
-  }
-  .stats-summary{
-    grid-template-columns:repeat(4,1fr);
-  }
-  .bp-fs{
-    grid-template-columns:1fr 1fr 1fr 1fr auto;
-  }
-  .bnav{
-    max-width:none;
-  }
-  .wave-div{
-    margin:7px -5% 0;
-  }
-}
-@media(min-width:1000px){
-  .hero{
-    padding:52px 8% 0;
-  }
-  .page{
-    padding:14px 8% 0;
-  }
-  .recipe-grid{
-    grid-template-columns:repeat(4,1fr);
-  }
-  .wave-div{
-    margin:7px -8% 0;
-  }
-}
-@media(min-width:1400px){
-  .hero{
-    padding:52px 12% 0;
-  }
-  .page{
-    padding:14px 12% 0;
-  }
-  .recipe-grid{
-    grid-template-columns:repeat(5,1fr);
-  }
-  .wave-div{
-    margin:7px -12% 0;
-  }
-}
 </style>
 </head>
 <body>
@@ -378,13 +314,31 @@ canvas.cv{width:100%;height:100%}
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-top">
-      <div><div class="brand-name">Health OKZ</div><div class="brand-sub">Personal Health System</div></div>
-      <div><div class="hero-dn" id="hDay">--</div><div class="hero-dm" id="hMeta">---</div></div>
+      <div>
+        <div class="brand-name"><span id="heroUserName"></span>Health OKZ</div>
+        <div class="brand-sub">Personal Health System</div>
+      </div>
+      <div>
+        <div class="hero-dn" id="hDay">--</div>
+        <div class="hero-dm" id="hMeta">---</div>
+      </div>
     </div>
     <div class="stat-strip">
-      <div class="sp"><div class="sp-lbl">Weight</div><div class="sp-val"><input type="number" step="0.1" id="weightIn" placeholder="--.-"></div><div class="sp-unit">kg / goal 85.0</div></div>
-      <div class="sp"><div class="sp-lbl">Blood P.</div><div class="sp-val" id="bpDisp" style="color:var(--lemon);font-size:.88rem">--/--</div><div class="sp-unit">mmHg</div></div>
-      <div class="sp"><div class="sp-lbl">Intake</div><div class="sp-val" id="hKcal" style="color:var(--lemon)">0</div><div class="sp-unit">/ 1,600 kcal</div></div>
+      <div class="sp">
+        <div class="sp-lbl">Weight</div>
+        <div class="sp-val"><input type="number" step="0.1" id="weightIn" placeholder="--.-"></div>
+        <div class="sp-unit">kg / goal <span id="goalWeightDisp">--.-</span></div>
+      </div>
+      <div class="sp">
+        <div class="sp-lbl">Blood P.</div>
+        <div class="sp-val" id="bpDisp" style="color:var(--lemon);font-size:.88rem">--/--</div>
+        <div class="sp-unit">mmHg</div>
+      </div>
+      <div class="sp">
+        <div class="sp-lbl">Intake</div>
+        <div class="sp-val" id="hKcal" style="color:var(--lemon)">0</div>
+        <div class="sp-unit">/ <span id="targetKcalDisp">1600</span> kcal</div>
+      </div>
     </div>
   </div>
   <div class="wave-div"></div>
@@ -392,35 +346,89 @@ canvas.cv{width:100%;height:100%}
 
 <!-- FOOD PAGE -->
 <div id="page-food" class="page active">
-  <div class="shd" style="margin-top:8px"><div class="shd-title">Today's Meals</div><span class="shd-meta">2食制プラン</span></div>
-  <div class="dnb"><label>LOG DATE</label><input type="date" id="logDate"><div style="display:flex;gap:4px"><button class="dnav-b" onclick="shiftDate(-1)">‹</button><button class="dnav-b" onclick="shiftDate(1)">›</button></div></div>
+  <div class="shd" style="margin-top:8px">
+    <div class="shd-title">今日の食事</div>
+    <span class="shd-meta">食事記録</span>
+  </div>
+  <div class="dnb">
+    <label>LOG DATE</label>
+    <input type="date" id="logDate">
+    <div style="display:flex;gap:4px">
+      <button class="dnav-b" onclick="shiftDate(-1)">&#8249;</button>
+      <button class="dnav-b" onclick="shiftDate(1)">&#8250;</button>
+    </div>
+  </div>
   <div class="ring-card">
     <div class="ring-outer">
       <svg class="ring-svg" width="90" height="90" viewBox="0 0 90 90">
-        <defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0077b6"/><stop offset="100%" stop-color="#48cae4"/></linearGradient></defs>
-        <circle class="ring-bg" cx="45" cy="45" r="42"/><circle class="ring-tr" id="ringFill" cx="45" cy="45" r="42" stroke="url(#rg)"/>
+        <defs>
+          <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0077b6"/>
+            <stop offset="100%" stop-color="#48cae4"/>
+          </linearGradient>
+        </defs>
+        <circle class="ring-bg" cx="45" cy="45" r="42"/>
+        <circle class="ring-tr" id="ringFill" cx="45" cy="45" r="42" stroke="url(#rg)"/>
       </svg>
-      <div class="ring-center"><div class="ring-big" id="ringNum">0</div><div class="ring-sm">kcal</div></div>
+      <div class="ring-center">
+        <div class="ring-big" id="ringNum">0</div>
+        <div class="ring-sm">kcal</div>
+      </div>
     </div>
     <div class="ring-info">
-      <div class="ring-tr-row"><span class="ring-tr-lbl">DAILY TARGET</span><span class="ring-rem" id="ringRem">1,600 rem</span></div>
+      <div class="ring-tr-row">
+        <span class="ring-tr-lbl">DAILY TARGET</span>
+        <span class="ring-rem" id="ringRem">1600 rem</span>
+      </div>
       <div class="mbars">
-        <div class="mbar-r"><div class="mbar-top"><span class="mbar-l">昼食</span><span id="lNum" style="color:var(--ocean)">0</span></div><div class="mbar-track"><div class="mbar-fill" id="lBar" style="width:0%;background:linear-gradient(90deg,var(--ocean),var(--aqua))"></div></div></div>
-        <div class="mbar-r"><div class="mbar-top"><span class="mbar-l">間食</span><span id="sNum" style="color:var(--sunset)">0</span></div><div class="mbar-track"><div class="mbar-fill" id="sBar" style="width:0%;background:linear-gradient(90deg,var(--lemon),var(--sunset))"></div></div></div>
-        <div class="mbar-r"><div class="mbar-top"><span class="mbar-l">夕食</span><span id="dNum" style="color:var(--palm)">0</span></div><div class="mbar-track"><div class="mbar-fill" id="dBar" style="width:0%;background:linear-gradient(90deg,var(--palm),var(--palm2))"></div></div></div>
+        <div class="mbar-r">
+          <div class="mbar-top"><span class="mbar-l">朝食</span><span id="bNum" style="color:var(--sunset)">0</span></div>
+          <div class="mbar-track"><div class="mbar-fill" id="bBar" style="width:0%;background:linear-gradient(90deg,#ffcc80,var(--sunset))"></div></div>
+        </div>
+        <div class="mbar-r">
+          <div class="mbar-top"><span class="mbar-l">昼食</span><span id="lNum" style="color:var(--ocean)">0</span></div>
+          <div class="mbar-track"><div class="mbar-fill" id="lBar" style="width:0%;background:linear-gradient(90deg,var(--ocean),var(--aqua))"></div></div>
+        </div>
+        <div class="mbar-r">
+          <div class="mbar-top"><span class="mbar-l">間食</span><span id="sNum" style="color:var(--lemon)" style="color:#c04a00">0</span></div>
+          <div class="mbar-track"><div class="mbar-fill" id="sBar" style="width:0%;background:linear-gradient(90deg,var(--lemon),var(--sunset))"></div></div>
+        </div>
+        <div class="mbar-r">
+          <div class="mbar-top"><span class="mbar-l">夕食</span><span id="dNum" style="color:var(--palm)">0</span></div>
+          <div class="mbar-track"><div class="mbar-fill" id="dBar" style="width:0%;background:linear-gradient(90deg,var(--palm),var(--palm2))"></div></div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="mc"><div class="mc-hd"><div class="mc-ico ln">🍱</div><div style="flex:1"><div class="mc-nm">LUNCH — 第1食</div><div class="mc-tm">12:00 固定</div></div><div class="mc-kc"><span id="t-lunch">0</span></div></div><div class="entries" id="e-lunch"><div class="no-entry">まだ記録なし</div></div><div class="madd"><input class="mi" id="f-lunch" placeholder="食べたもの"><input class="ki" id="k-lunch" type="number" placeholder="kcal"><button class="madd-btn" onclick="addFood('lunch')">追加</button></div></div>
-  <div class="mc"><div class="mc-hd"><div class="mc-ico sn">🥜</div><div style="flex:1"><div class="mc-nm">SNACK — 間食</div><div class="mc-tm">15:00 / 帰宅前</div></div><div class="mc-kc"><span id="t-snack">0</span></div></div><div class="entries" id="e-snack"><div class="no-entry">まだ記録なし</div></div><div class="madd"><input class="mi" id="f-snack" placeholder="食べたもの"><input class="ki" id="k-snack" type="number" placeholder="kcal"><button class="madd-btn" onclick="addFood('snack')">追加</button></div></div>
-  <div class="mc"><div class="mc-hd"><div class="mc-ico dn">🌿</div><div style="flex:1"><div class="mc-nm">DINNER — 第2食</div><div class="mc-tm">21:00〜21:30</div></div><div class="mc-kc"><span id="t-dinner">0</span></div></div><div class="entries" id="e-dinner"><div class="no-entry">まだ記録なし</div></div><div class="madd"><input class="mi" id="f-dinner" placeholder="食べたもの"><input class="ki" id="k-dinner" type="number" placeholder="kcal"><button class="madd-btn" onclick="addFood('dinner')">追加</button></div></div>
+  <div class="mc">
+    <div class="mc-hd"><div class="mc-ico" style="background:linear-gradient(135deg,#fff3e0,#ffcc80)">&#127774;</div><div style="flex:1"><div class="mc-nm">朝食</div><div class="mc-tm">7:00〜8:00</div></div><div class="mc-kc"><span id="t-breakfast">0</span></div></div>
+    <div class="entries" id="e-breakfast"><div class="no-entry">まだ記録なし</div></div>
+    <div class="madd"><input class="mi" id="fi-breakfast" placeholder="食べたもの"><input class="ki" id="ki-breakfast" type="number" placeholder="kcal"><button class="madd-btn" onclick="addFood('breakfast')">追加</button></div>
+  </div>
+  <div class="mc">
+    <div class="mc-hd"><div class="mc-ico ln">&#127857;</div><div style="flex:1"><div class="mc-nm">昼食</div><div class="mc-tm">12:00</div></div><div class="mc-kc"><span id="t-lunch">0</span></div></div>
+    <div class="entries" id="e-lunch"><div class="no-entry">まだ記録なし</div></div>
+    <div class="madd"><input class="mi" id="fi-lunch" placeholder="食べたもの"><input class="ki" id="ki-lunch" type="number" placeholder="kcal"><button class="madd-btn" onclick="addFood('lunch')">追加</button></div>
+  </div>
+  <div class="mc">
+    <div class="mc-hd"><div class="mc-ico sn">&#129380;</div><div style="flex:1"><div class="mc-nm">間食</div><div class="mc-tm">15:00 / 帰宅前</div></div><div class="mc-kc"><span id="t-snack">0</span></div></div>
+    <div class="entries" id="e-snack"><div class="no-entry">まだ記録なし</div></div>
+    <div class="madd"><input class="mi" id="fi-snack" placeholder="食べたもの"><input class="ki" id="ki-snack" type="number" placeholder="kcal"><button class="madd-btn" onclick="addFood('snack')">追加</button></div>
+  </div>
+  <div class="mc">
+    <div class="mc-hd"><div class="mc-ico dn">&#127807;</div><div style="flex:1"><div class="mc-nm">夕食</div><div class="mc-tm">21:00〜21:30</div></div><div class="mc-kc"><span id="t-dinner">0</span></div></div>
+    <div class="entries" id="e-dinner"><div class="no-entry">まだ記録なし</div></div>
+    <div class="madd"><input class="mi" id="fi-dinner" placeholder="食べたもの"><input class="ki" id="ki-dinner" type="number" placeholder="kcal"><button class="madd-btn" onclick="addFood('dinner')">追加</button></div>
+  </div>
 </div>
 
 <!-- RECIPE PAGE -->
 <div id="page-recipe" class="page">
-  <div class="shd" style="margin-top:8px"><div class="shd-title">Recipes</div><span class="shd-meta">昼15品 / 夜15品</span></div>
+  <div class="shd" style="margin-top:8px"><div class="shd-title">レシピ</div><span class="shd-meta">朝10品 / 昼15品 / 夜15品</span></div>
   <div class="recipe-filters">
     <button class="rf-btn on" onclick="filterR('all',this)">すべて</button>
+    <button class="rf-btn" onclick="filterR('breakfast',this)">朝食向け</button>
+    <button class="rf-btn" onclick="filterR('breakfast',this)">朝食向け</button>
     <button class="rf-btn" onclick="filterR('lunch',this)">昼食向け</button>
     <button class="rf-btn" onclick="filterR('dinner',this)">夕食向け</button>
     <button class="rf-btn" onclick="filterR('quick',this)">10分以内</button>
@@ -431,46 +439,86 @@ canvas.cv{width:100%;height:100%}
 
 <!-- GRAPH PAGE -->
 <div id="page-graph" class="page">
-  <div class="shd" style="margin-top:8px"><div class="shd-title">Progress</div><span class="shd-meta">START: 2025.05.15</span></div>
-  <div class="ptabs"><button class="ptab on" onclick="setPeriod(7,this)">7日</button><button class="ptab" onclick="setPeriod(14,this)">14日</button><button class="ptab" onclick="setPeriod(30,this)">30日</button><button class="ptab" onclick="setPeriod(0,this)">全期間</button></div>
-  <div class="gc"><div class="gc-hd"><div><div class="gc-lbl">WEIGHT</div><div class="gc-cur" id="gW">--<span style="font-size:.95rem;color:var(--muted)">kg</span></div></div><div class="gc-diff good" id="gWd"></div></div><div class="chart-a"><canvas class="cv" id="cvW"></canvas></div><div class="chart-xl" id="xlW"></div></div>
-  <div class="gc"><div class="gc-hd"><div><div class="gc-lbl">BLOOD PRESSURE</div><div class="gc-cur" id="gB">--<span style="font-size:.95rem;color:var(--muted)">mmHg</span></div></div><div class="gc-diff good" id="gBd"></div></div><div class="chart-a"><canvas class="cv" id="cvB"></canvas></div><div class="chart-xl" id="xlB"></div></div>
-  <div class="sg">
-    <div class="sc"><div class="sc-lbl">START</div><div class="sc-val oc" id="startWeight">--<span style="font-size:.75rem">kg</span></div></div>
-    <div class="sc"><div class="sc-lbl">TOTAL LOSS</div><div class="sc-val gn" id="totalLoss">--</div></div>
-    <div class="sc"><div class="sc-lbl">START BP</div><div class="sc-val rd" id="startBP">--<span style="font-size:.75rem">mmHg</span></div></div>
-    <div class="sc"><div class="sc-lbl">DAYS LOGGED</div><div class="sc-val am" id="daysLogged">--</div></div>
+  <div class="shd" style="margin-top:8px"><div class="shd-title">グラフ</div><span class="shd-meta">体重・血圧の推移</span></div>
+  <div class="ptabs">
+    <button class="ptab on" onclick="setPeriod(7,this)">7日</button>
+    <button class="ptab" onclick="setPeriod(14,this)">14日</button>
+    <button class="ptab" onclick="setPeriod(30,this)">30日</button>
+    <button class="ptab" onclick="setPeriod(0,this)">全期間</button>
   </div>
-  <div class="bp-card">
-    <!-- 体重入力 -->
-    <div style="font-family:var(--fd);font-size:1.05rem;color:var(--palm);margin-bottom:12px">Weight Log</div>
-    <div class="bp-fs" style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)">
-      <div class="bf"><label>記録日</label><input type="date" id="wtDate" style="font-size:.72rem"></div>
-      <div class="bf"><label>体重 (kg)</label><input type="number" step="0.1" id="wtVal" placeholder="96.9"></div>
-      <button class="rec-btn" style="background:linear-gradient(135deg,var(--palm),var(--palm2))" onclick="saveWeight()">記録</button>
+  <div class="gc">
+    <div class="gc-hd">
+      <div><div class="gc-lbl">WEIGHT</div><div class="gc-cur" id="gW">--<span style="font-size:.9rem;color:var(--muted)">kg</span></div></div>
+      <div class="gc-diff good" id="gWd"></div>
     </div>
-    <div class="bp-hist" id="wtHist"></div>
-    <div style="font-family:var(--fd);font-size:1.05rem;color:var(--ocean);margin-top:4px">Blood Pressure Log</div>
-    <div class="bp-fs"><div class="bf"><label>記録日</label><input type="date" id="bpDate" style="font-size:.72rem"></div><div class="bf"><label>収縮期 上</label><input type="number" id="bpSys" placeholder="121"></div><div class="bf"><label>拡張期 下</label><input type="number" id="bpDia" placeholder="96"></div><div class="bf"><label>脈拍</label><input type="number" id="bpPulse" placeholder="72"></div><button class="rec-btn" onclick="saveBP()">記録</button></div>
-    <div class="bp-hist" id="bpHist"></div>
+    <div class="chart-a"><canvas class="cv" id="cvW"></canvas></div>
+    <div class="chart-xl" id="xlW"></div>
+  </div>
+  <div class="gc">
+    <div class="gc-hd">
+      <div><div class="gc-lbl">BLOOD PRESSURE</div><div class="gc-cur" id="gB">--<span style="font-size:.9rem;color:var(--muted)">mmHg</span></div></div>
+      <div class="gc-diff good" id="gBd"></div>
+    </div>
+    <div class="chart-a"><canvas class="cv" id="cvB"></canvas></div>
+    <div class="chart-xl" id="xlB"></div>
+  </div>
+  <div class="sg">
+    <div class="sc"><div class="sc-lbl">開始時体重</div><div class="sc-val oc" id="startWeight">--<span style="font-size:.75rem">kg</span></div></div>
+    <div class="sc"><div class="sc-lbl">総減量</div><div class="sc-val gn" id="totalLoss">--</div></div>
+    <div class="sc"><div class="sc-lbl">開始時血圧</div><div class="sc-val rd" id="startBP">--<span style="font-size:.75rem">mmHg</span></div></div>
+    <div class="sc"><div class="sc-lbl">記録日数</div><div class="sc-val am" id="daysLogged">--</div></div>
+  </div>
+  <!-- Weight Log -->
+  <div class="bp-card">
+    <div style="font-family:var(--fd);font-size:1rem;color:var(--palm);margin-bottom:10px">体重の記録</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <div class="bf"><label>記録日</label><input type="date" id="wtDate" style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+      <div class="bf"><label>体重 (kg)</label><input type="number" step="0.1" id="wtVal" placeholder="97.4" style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+      <button class="rec-btn" style="background:linear-gradient(135deg,var(--palm),var(--palm2))" onclick="saveWeight()">体重を保存</button>
+    </div>
+    <div class="bp-hist" id="wtHist" style="margin-top:10px"></div>
+  </div>
+  <!-- BP Log -->
+  <div class="bp-card">
+    <div style="font-family:var(--fd);font-size:1rem;color:var(--ocean);margin-bottom:10px">血圧の記録</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <div class="bf"><label>記録日</label><input type="date" id="bpDate" style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="bf"><label>収縮期（上）</label><input type="number" id="bpSys" placeholder="121" style="width:100%;padding:10px 10px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+        <div class="bf"><label>拡張期（下）</label><input type="number" id="bpDia" placeholder="96" style="width:100%;padding:10px 10px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+      </div>
+      <div class="bf"><label>脈拍</label><input type="number" id="bpPulse" placeholder="72" style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+      <button class="rec-btn" onclick="saveBP()">血圧を保存</button>
+    </div>
+    <div class="bp-hist" id="bpHist" style="margin-top:10px"></div>
   </div>
 </div>
 
 <!-- TRAINING PAGE -->
 <div id="page-train" class="page">
-  <div class="shd" style="margin-top:8px"><div class="shd-title">Training</div><button onclick="openIrr()" style="padding:6px 12px;border-radius:99px;background:linear-gradient(135deg,var(--palm),var(--palm2));border:none;color:white;font-size:.68rem;font-weight:800;cursor:pointer">+ イレギュラー</button></div>
-  <div class="whm"><div class="whm-lbl">THIS WEEK</div><div class="wcells" id="weekCells"></div></div>
-  <div class="tdtabs"><button class="tdt on" onclick="setTD('weekday',this)">平日</button><button class="tdt" onclick="setTD('sat',this)">土曜</button><button class="tdt" onclick="setTD('sun',this)">日曜</button></div>
+  <div class="shd" style="margin-top:8px">
+    <div class="shd-title">トレーニング</div>
+    <button onclick="openIrr()" style="padding:6px 12px;border-radius:99px;background:linear-gradient(135deg,var(--palm),var(--palm2));border:none;color:white;font-size:.68rem;font-weight:800;cursor:pointer">+ イレギュラー</button>
+  </div>
+  <div class="whm">
+    <div class="whm-lbl">THIS WEEK</div>
+    <div class="wcells" id="weekCells"></div>
+  </div>
+  <div class="tdtabs">
+    <button class="tdt on" onclick="setTD('weekday',this)">平日</button>
+    <button class="tdt" onclick="setTD('sat',this)">土曜</button>
+    <button class="tdt" onclick="setTD('sun',this)">日曜</button>
+  </div>
   <div id="trainContent"></div>
-  <div style="margin-top:4px">
-    <div class="shd"><div class="shd-title" style="font-size:1.05rem">Irregular Log</div></div>
+  <div style="margin-top:6px">
+    <div class="shd">
+      <div class="shd-title" style="font-size:1.05rem">イレギュラートレーニング</div>
+    </div>
     <div class="irr-log-list" id="irrLog"></div>
   </div>
-
-  <!-- 過去のルーティントレーニング記録 -->
-  <div style="margin-top:4px">
+  <div style="margin-top:6px">
     <div class="shd">
-      <div class="shd-title" style="font-size:1.05rem">Routine Log</div>
+      <div class="shd-title" style="font-size:1.05rem">ルーティン記録</div>
       <button onclick="openRoutineLog()" style="padding:6px 12px;border-radius:99px;background:linear-gradient(135deg,var(--ocean),var(--aqua));border:none;color:white;font-size:.68rem;font-weight:800;cursor:pointer">+ 過去記録</button>
     </div>
     <div id="routineLogList"></div>
@@ -479,10 +527,10 @@ canvas.cv{width:100%;height:100%}
 
 <!-- ANALYSIS PAGE -->
 <div id="page-analysis" class="page">
-  <div class="shd" style="margin-top:8px"><div class="shd-title">AI Analysis</div><span class="shd-meta">Claudeへ解析依頼</span></div>
+  <div class="shd" style="margin-top:8px"><div class="shd-title">AI 分析</div><span class="shd-meta">Claudeへ解析依頼</span></div>
   <div class="analysis-card">
-    <div class="analysis-title">期間を選択</div>
-    <div class="analysis-sub">記録データをまとめてClaudeへ送るプロンプトを生成します</div>
+    <div style="font-family:var(--fd);font-size:1rem;color:var(--ocean);margin-bottom:4px">期間を選択</div>
+    <div style="font-size:.64rem;color:var(--muted);margin-bottom:10px">選択した期間の健康データをまとめてClaudeへ送るプロンプトを生成します</div>
     <div class="period-sel">
       <button class="ps-btn on" onclick="setAnalysisPeriod(7,this)">7日間</button>
       <button class="ps-btn" onclick="setAnalysisPeriod(14,this)">14日間</button>
@@ -490,147 +538,147 @@ canvas.cv{width:100%;height:100%}
       <button class="ps-btn" onclick="setAnalysisPeriod(0,this)">全期間</button>
     </div>
     <div class="stats-summary" id="analysisSummary"></div>
-    <div class="analysis-sub" style="margin-bottom:6px">以下のプロンプトをコピーしてClaudeの新しいチャットに貼り付けてください</div>
+    <div style="font-size:.64rem;color:var(--muted);margin-bottom:6px;font-weight:700">このプロンプトをコピーして新しいClaude チャットに貼り付けてください</div>
     <div class="prompt-box" id="promptBox">期間を選択するとプロンプトが生成されます...</div>
-    <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">📋 プロンプトをコピー</button>
+    <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">プロンプトをコピー</button>
+  </div>
+</div>
+
+<!-- SHEET PAGE -->
+<div id="page-sheet" class="page">
+  <div class="shd" style="margin-top:8px"><div class="shd-title">スプレッドシート</div><span class="shd-meta">データ出力・連携</span></div>
+  <div class="analysis-card" style="margin-bottom:10px">
+    <div style="font-family:var(--fd);font-size:1rem;color:var(--ocean);margin-bottom:8px">出力期間を選択</div>
+    <div class="period-sel">
+      <button class="ps-btn on" onclick="setSheetPeriod(7,this)">7日</button>
+      <button class="ps-btn" onclick="setSheetPeriod(14,this)">14日</button>
+      <button class="ps-btn" onclick="setSheetPeriod(30,this)">30日</button>
+      <button class="ps-btn" onclick="setSheetPeriod(0,this)">All</button>
+    </div>
+    <div style="overflow-x:auto;margin-bottom:10px">
+      <table id="sheetPreview" style="width:100%;border-collapse:collapse;font-size:.7rem;min-width:480px"></table>
+    </div>
+    <button class="copy-btn" onclick="exportCSV()" style="margin-bottom:8px">CSVダウンロード（Excelで開ける）</button>
+    <button class="copy-btn" onclick="copySheetData()" style="margin-bottom:8px;background:linear-gradient(135deg,var(--palm),var(--palm2))">Googleスプレッドシート用コピー</button>
+    <button class="copy-btn" onclick="openGoogleSheet()" style="background:linear-gradient(135deg,#ea4335,#fbbc04)">Googleスプレッドシートを開く</button>
+  </div>
+</div>
+
+<!-- SETTINGS PAGE -->
+<div id="page-settings" class="page">
+  <div class="shd" style="margin-top:8px"><div class="shd-title">Settings</div><span class="shd-meta">個人情報・目標設定</span></div>
+  <div class="settings-card">
+    <div style="font-family:var(--fd);font-size:1rem;color:var(--ocean);margin-bottom:12px">プロフィール・目標設定</div>
+    <div class="sf"><label>お名前</label><input type="text" id="sUserName" placeholder="例: OKZ"></div>
+    <div class="sf"><label>年齢</label><input type="number" id="sAge" placeholder="例: 42"></div>
+    <div class="sf"><label>身長 (cm)</label><input type="number" step="0.1" id="sHeight" placeholder="例: 168.0"></div>
+    <div class="sf"><label>目標体重 (kg)</label><input type="number" step="0.1" id="sGoalWeight" placeholder="例: 85.0"></div>
+    <div class="sf"><label>1日の目標カロリー (kcal)</label><input type="number" id="sTargetKcal" placeholder="例: 1600"></div>
+    <div class="sf"><label>健康メモ（AI分析用）</label><textarea id="sCondition" placeholder="例: 高血圧、尿蛋白+、低血糖症状あり、2食制を実施中"></textarea></div>
+    <div class="sf"><label>Googleスプレッドシート URL（任意）</label><input type="text" id="sSheetUrl" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
+    <button class="save-settings-btn" onclick="saveSettings()">設定を保存</button>
+    <div class="saved-msg" id="settingsSaved">設定を保存しました！</div>
   </div>
 </div>
 
 <!-- HUNGER PAGE -->
 <div id="page-hunger" class="page">
-  <div class="shd" style="margin-top:8px"><div class="shd-title">Hunger Control</div></div>
-  <div class="hcard"><div class="habar oc"></div><div class="hinn"><div class="htit">朝の空腹</div><div class="htm">05:00 — 11:00</div><div class="hdesc">2食制移行の最初の壁。空腹のピークは約15分で消える。</div><ul class="hlist"><li><span class="hdot"></span><span>水を500ml〜1L飲む<span class="hkc"> 0kcal</span></span></li><li><span class="hdot"></span><span>ブラックコーヒー 1〜2杯<span class="hkc"> 0kcal</span></span></li><li><span class="hdot"></span><span>塩をひとつまみ舐める（めまい予防）</span></li><li><span class="hdot"></span><span>キシリトールガム<span class="hkc"> 5kcal</span></span></li></ul></div></div>
-  <div class="hcard"><div class="habar am"></div><div class="hinn"><div class="htit">昼食後〜夕方</div><div class="htm">13:00 — 17:00</div><ul class="hlist"><li><span class="hdot" style="background:var(--lemon)"></span><span>アーモンド15粒（職場に常備）<span class="hkc"> 約90kcal</span></span></li><li><span class="hdot" style="background:var(--lemon)"></span><span>無糖こんにゃくゼリー<span class="hkc"> 約5kcal</span></span></li><li><span class="hdot" style="background:var(--lemon)"></span><span>水を飲んで10分待つ</span></li></ul></div></div>
-  <div class="hcard"><div class="habar rd"></div><div class="hinn"><div class="htit">帰宅運転中 — 注意</div><div class="htm">18:00 — 20:30</div><ul class="hlist"><li><span class="hdot" style="background:var(--sunset)"></span><span>退社前プロテインバー（糖質15g以下）<span class="hkc"> 約150kcal</span></span></li><li><span class="hdot" style="background:var(--sunset)"></span><span>車内にナッツ小袋を常備<span class="hkc"> 約60kcal</span></span></li><li><span class="hdot" style="background:var(--hibiscus)"></span><span style="color:var(--hibiscus);font-weight:700">めまい・動悸は低血糖 → 即補食（ガマン禁止）</span></li></ul></div></div>
-  <div class="hcard"><div class="habar gn"></div><div class="hinn"><div class="htit">就寝前</div><div class="htm">22:00 — 23:00</div><ul class="hlist"><li><span class="hdot" style="background:var(--palm)"></span><span>ホット無糖ハーブティー<span class="hkc"> 0kcal</span></span></li><li><span class="hdot" style="background:var(--palm)"></span><span>歯磨きをする（食欲が自然に消える）</span></li><li><span class="hdot" style="background:var(--hibiscus)"></span><span style="color:var(--hibiscus);font-weight:700">絶対NG：菓子・カップ麺・白米の追加</span></li></ul></div></div>
-  <div class="hcard"><div class="habar sd"></div><div class="hinn"><div class="htit">Mindset</div><ul class="hlist" style="margin-top:7px"><li><span class="hdot" style="background:var(--palm2)"></span><span><strong>空腹のピークは15分で終わる</strong></span></li><li><span class="hdot" style="background:var(--palm2)"></span><span><strong>空腹 = 脂肪燃焼中</strong> — ポジティブなサイン</span></li><li><span class="hdot" style="background:var(--palm2)"></span><span><strong>2週間で慣れる</strong></span></li><li><span class="hdot" style="background:var(--hibiscus)"></span><span style="color:var(--hibiscus)"><strong>めまい・動悸は低血糖</strong> — 即補食する</span></li></ul></div></div>
-</div>
-
-<!-- SPREADSHEET PAGE -->
-<div id="page-sheet" class="page">
-  <div class="shd" style="margin-top:8px">
-    <div class="shd-title">Spreadsheet</div>
-    <span class="shd-meta">データ出力・連携</span>
-  </div>
-
-  <!-- Google連携設定 -->
-  <div class="analysis-card" style="margin-bottom:10px">
-    <div class="analysis-title" style="font-size:1rem;margin-bottom:4px">Google アカウント連携</div>
-    <div class="analysis-sub" style="margin-bottom:10px">各自のGoogleアカウントに紐付けて記録を保存します</div>
-    <div class="ifield">
-      <label>ユーザー名（識別用）</label>
-      <input class="iinput" id="sheetUser" placeholder="例：OKZ" style="margin-bottom:8px">
-    </div>
-    <div class="ifield">
-      <label>Google スプレッドシート URL（任意）</label>
-      <input class="iinput" id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/...">
-    </div>
-    <button class="isave" style="margin-top:10px;padding:11px" onclick="saveSheetSettings()">設定を保存</button>
-    <div id="sheetSettingStatus" style="font-size:.68rem;color:var(--palm);text-align:center;margin-top:6px"></div>
-  </div>
-
-  <!-- 期間選択 -->
-  <div class="analysis-card" style="margin-bottom:10px">
-    <div class="analysis-title" style="font-size:1rem;margin-bottom:8px">出力期間を選択</div>
-    <div class="period-sel" style="margin-bottom:12px">
-      <button class="ps-btn on" onclick="setSheetPeriod(7,this)">7日</button>
-      <button class="ps-btn" onclick="setSheetPeriod(14,this)">14日</button>
-      <button class="ps-btn" onclick="setSheetPeriod(30,this)">30日</button>
-      <button class="ps-btn" onclick="setSheetPeriod(0,this)">全期間</button>
-    </div>
-
-    <!-- プレビューテーブル -->
-    <div style="overflow-x:auto;margin-bottom:10px">
-      <table id="sheetPreview" style="width:100%;border-collapse:collapse;font-size:.7rem;min-width:500px"></table>
-    </div>
-
-    <!-- 出力ボタン群 -->
-    <button class="copy-btn" onclick="exportCSV()" style="margin-bottom:8px">
-      📥 CSVダウンロード（Excelで開ける）
-    </button>
-    <button class="copy-btn" onclick="copySheetData()" style="margin-bottom:8px;background:linear-gradient(135deg,var(--palm),var(--palm2))">
-      📋 Googleスプレッドシート貼り付け用コピー
-    </button>
-    <button class="copy-btn" onclick="openGoogleSheet()" style="background:linear-gradient(135deg,#ea4335,#fbbc04)">
-      🔗 Googleスプレッドシートを開く
-    </button>
-  </div>
-
-  <!-- GASコード -->
-  <div class="analysis-card">
-    <div class="analysis-title" style="font-size:1rem;margin-bottom:4px">自動連携の設定方法</div>
-    <div class="analysis-sub" style="margin-bottom:10px">Google Apps Scriptを使って自動でシートに記録できます</div>
-    <div style="background:rgba(0,119,182,.05);border-radius:10px;padding:12px;font-size:.68rem;color:var(--text);line-height:1.8;margin-bottom:10px">
-      <strong>手順：</strong><br>
-      1. Googleスプレッドシートを新規作成<br>
-      2. メニュー「拡張機能」→「Apps Script」を開く<br>
-      3. 下のコードをコピーして貼り付け<br>
-      4. 保存して「デプロイ」→「新しいデプロイ」<br>
-      5. 種類「ウェブアプリ」・アクセス「全員」で公開<br>
-      6. 発行されたURLをこのアプリに貼り付ける
-    </div>
-    <div class="prompt-box" id="gasCode" style="font-size:.62rem;max-height:200px"></div>
-    <button class="copy-btn" onclick="copyGAS()" style="margin-top:8px">📋 GASコードをコピー</button>
-  </div>
+  <div class="shd" style="margin-top:8px"><div class="shd-title">空腹対策</div></div>
+  <div class="hcard"><div class="habar oc"></div><div class="hinn">
+    <div class="htit">Morning hunger - HARDEST</div><div class="htm">05:00 - 11:00</div>
+    <div class="hdesc">The first hurdle of 2-meal transition. Hunger peaks last about 15min. The first 2 weeks are the challenge.</div>
+    <ul class="hlist">
+      <li><span class="hdot"></span><span>Drink 500ml-1L water (fills stomach physically) <span class="hkc">0kcal</span></span></li>
+      <li><span class="hdot"></span><span>Black coffee 1-2 cups (suppresses appetite) <span class="hkc">0kcal</span></span></li>
+      <li><span class="hdot"></span><span>Lick a pinch of salt (mineral supplement, prevents dizziness)</span></li>
+      <li><span class="hdot"></span><span>Xylitol gum (chewing suppresses hunger hormones) <span class="hkc">5kcal</span></span></li>
+    </ul>
+  </div></div>
+  <div class="hcard"><div class="habar am"></div><div class="hinn">
+    <div class="htit">After lunch - afternoon</div><div class="htm">13:00 - 17:00</div>
+    <ul class="hlist">
+      <li><span class="hdot" style="background:var(--lemon)"></span><span>15 almonds (keep at desk) <span class="hkc">~90kcal</span></span></li>
+      <li><span class="hdot" style="background:var(--lemon)"></span><span>Sugar-free konjac jelly <span class="hkc">~5kcal</span></span></li>
+      <li><span class="hdot" style="background:var(--lemon)"></span><span>Drink water and wait 10 min (often confuse hunger and thirst)</span></li>
+    </ul>
+  </div></div>
+  <div class="hcard"><div class="habar rd"></div><div class="hinn">
+    <div class="htit">Commute home - DANGER ZONE</div><div class="htm">18:00 - 20:30</div>
+    <ul class="hlist">
+      <li><span class="hdot" style="background:var(--sunset)"></span><span>Protein bar before leaving work (under 15g carbs) <span class="hkc">~150kcal</span></span></li>
+      <li><span class="hdot" style="background:var(--sunset)"></span><span>Keep nut pack in glovebox <span class="hkc">~60kcal</span></span></li>
+      <li><span class="hdot" style="background:var(--hibiscus)"></span><span style="color:var(--hibiscus);font-weight:700">Dizziness or palpitations = low blood sugar - eat immediately (do NOT endure)</span></li>
+    </ul>
+  </div></div>
+  <div class="hcard"><div class="habar gn"></div><div class="hinn">
+    <div class="htit">Before bed</div><div class="htm">22:00 - 23:00</div>
+    <ul class="hlist">
+      <li><span class="hdot" style="background:var(--palm)"></span><span>Hot unsweetened herbal tea <span class="hkc">0kcal</span></span></li>
+      <li><span class="hdot" style="background:var(--palm)"></span><span>Brush teeth (appetite naturally disappears)</span></li>
+      <li><span class="hdot" style="background:var(--hibiscus)"></span><span style="color:var(--hibiscus);font-weight:700">NEVER: snacks, instant noodles, extra rice</span></li>
+    </ul>
+  </div></div>
+  <div class="hcard"><div class="habar sd"></div><div class="hinn">
+    <div class="htit">Mindset</div>
+    <ul class="hlist" style="margin-top:7px">
+      <li><span class="hdot" style="background:var(--palm2)"></span><span><strong>Hunger peaks last only 15 min</strong> - drink water and ride it out</span></li>
+      <li><span class="hdot" style="background:var(--palm2)"></span><span><strong>Hunger = fat burning</strong> - recognize it as a positive sign</span></li>
+      <li><span class="hdot" style="background:var(--palm2)"></span><span><strong>Body adapts in 2 weeks</strong> - hormones adjust</span></li>
+      <li><span class="hdot" style="background:var(--hibiscus)"></span><span style="color:var(--hibiscus)"><strong>Dizziness/palpitations are different</strong> - low blood sugar, eat immediately</span></li>
+    </ul>
+  </div></div>
 </div>
 
 <!-- BOTTOM NAV -->
-<nav class="bnav"><!-- BOTTOM NAV -->
 <nav class="bnav">
-  <button class="nb active" onclick="switchPage('food',this)"><div class="nb-ic">🍱</div><span class="nb-lb">Food</span></button>
-  <button class="nb" onclick="switchPage('recipe',this)"><div class="nb-ic">👨‍🍳</div><span class="nb-lb">Recipe</span></button>
-  <button class="nb" onclick="switchPage('graph',this)"><div class="nb-ic">📈</div><span class="nb-lb">Graph</span></button>
-  <button class="nb" onclick="switchPage('train',this)"><div class="nb-ic">💪</div><span class="nb-lb">Train</span></button>
-  <button class="nb" onclick="switchPage('sheet',this)"><div class="nb-ic">📊</div><span class="nb-lb">Sheet</span></button>
-  <button class="nb" onclick="switchPage('analysis',this)"><div class="nb-ic">🤖</div><span class="nb-lb">AI分析</span></button>
-  <button class="nb" onclick="switchPage('hunger',this)"><div class="nb-ic">🌺</div><span class="nb-lb">Hunger</span></button>
+  <button class="nb active" onclick="switchPage('food',this)"><div class="nb-ic">&#127857;</div><span class="nb-lb">Food</span></button>
+  <button class="nb" onclick="switchPage('recipe',this)"><div class="nb-ic">&#128104;&#8205;&#127859;</div><span class="nb-lb">Recipe</span></button>
+  <button class="nb" onclick="switchPage('graph',this)"><div class="nb-ic">&#128200;</div><span class="nb-lb">Graph</span></button>
+  <button class="nb" onclick="switchPage('train',this)"><div class="nb-ic">&#128170;</div><span class="nb-lb">Train</span></button>
+  <button class="nb" onclick="switchPage('analysis',this)"><div class="nb-ic">&#129302;</div><span class="nb-lb">AI</span></button>
+  <button class="nb" onclick="switchPage('sheet',this)"><div class="nb-ic">&#128202;</div><span class="nb-lb">Sheet</span></button>
+  <button class="nb" onclick="switchPage('settings',this)"><div class="nb-ic">&#9881;</div><span class="nb-lb">Settings</span></button>
 </nav>
 
 <!-- IRR MODAL -->
 <div class="mover" id="irrModal" onclick="closeIrr(event)">
   <div class="msheet">
     <div class="mhandle"></div>
-    <div class="mttl">Irregular Training</div>
+    <div class="mttl">イレギュラートレーニング</div>
     <div class="msub">ルーティン外のトレーニングを記録する</div>
-    <div class="ifield"><label>カテゴリ</label><div class="cc"><button class="cch sel" onclick="selCat(this,'walk')">ウォーキング</button><button class="cch" onclick="selCat(this,'muscle')">筋トレ</button><button class="cch" onclick="selCat(this,'stretch')">ストレッチ</button><button class="cch" onclick="selCat(this,'cardio')">有酸素</button><button class="cch" onclick="selCat(this,'other')">その他</button></div></div>
+    <div class="ifield"><label>カテゴリ</label><div class="cc">
+      <button class="cch sel" onclick="selCat(this,'walk')">ウォーキング</button>
+      <button class="cch" onclick="selCat(this,'muscle')">筋トレ</button>
+      <button class="cch" onclick="selCat(this,'stretch')">ストレッチ</button>
+      <button class="cch" onclick="selCat(this,'cardio')">有酸素</button>
+      <button class="cch" onclick="selCat(this,'other')">その他</button>
+    </div></div>
     <div class="ifield"><label>内容・メモ</label><input class="iinput" id="iNote" placeholder="例：江戸川土手 速歩 40分"></div>
-    <div class="irow"><div class="ifield"><label>時間 (分)</label><input class="iinput" id="iMin" type="number" placeholder="40"></div><div class="ifield"><label>記録日</label><input class="iinput" id="iDate" type="date"></div></div>
+    <div class="irow">
+      <div class="ifield"><label>時間（分）</label><input class="iinput" id="iMin" type="number" placeholder="40"></div>
+      <div class="ifield"><label>記録日</label><input class="iinput" id="iDate" type="date"></div>
+    </div>
     <div class="ifield"><label>距離・心拍数など（任意）</label><input class="iinput" id="iDetail" placeholder="例：2.8km / 心拍102〜134"></div>
-    <button class="isave" onclick="saveIrr()">記録する 🌺</button>
+    <button class="isave" onclick="saveIrr()">記録する</button>
   </div>
 </div>
 
-<!-- ROUTINE LOG MODAL -->
+<!-- ROUTINE MODAL -->
 <div class="mover" id="routineModal" onclick="closeRoutineModal(event)">
   <div class="msheet">
     <div class="mhandle"></div>
-    <div class="mttl">Routine Training Log</div>
-    <div class="msub">過去のルーティントレーニングを記録・確認する</div>
-    <div class="ifield">
-      <label>記録日</label>
-      <input class="iinput" id="rtDate" type="date">
-    </div>
-    <div class="ifield">
-      <label>メニュー</label>
-      <div class="cc">
-        <button class="cch sel" onclick="selRtDay(this,'weekday')">平日メニュー</button>
-        <button class="cch" onclick="selRtDay(this,'sat')">土曜メニュー</button>
-        <button class="cch" onclick="selRtDay(this,'sun')">日曜メニュー</button>
-      </div>
-    </div>
-    <div class="ifield">
-      <label>実施した種目（任意）</label>
-      <input class="iinput" id="rtNote" placeholder="例：スクワット・腕立て・プランク完了">
-    </div>
-    <div class="ifield">
-      <label>所要時間（分）</label>
-      <input class="iinput" id="rtMin" type="number" placeholder="45">
-    </div>
-    <div class="ifield">
-      <label>メモ・体調など</label>
-      <input class="iinput" id="rtMemo" placeholder="例：体調良好、全種目完了">
-    </div>
-    <button class="isave" onclick="saveRoutineLog()">記録する 🌺</button>
+    <div class="mttl">ルーティン記録</div>
+    <div class="msub">過去のルーティントレーニングを記録する</div>
+    <div class="ifield"><label>記録日</label><input class="iinput" id="rtDate" type="date"></div>
+    <div class="ifield"><label>メニュー</label><div class="cc">
+      <button class="cch sel" onclick="selRtDay(this,'weekday')">平日</button>
+      <button class="cch" onclick="selRtDay(this,'sat')">土曜</button>
+      <button class="cch" onclick="selRtDay(this,'sun')">日曜</button>
+    </div></div>
+    <div class="ifield"><label>実施した種目（任意）</label><input class="iinput" id="rtNote" placeholder="例：スクワット・腕立て・プランク完了"></div>
+    <div class="ifield"><label>時間（分）</label><input class="iinput" id="rtMin" type="number" placeholder="45"></div>
+    <div class="ifield"><label>メモ・体調など</label><input class="iinput" id="rtMemo" placeholder="例：体調良好、全種目完了"></div>
+    <button class="isave" onclick="saveRoutineLog()">記録する</button>
   </div>
 </div>
 
@@ -640,1038 +688,1346 @@ canvas.cv{width:100%;height:100%}
 </div>
 
 <script>
-// ═══════════════════
-// STORAGE
-// ═══════════════════
-var MK='okz5';
-function loadM(){
-  try{return JSON.parse(localStorage.getItem(MK)||'{"days":{},"bp":[],"irr":[],"rtl":[],"meta":{},"sheetSettings":{}}');}
-  catch(e){return{days:{},bp:[],irr:[],rtl:[],meta:{},sheetSettings:{}};}
-}
-function saveM(m){
-  try{
-    localStorage.setItem(MK,JSON.stringify(m));
-    try{sessionStorage.setItem(MK,JSON.stringify(m));}catch(e){}
-  }catch(e){console.error('saveM error',e);}
-}
-function getM(){
-  var m=loadM();
-  if(!m.bp||!m.bp.length){
-    try{var s=sessionStorage.getItem(MK);if(s){var sd=JSON.parse(s);if(sd.bp&&sd.bp.length){m=sd;saveM(m);}}}catch(e){}
-  }
-  return m;
-}
-function gdd(d){return getM().days[d]||{lunch:[],snack:[],dinner:[]};}
-function sdd(d,data){var m=getM();m.days[d]=data;saveM(m);}
-function sdf(d,f,v){var data=gdd(d);data[f]=v;sdd(d,data);}
-function gbp(){return getM().bp||[];}
-function sbp(a){var m=getM();m.bp=a;saveM(m);}
-function girr(){return getM().irr||[];}
-function sirr(a){var m=getM();m.irr=a;saveM(m);}
-function grtl(){var m=getM();return m.rtl||[];}
-function srtl(a){var m=getM();m.rtl=a;saveM(m);}
-function gall(){return Object.keys(getM().days||{}).sort();}
-function today(){var d=new Date();return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}
-function p2(n){return String(n).padStart(2,'0');}
-
-// ═══════════════════
-// RECIPES & TRAINING
-// ═══════════════════
-const RECIPES=[
+var RECIPES = [
   {id:1,type:'lunch',tags:['lunch','quick','lowsalt'],emoji:'🍱',bg:'linear-gradient(135deg,#e0f4ff,#0077b6)',
-   name:'サラダチキン＋おにぎり＋野菜サラダ',kcal:620,time:'0分',
+   name:'サラダチキン＋おにぎり＋野菜サラダ',kcal:620,time:'0分（購入のみ）',
    nutr:{kcal:620,p:'45g',f:'12g',c:'72g'},
-   ingr:[{n:'サラダチキン（プレーン）',a:'1袋115g'},{n:'おにぎり（鮭or梅）',a:'1個'},{n:'野菜サラダ',a:'1パック'},{n:'減塩味噌汁',a:'1個'}],
-   steps:['コンビニで購入するだけ。調理不要。','サラダチキンは必ずプレーンを選ぶ。','おにぎりは鮭か梅推奨。'],
-   tip:'外食困難時の完全対応策。塩分約3g以内。毎日でも飽きない黄金構成。'},
+   ingr:[{n:'サラダチキン（プレーン）',a:'1袋 115g'},{n:'おにぎり（鮭か梅）',a:'1個'},{n:'野菜サラダ',a:'1パック'},{n:'減塩味噌汁',a:'1個'}],
+   steps:['コンビニで購入するだけ。調理不要。','サラダチキンは必ずプレーンを選ぶ（ハーブ系は塩分高め）。','おにぎりは鮭か梅推奨。明太子やツナマヨは脂質が高め。'],
+   tip:'外食が困難な日の完全対応策。合計塩分約3g以内。毎日でも飽きない黄金構成。'},
   {id:2,type:'lunch',tags:['lunch','lowsalt'],emoji:'🍱',bg:'linear-gradient(135deg,#fff8e1,#f77f00)',
-   name:'職場弁当：鶏むね＋玄米＋ブロッコリー',kcal:580,time:'前夜15分',
+   name:'職場弁当：鶏むね肉＋玄米＋ブロッコリー',kcal:580,time:'前夜15分',
    nutr:{kcal:580,p:'42g',f:'10g',c:'68g'},
-   ingr:[{n:'鶏むね肉',a:'160g'},{n:'玄米ご飯',a:'150g'},{n:'ブロッコリー',a:'100g'},{n:'塩こうじ',a:'小さじ1'}],
-   steps:['前夜：鶏むねに塩こうじをもみ込んで冷蔵庫へ。','翌朝：フライパンで焼くかレンジ5分。','ブロッコリーはレンジ3分。弁当箱に詰めて完成。'],
-   tip:'玄米は血糖値の上昇が緩やか。昼食後の眠気が減る。'},
+   ingr:[{n:'鶏むね肉',a:'160g'},{n:'玄米ご飯（炊いた状態）',a:'150g'},{n:'ブロッコリー',a:'100g'},{n:'塩こうじ',a:'小さじ1'}],
+   steps:['前夜：鶏むねに塩こうじをもみ込んで冷蔵庫へ。','翌朝：フライパンで中火5分、または電子レンジ600Wで5分。','ブロッコリーはレンジ3分。弁当箱に詰めて完成。'],
+   tip:'玄米は血糖値の上昇が緩やか。昼食後の眠気が減る効果がある。前夜5分の仕込みだけで完成。'},
   {id:3,type:'lunch',tags:['lunch','quick'],emoji:'🍜',bg:'linear-gradient(135deg,#e8f5e9,#2d6a4f)',
-   name:'ざる蕎麦＋サラダチキンのせ',kcal:520,time:'外食0分',
+   name:'ざる蕎麦＋サラダチキントッピング',kcal:520,time:'0分（外食）',
    nutr:{kcal:520,p:'32g',f:'6g',c:'76g'},
-   ingr:[{n:'ざる蕎麦',a:'1人前'},{n:'サラダチキン',a:'80g'},{n:'わさび',a:'少量'}],
-   steps:['蕎麦屋でざる蕎麦を注文。','サラダチキンを持参してトッピング。','つゆは半分残す（塩分カット）。'],
-   tip:'蕎麦はGI値が低く血糖値の急上昇を防ぐ。外食時の優秀メニュー。'},
+   ingr:[{n:'ざる蕎麦（外食）',a:'1人前'},{n:'サラダチキン',a:'80g（持参）'},{n:'わさび',a:'少量'}],
+   steps:['蕎麦屋でざる蕎麦を注文。','コンビニのサラダチキンを持参してトッピング。','つゆは全部飲まず半分残す（塩分カット約2g）。'],
+   tip:'蕎麦はGI値が低く血糖値の急上昇を防ぐ。外食時の最優秀メニューの一つ。'},
   {id:4,type:'lunch',tags:['lunch','lowsalt'],emoji:'🐟',bg:'linear-gradient(135deg,#e8eaf6,#3f51b5)',
-   name:'焼き魚定食',kcal:550,time:'外食0分',
+   name:'焼き魚定食',kcal:550,time:'0分（外食）',
    nutr:{kcal:550,p:'38g',f:'14g',c:'52g'},
-   ingr:[{n:'焼き魚（さば or あじ）',a:'1切れ'},{n:'ご飯',a:'150g少なめ'},{n:'味噌汁',a:'1杯'},{n:'小鉢',a:'1品'}],
-   steps:['定食屋で焼き魚定食を注文。','ご飯は少なめにしてもらう。','味噌汁は半分程度に。'],
-   tip:'和定食は最もバランスが良い外食。タンパク質・ミネラル・野菜が揃う。'},
+   ingr:[{n:'焼き魚（さばかあじ）',a:'1切れ'},{n:'ご飯',a:'少なめ150g'},{n:'味噌汁',a:'1杯'},{n:'小鉢',a:'1品'}],
+   steps:['定食屋で焼き魚定食を注文。','ご飯は少なめにしてもらう。','味噌汁は半分程度に控える（塩分対策）。'],
+   tip:'和定食は外食の中で最もバランスが良い。タンパク質・ミネラル・野菜が揃う。'},
   {id:5,type:'lunch',tags:['lunch','quick'],emoji:'🥗',bg:'linear-gradient(135deg,#f3e5f5,#9c27b0)',
    name:'コンビニ高タンパクサラダセット',kcal:450,time:'0分',
    nutr:{kcal:450,p:'38g',f:'14g',c:'32g'},
    ingr:[{n:'鶏むね肉サラダ',a:'1パック'},{n:'ゆで卵',a:'1個'},{n:'無糖ヨーグルト',a:'1個'}],
-   steps:['セブン等でたんぱく質サラダを購入。','ゆで卵とヨーグルトでタンパク質を補強。','ドレッシングは和風系を少量使用。'],
-   tip:'揚げ物が多かった翌日に最適なリセット昼食。'},
-  {id:6,type:'lunch',tags:['lunch','lowsalt'],emoji:'🍣',bg:'linear-gradient(135deg,#fce4ec,#e91e63)',
-   name:'回転寿司（10皿以内）',kcal:600,time:'外食0分',
+   steps:['セブンイレブン等でたんぱく質サラダを購入。','ゆで卵とヨーグルトでタンパク質を補強。','ドレッシングは和風系（低カロリー）を少量使用。'],
+   tip:'揚げ物が多かった翌日のリセット昼食に最適。糖質が少なく体が軽くなる。'},
+  {id:6,type:'lunch',tags:['lunch'],emoji:'🍣',bg:'linear-gradient(135deg,#fce4ec,#e91e63)',
+   name:'回転寿司（10皿以内）',kcal:600,time:'0分（外食）',
    nutr:{kcal:600,p:'40g',f:'12g',c:'68g'},
-   ingr:[{n:'白身魚・青魚・えび・いか',a:'各2皿'},{n:'赤身（まぐろ）',a:'1〜2皿'}],
-   steps:['揚げ物系は避ける。','軍艦（マヨ系）は1皿まで。','10皿を目安にする。'],
-   tip:'魚のタンパク質とDHAが血圧改善に有効。シャリの量に注意。'},
+   ingr:[{n:'白身魚・青魚・えび・いか',a:'各2〜3皿'},{n:'赤身（まぐろ）',a:'1〜2皿'}],
+   steps:['揚げ物系（天ぷら等）は避ける。','軍艦（マヨ系）は1皿まで。','10皿を目安にする。'],
+   tip:'魚のタンパク質とDHAが血圧改善に有効。シャリの量に注意する。'},
   {id:7,type:'lunch',tags:['lunch','quick'],emoji:'🍲',bg:'linear-gradient(135deg,#e0f2f1,#009688)',
-   name:'豚汁定食',kcal:530,time:'外食0分',
+   name:'豚汁定食',kcal:530,time:'0分（外食）',
    nutr:{kcal:530,p:'30g',f:'16g',c:'58g'},
-   ingr:[{n:'豚汁（大）',a:'1杯'},{n:'ご飯',a:'130g少なめ'},{n:'冷奴',a:'1丁'}],
+   ingr:[{n:'豚汁（大）',a:'1杯'},{n:'ご飯',a:'少なめ130g'},{n:'冷奴',a:'1丁'}],
    steps:['定食屋で豚汁定食を注文。','ご飯は少なめ。','冷奴はタンパク質補給として優秀。'],
-   tip:'豚肉・根菜・豆腐でタンパク質と食物繊維が同時に摂れる。'},
+   tip:'豚肉・根菜・豆腐でタンパク質と食物繊維が同時に摂れる。疲れた日の昼食に最適。'},
   {id:8,type:'lunch',tags:['lunch','quick'],emoji:'🥚',bg:'linear-gradient(135deg,#fff3e0,#ff9800)',
-   name:'温玉豆腐＋おにぎり',kcal:480,time:'5分',
+   name:'温泉卵豆腐＋おにぎり',kcal:480,time:'5分',
    nutr:{kcal:480,p:'32g',f:'16g',c:'44g'},
-   ingr:[{n:'絹豆腐',a:'1丁150g'},{n:'温泉卵',a:'2個'},{n:'めんつゆ（減塩）',a:'大さじ1'},{n:'おにぎり',a:'1個'}],
-   steps:['豆腐を器に盛り、温泉卵をのせる。','めんつゆ少量とねぎをかける。','おにぎりと合わせて食べる。'],
+   ingr:[{n:'絹豆腐',a:'1丁 150g'},{n:'温泉卵',a:'2個'},{n:'めんつゆ（減塩）',a:'大さじ1'},{n:'おにぎり',a:'1個'}],
+   steps:['豆腐を器に盛り、温泉卵をのせる。','めんつゆ少量とねぎをかける。','レンジ1分で温めてもOK。おにぎりと合わせて食べる。'],
    tip:'糖質控えめで高タンパク。豆腐と卵の組み合わせでアミノ酸スコアが高くなる。'},
-  {id:9,type:'lunch',tags:['lunch','quick','lowsalt'],emoji:'🐔',bg:'linear-gradient(135deg,#fafafa,#607d8b)',
-   name:'チキンかけうどん',kcal:560,time:'外食0分',
+  {id:9,type:'lunch',tags:['lunch','lowsalt'],emoji:'🍝',bg:'linear-gradient(135deg,#fafafa,#607d8b)',
+   name:'鶏むねうどん',kcal:560,time:'0分（外食）',
    nutr:{kcal:560,p:'36g',f:'8g',c:'78g'},
-   ingr:[{n:'かけうどん（並）',a:'1杯'},{n:'サラダチキン',a:'1袋'},{n:'温泉卵',a:'1個'}],
-   steps:['うどん屋でかけうどんを注文。','持参したサラダチキンをトッピング。','温泉卵を追加でタンパク質アップ。'],
+   ingr:[{n:'かけうどん（並）',a:'1杯'},{n:'サラダチキン',a:'1袋（持参）'},{n:'温泉卵',a:'1個'}],
+   steps:['うどん屋でかけうどんを注文。','持参したサラダチキンをトッピング。','温泉卵（単品注文）を追加でタンパク質アップ。'],
    tip:'消化が良く胃に優しい。低血糖症状が出やすい日の昼食に特におすすめ。'},
-  {id:10,type:'lunch',tags:['lunch','quick'],emoji:'🥗',bg:'linear-gradient(135deg,#e8f5e9,#4caf50)',
-   name:'弁当（野菜系・焼き魚系）',kcal:600,time:'外食0分',
-   nutr:{kcal:600,p:'28g',f:'18g',c:'70g'},
-   ingr:[{n:'野菜弁当 or 幕の内',a:'1個'}],
-   steps:['焼き魚弁当・幕の内・野菜系を選ぶ。','唐揚げ弁当・カツ弁当は避ける。','白ご飯は半分残してもOK。'],
-   tip:'持ち帰り弁当は揚げ物中心を避け、焼き・蒸し料理メインを選ぶ。'},
-  {id:11,type:'lunch',tags:['lunch'],emoji:'🍤',bg:'linear-gradient(135deg,#f0f4c3,#cddc39)',
-   name:'牛丼（並）＋サラダセット',kcal:680,time:'外食0分',
-   nutr:{kcal:680,p:'28g',f:'20g',c:'88g'},
-   ingr:[{n:'牛丼（並）',a:'1杯'},{n:'サラダ',a:'1皿'},{n:'味噌汁',a:'1杯'}],
-   steps:['すき家・吉野家等で牛丼並を注文。','サラダセットをつけて野菜を確保。','ご飯は少なめにしてもらうとベター。'],
-   tip:'鉄分・タンパク質は豊富だが糖質・塩分が高め。週1回程度に。'},
-  {id:12,type:'lunch',tags:['lunch','quick'],emoji:'🐟',bg:'linear-gradient(135deg,#e3f2fd,#2196f3)',
+  {id:10,type:'lunch',tags:['lunch'],emoji:'🐟',bg:'linear-gradient(135deg,#e3f2fd,#2196f3)',
    name:'サバ缶＋ご飯＋みそ汁（持参）',kcal:500,time:'5分',
    nutr:{kcal:500,p:'35g',f:'16g',c:'48g'},
-   ingr:[{n:'サバ水煮缶',a:'1缶190g'},{n:'ご飯',a:'130g'},{n:'減塩味噌汁（即席）',a:'1袋'}],
-   steps:['前日夜にご飯をタッパーに詰める。','職場レンジでご飯を温める。','サバ缶はそのまま食べる（加熱不要）。'],
-   tip:'サバのDHAが血圧改善に直接効く。週2〜3回組み込むと効果的。'},
-  {id:13,type:'lunch',tags:['lunch','lowsalt'],emoji:'🍛',bg:'linear-gradient(135deg,#fff8e1,#ffc107)',
-   name:'カレー（ルー少なめ）＋サラダ',kcal:650,time:'外食0分',
-   nutr:{kcal:650,p:'24g',f:'20g',c:'86g'},
-   ingr:[{n:'カレー（ルー少なめ）',a:'1皿'},{n:'サラダ',a:'1皿'}],
-   steps:['ご飯少なめ・ルー少なめで注文。','サラダを先に食べてから食べ始める。'],
-   tip:'カレーは塩分・カロリー高め。週1回の楽しみとして取り入れる。'},
-  {id:14,type:'lunch',tags:['lunch','quick','lowsalt'],emoji:'🥚',bg:'linear-gradient(135deg,#fff9c4,#ffeb3b)',
-   name:'玉子かけご飯＋サラダ＋豆腐',kcal:460,time:'5分',
+   ingr:[{n:'サバ水煮缶',a:'1缶 190g'},{n:'ご飯',a:'130g'},{n:'減塩味噌汁（即席）',a:'1袋'}],
+   steps:['前日夜にご飯をタッパーに詰めておく。','職場のレンジでご飯を温める。','サバ缶はそのまま食べる（加熱不要）。'],
+   tip:'サバのDHAが血圧改善に直接効く。週2〜3回組み込むと血圧低下効果が期待できる。'},
+  {id:11,type:'lunch',tags:['lunch','quick'],emoji:'🥚',bg:'linear-gradient(135deg,#fff9c4,#ffeb3b)',
+   name:'卵かけご飯＋サラダ＋豆腐',kcal:460,time:'5分',
    nutr:{kcal:460,p:'28g',f:'14g',c:'52g'},
    ingr:[{n:'ご飯',a:'150g'},{n:'卵',a:'2個'},{n:'減塩醤油',a:'小さじ1'},{n:'木綿豆腐',a:'1/2丁'},{n:'野菜サラダ',a:'1パック'}],
    steps:['ご飯に生卵2個を割り入れ、減塩醤油少量で混ぜる。','豆腐は水切りして小皿に盛る。','サラダを先に食べてから食べ始める。'],
-   tip:'シンプルで最速の高タンパク食。疲れた朝の弁当作りが辛い日に。'},
-  {id:15,type:'lunch',tags:['lunch','quick'],emoji:'🐟',bg:'linear-gradient(135deg,#e8eaf6,#5c6bc0)',
+   tip:'シンプルで最速の高タンパク食。卵2個で必須アミノ酸がほぼ揃う。疲れた朝の弁当作りが辛い日に。'},
+  {id:12,type:'lunch',tags:['lunch'],emoji:'🍚',bg:'linear-gradient(135deg,#f0f4c3,#cddc39)',
+   name:'牛丼（並）＋サラダセット',kcal:680,time:'0分（外食）',
+   nutr:{kcal:680,p:'28g',f:'20g',c:'88g'},
+   ingr:[{n:'牛丼（並）',a:'1杯'},{n:'サラダ',a:'1皿'},{n:'味噌汁',a:'1杯'}],
+   steps:['すき家・吉野家等で牛丼並を注文。','サラダセットをつけて野菜を確保。','ご飯は少なめにしてもらうとベター。'],
+   tip:'鉄分・タンパク質は豊富だが糖質・塩分が高め。週1回程度に。サラダを必ずつけること。'},
+  {id:13,type:'lunch',tags:['lunch','lowsalt'],emoji:'🍛',bg:'linear-gradient(135deg,#fff8e1,#ffc107)',
+   name:'カレー（ルー少なめ）＋サラダ',kcal:650,time:'0分（外食）',
+   nutr:{kcal:650,p:'24g',f:'20g',c:'86g'},
+   ingr:[{n:'カレー（ルー少なめ）',a:'1皿'},{n:'サラダ',a:'1皿'}],
+   steps:['ご飯少なめ・ルー少なめで注文。','サラダを先に食べてから食べ始める。','週1回程度の楽しみとして位置付ける。'],
+   tip:'カレーは塩分・カロリーが高め。週1回の楽しみとして取り入れ、他の食事で調整する。'},
+  {id:14,type:'lunch',tags:['lunch','quick'],emoji:'🍝',bg:'linear-gradient(135deg,#e8eaf6,#5c6bc0)',
    name:'コンビニパスタ＋サラダ',kcal:620,time:'0分',
    nutr:{kcal:620,p:'24g',f:'18g',c:'82g'},
-   ingr:[{n:'ペペロンチーノ or ツナパスタ',a:'1袋'},{n:'野菜サラダ',a:'1パック'},{n:'ゆで卵',a:'1個'}],
+   ingr:[{n:'ペペロンチーノかツナパスタ',a:'1袋'},{n:'野菜サラダ',a:'1パック'},{n:'ゆで卵',a:'1個'}],
    steps:['パスタはミートソース・クリーム系ではなく和風・ペペロン系を選ぶ。','サラダとゆで卵でタンパク質と食物繊維を補強。'],
-   tip:'パスタは週2回まで。野菜とタンパク質を必ずセットにする。'},
+   tip:'パスタは週2回まで。炭水化物が多いため、野菜とタンパク質を必ずセットにすること。'},
+  {id:15,type:'lunch',tags:['lunch','quick','lowsalt'],emoji:'🐟',bg:'linear-gradient(135deg,#e0f7fa,#00bcd4)',
+   name:'いわし缶＋大根おろし＋ご飯',kcal:430,time:'5分',
+   nutr:{kcal:430,p:'30g',f:'14g',c:'44g'},
+   ingr:[{n:'いわし水煮缶',a:'1缶 190g'},{n:'大根おろし',a:'50g'},{n:'ご飯',a:'120g'},{n:'ポン酢',a:'少量'}],
+   steps:['いわし缶を器に盛る。','大根おろしをのせて、ポン酢をかける。','ご飯と一緒に食べる。'],
+   tip:'いわしはDHA・EPAが最も豊富な缶詰。大根おろしの消化酵素が脂質の消化を助ける。最速5分。'},
 
-  // 夕食15品
   {id:16,type:'dinner',tags:['dinner','quick','lowsalt'],emoji:'🐔',bg:'linear-gradient(135deg,#e8f5e9,#2d6a4f)',
    name:'鶏むね蒸し＋野菜レンジ蒸し',kcal:420,time:'10分',
    nutr:{kcal:420,p:'38g',f:'8g',c:'25g'},
    ingr:[{n:'鶏むね肉',a:'150g'},{n:'ブロッコリー',a:'100g'},{n:'キャベツ',a:'80g'},{n:'塩こうじ',a:'小さじ1'},{n:'ごま油',a:'小さじ1/2'},{n:'レモン汁',a:'少量'}],
-   steps:['鶏むねを薄くそぎ切りにして塩こうじをもみ込む。','耐熱皿に鶏肉→野菜の順に並べ、ラップをして600Wで5分。','取り出して1分蒸らす。ごま油とレモン汁をかけて完成。'],
+   steps:['鶏むねを薄くそぎ切り（厚さ1cm）にして塩こうじをもみ込む。','耐熱皿に鶏肉→野菜の順に並べ、ラップをして600Wで5分。','取り出して1分蒸らす。ごま油とレモン汁をかけて完成。'],
    tip:'塩こうじで旨みが増し減塩でも満足感あり。鶏むね150gでタンパク質約28g。'},
   {id:17,type:'dinner',tags:['dinner','quick','lowsalt'],emoji:'🐟',bg:'linear-gradient(135deg,#e3f2fd,#0077b6)',
-   name:'サバ缶＋豆腐＋即席味噌汁',kcal:380,time:'5分',
+   name:'サバ缶＋豆腐＋即席みそ汁',kcal:380,time:'5分',
    nutr:{kcal:380,p:'32g',f:'14g',c:'18g'},
-   ingr:[{n:'サバ水煮缶',a:'1缶190g'},{n:'木綿豆腐',a:'1/2丁150g'},{n:'減塩味噌',a:'小さじ1.5'},{n:'乾燥わかめ',a:'2g'}],
-   steps:['サバ缶は汁ごと器に出す（加熱不要）。','豆腐は水切りしてそのまま。','マグカップに味噌＋わかめ＋熱湯で即席味噌汁。'],
-   tip:'サバのEPA・DHAは血圧改善に効果的。最速5分の完全栄養食。'},
+   ingr:[{n:'サバ水煮缶',a:'1缶 190g'},{n:'木綿豆腐',a:'1/2丁 150g'},{n:'減塩味噌',a:'小さじ1.5'},{n:'乾燥わかめ',a:'2g'}],
+   steps:['サバ缶は汁ごと器に出す（加熱不要）。','豆腐は水切りしてそのまま、またはレンジ2分。','マグカップに味噌＋わかめ＋熱湯で即席みそ汁。'],
+   tip:'サバのEPA・DHAは血圧改善に効果的。最速5分の完全栄養食。疲労MAX日の鉄板メニュー。'},
   {id:18,type:'dinner',tags:['dinner','quick'],emoji:'🥚',bg:'linear-gradient(135deg,#fff8e1,#ff9800)',
    name:'スクランブルエッグ＋キムチ豆腐',kcal:350,time:'8分',
    nutr:{kcal:350,p:'28g',f:'18g',c:'12g'},
    ingr:[{n:'卵',a:'2個'},{n:'絹豆腐',a:'1/2丁'},{n:'キムチ（低塩）',a:'30g'},{n:'オリーブオイル',a:'小さじ1'}],
-   steps:['フライパンにオリーブオイルを熱し、溶き卵を投入。半熟で火を止める。','器に豆腐を盛り、キムチをのせて醤油少量をたらす。','盛り合わせて完成。'],
-   tip:'キムチの乳酸菌が腸内環境を整える。帰宅が遅い日でも8分で完成。'},
+   steps:['フライパンにオリーブオイルを熱し、溶き卵を投入。半熟で火を止める。','器に豆腐を盛り、キムチをのせて醤油少量をたらす。','盛り合わせて完成。帰宅から8分で食べられる。'],
+   tip:'キムチの乳酸菌が腸内環境を整える。卵2個でタンパク質12g。帰宅が遅い日でも作れる。'},
   {id:19,type:'dinner',tags:['dinner','quick'],emoji:'💪',bg:'linear-gradient(135deg,#f3e5f5,#9c27b0)',
    name:'プロテイン夜食（疲労MAX専用）',kcal:360,time:'2分',
    nutr:{kcal:360,p:'35g',f:'8g',c:'28g'},
-   ingr:[{n:'ホエイプロテイン（無糖）',a:'1スクープ'},{n:'ゆで卵',a:'2個'},{n:'バナナ',a:'1本'},{n:'牛乳 or 豆乳',a:'200ml'}],
-   steps:['プロテインを牛乳/豆乳に溶かして飲む。','ゆで卵2個とバナナ1本をそのまま食べる。','調理ゼロ。帰宅2分で完了。'],
-   tip:'帰宅21時超え・疲労ピーク時専用。バナナのカリウムは高血圧改善に効果的。'},
+   ingr:[{n:'ホエイプロテイン（無糖）',a:'1スクープ'},{n:'ゆで卵（前日に茹でておく）',a:'2個'},{n:'バナナ',a:'1本'},{n:'牛乳か豆乳',a:'200ml'}],
+   steps:['プロテインを牛乳/豆乳に溶かして飲む。','ゆで卵2個とバナナ1本をそのまま食べる。','以上。調理ゼロ。帰宅2分で完了。'],
+   tip:'帰宅21時超え・疲労ピーク時専用。バナナのカリウムは高血圧改善にも効果的。'},
   {id:20,type:'dinner',tags:['dinner','lowsalt'],emoji:'🍖',bg:'linear-gradient(135deg,#fce4ec,#e91e63)',
    name:'鶏ひき肉の和風味噌炒め',kcal:490,time:'15分',
    nutr:{kcal:490,p:'34g',f:'12g',c:'52g'},
-   ingr:[{n:'鶏ひき肉',a:'150g'},{n:'ご飯',a:'100g'},{n:'ごぼう',a:'50g'},{n:'にんじん',a:'40g'},{n:'減塩味噌',a:'小さじ2'},{n:'みりん',a:'小さじ1'},{n:'ごま油',a:'小さじ1'}],
-   steps:['フライパンにごま油を熱し、ごぼうとにんじんを中火で3分炒める。','鶏ひき肉を加えてほぐしながら炒める。','減塩味噌とみりんを加えて全体に絡めたら完成。'],
+   ingr:[{n:'鶏ひき肉',a:'150g'},{n:'ご飯',a:'100g'},{n:'ごぼう（細切り）',a:'50g'},{n:'にんじん（細切り）',a:'40g'},{n:'減塩味噌',a:'小さじ2'},{n:'みりん',a:'小さじ1'},{n:'ごま油',a:'小さじ1'}],
+   steps:['フライパンにごま油を熱し、ごぼうとにんじんを中火で3分炒める。','鶏ひき肉を加えてほぐしながら色が変わるまで炒める。','減塩味噌とみりんを加えて全体に絡め、水分が飛んだら完成。'],
    tip:'ごぼうの食物繊維が腸内環境を整え血糖値の急上昇も抑える。作り置き3日間可能。'},
   {id:21,type:'dinner',tags:['dinner','lowsalt'],emoji:'🫕',bg:'linear-gradient(135deg,#e8eaf6,#3f51b5)',
    name:'豆乳鍋（一人前）',kcal:420,time:'15分',
    nutr:{kcal:420,p:'36g',f:'14g',c:'28g'},
    ingr:[{n:'豆乳（無調整）',a:'200ml'},{n:'鶏むね肉（薄切り）',a:'120g'},{n:'白菜',a:'150g'},{n:'えのき',a:'50g'},{n:'減塩めんつゆ',a:'大さじ1'},{n:'しょうが',a:'少量'}],
    steps:['小鍋に豆乳＋めんつゆ＋しょうがを入れて中火で温める（沸騰させない）。','白菜・えのき・鶏むねを加えて蓋をして弱火で8分煮る。','鶏肉に火が通ったら完成。'],
-   tip:'豆乳のイソフラボンが血圧低下をサポート。鍋1つで洗い物が少ない。'},
+   tip:'豆乳のイソフラボンが血圧低下をサポート。鍋1つで洗い物が少なく、疲れた夜でも継続しやすい。'},
   {id:22,type:'dinner',tags:['dinner','quick','lowsalt'],emoji:'🐟',bg:'linear-gradient(135deg,#e0f7fa,#00bcd4)',
    name:'鮭のホイル焼き＋蒸し野菜',kcal:400,time:'15分',
    nutr:{kcal:400,p:'36g',f:'14g',c:'22g'},
-   ingr:[{n:'生鮭（切り身）',a:'1切れ150g'},{n:'玉ねぎ',a:'1/4個'},{n:'しめじ',a:'50g'},{n:'塩こうじ',a:'小さじ1'},{n:'バター',a:'小さじ1/2'},{n:'レモン',a:'1/4個'}],
-   steps:['アルミホイルに鮭→玉ねぎ→しめじを並べ、塩こうじとバターをのせる。','ホイルで包んでトースターで15分。','開いてレモンを絞って完成。'],
-   tip:'鮭のアスタキサンチンは抗酸化作用が強い。ホイル焼きは洗い物がほぼゼロ。'},
+   ingr:[{n:'生鮭（切り身）',a:'1切れ 150g'},{n:'玉ねぎ',a:'1/4個'},{n:'しめじ',a:'50g'},{n:'塩こうじ',a:'小さじ1'},{n:'バター',a:'小さじ1/2'},{n:'レモン',a:'1/4個'}],
+   steps:['アルミホイルに鮭→玉ねぎ→しめじの順に並べ、塩こうじとバターをのせる。','ホイルで包んでトースターで15分（または魚焼きグリルで10分）。','開いてレモンを絞って完成。'],
+   tip:'鮭のアスタキサンチンは抗酸化作用が強い。ホイル焼きは洗い物がほぼゼロで帰宅後に最適。'},
   {id:23,type:'dinner',tags:['dinner','lowsalt'],emoji:'🥩',bg:'linear-gradient(135deg,#fbe9e7,#ff5722)',
    name:'豚しゃぶサラダ',kcal:440,time:'15分',
    nutr:{kcal:440,p:'36g',f:'16g',c:'28g'},
    ingr:[{n:'豚もも薄切り肉',a:'150g'},{n:'レタス',a:'100g'},{n:'きゅうり',a:'1/2本'},{n:'トマト',a:'1/2個'},{n:'ポン酢（減塩）',a:'大さじ1.5'}],
-   steps:['豚肉を沸騰したお湯でしゃぶしゃぶ（片面30秒）。','野菜を盛り付けた皿に豚肉をのせる。','ポン酢をかけて完成。'],
+   steps:['豚肉を沸騰したお湯でしゃぶしゃぶ（片面30秒ずつ）。','野菜を盛り付けた皿に豚肉をのせる。','ポン酢をかけて完成。'],
    tip:'豚もものビタミンB1が疲労回復に効果的。脂質が少なくさっぱり食べられる。'},
   {id:24,type:'dinner',tags:['dinner','quick'],emoji:'🍳',bg:'linear-gradient(135deg,#f0f4c3,#8bc34a)',
    name:'納豆卵かけご飯＋豆腐みそ汁',kcal:480,time:'5分',
    nutr:{kcal:480,p:'32g',f:'14g',c:'52g'},
    ingr:[{n:'ご飯',a:'150g'},{n:'納豆',a:'1パック'},{n:'卵',a:'1個'},{n:'絹豆腐',a:'1/4丁'},{n:'減塩味噌',a:'小さじ1.5'}],
-   steps:['ご飯に納豆と生卵を混ぜる。','豆腐とわかめの味噌汁をレンジで作る。','5分で完成。'],
-   tip:'納豆のナットウキナーゼは血栓予防に効果的。'},
+   steps:['ご飯に納豆と生卵を混ぜる。減塩醤油少量でOK。','豆腐とわかめの味噌汁をレンジまたは小鍋で作る。','以上。5分で完成。'],
+   tip:'納豆のナットウキナーゼは血栓予防に効果的。卵と組み合わせることでアミノ酸バランスが向上する。'},
   {id:25,type:'dinner',tags:['dinner','lowsalt'],emoji:'🍲',bg:'linear-gradient(135deg,#fff3e0,#ffc107)',
    name:'肉豆腐（ヘルシー版）',kcal:460,time:'20分',
    nutr:{kcal:460,p:'38g',f:'14g',c:'36g'},
    ingr:[{n:'牛もも薄切り',a:'100g'},{n:'木綿豆腐',a:'1/2丁'},{n:'玉ねぎ',a:'1/2個'},{n:'減塩醤油',a:'大さじ1.5'},{n:'みりん',a:'大さじ1'},{n:'だし',a:'150ml'}],
-   steps:['玉ねぎをだし汁で煮る。','牛肉を加えて色が変わったら豆腐を入れる。','減塩醤油・みりんで味付けし15分煮て完成。'],
-   tip:'牛もも肉は脂質が少なく鉄分豊富。お母さんの手料理の定番。'},
+   steps:['玉ねぎをだし汁で煮る。','牛肉を加えて色が変わったら豆腐を入れる。','減塩醤油・みりんで味付けし、15分煮て完成。'],
+   tip:'牛もも肉は脂質が少なく鉄分豊富。お母さんの手料理の定番。ご飯は少なめに合わせること。'},
   {id:26,type:'dinner',tags:['dinner','quick','lowsalt'],emoji:'🐟',bg:'linear-gradient(135deg,#e8f5e9,#388e3c)',
-   name:'いわし缶＋大根おろし＋ご飯',kcal:430,time:'5分',
+   name:'いわし缶＋大根おろし＋ご飯（夜版）',kcal:430,time:'5分',
    nutr:{kcal:430,p:'30g',f:'14g',c:'44g'},
-   ingr:[{n:'いわし水煮缶',a:'1缶190g'},{n:'大根おろし',a:'50g'},{n:'ご飯',a:'120g'},{n:'ポン酢',a:'少量'}],
-   steps:['いわし缶を器に盛る。','大根おろしをのせて、ポン酢をかける。','ご飯と一緒に食べる。'],
+   ingr:[{n:'いわし水煮缶',a:'1缶 190g'},{n:'大根おろし',a:'50g'},{n:'ご飯',a:'120g'},{n:'ポン酢',a:'少量'}],
+   steps:['いわし缶を器に盛る。','大根おろしをのせて、ポン酢か減塩醤油をかける。','ご飯と一緒に食べる。'],
    tip:'いわしはDHA・EPAが最も豊富な缶詰。大根おろしの消化酵素が脂質の消化を助ける。'},
   {id:27,type:'dinner',tags:['dinner','lowsalt'],emoji:'🥗',bg:'linear-gradient(135deg,#e1f5fe,#03a9f4)',
    name:'ブロッコリー＆ツナのサラダ丼',kcal:520,time:'10分',
    nutr:{kcal:520,p:'34g',f:'12g',c:'62g'},
-   ingr:[{n:'ツナ缶（水煮）',a:'1缶70g'},{n:'ブロッコリー',a:'150g'},{n:'ゆで卵',a:'1個'},{n:'ご飯',a:'130g'},{n:'和風ドレッシング（減塩）',a:'大さじ1'}],
-   steps:['ブロッコリーは電子レンジ3分で加熱。','ご飯の上にブロッコリー・ツナ・ゆで卵をのせる。','ドレッシングをかけて完成。'],
-   tip:'ツナの水煮缶は低脂質・高タンパクの優秀食材。'},
+   ingr:[{n:'ツナ缶（水煮）',a:'1缶 70g'},{n:'ブロッコリー',a:'150g'},{n:'ゆで卵',a:'1個'},{n:'ご飯',a:'130g'},{n:'和風ドレッシング（減塩）',a:'大さじ1'}],
+   steps:['ブロッコリーは電子レンジ3分で加熱。','ご飯の上にブロッコリー・ツナ・ゆで卵をのせる。','和風ドレッシングをかけて完成。'],
+   tip:'ツナの水煮缶は低脂質・高タンパクの優秀食材。ブロッコリーのビタミンCが免疫力を強化する。'},
   {id:28,type:'dinner',tags:['dinner'],emoji:'🍖',bg:'linear-gradient(135deg,#fafafa,#9e9e9e)',
    name:'鶏むね肉のトマト煮込み',kcal:450,time:'20分',
    nutr:{kcal:450,p:'40g',f:'10g',c:'38g'},
    ingr:[{n:'鶏むね肉',a:'180g'},{n:'カットトマト缶',a:'1/2缶'},{n:'玉ねぎ',a:'1/2個'},{n:'にんにく',a:'1かけ'},{n:'塩こうじ',a:'小さじ1'}],
    steps:['にんにく・玉ねぎをオリーブオイルで炒める。','鶏むねを加えて表面を焼き、トマト缶を入れる。','塩こうじで味付けし蓋をして15分煮込む。'],
-   tip:'トマトのリコピンが強力な抗酸化作用。作り置き可能で翌日さらに美味しい。'},
+   tip:'トマトのリコピンが強力な抗酸化作用。作り置きが可能で、翌日はさらに美味しくなる。'},
   {id:29,type:'dinner',tags:['dinner','lowsalt'],emoji:'🥬',bg:'linear-gradient(135deg,#e8f5e9,#66bb6a)',
    name:'ほうれん草と卵の炒め物',kcal:360,time:'10分',
    nutr:{kcal:360,p:'28g',f:'16g',c:'22g'},
    ingr:[{n:'ほうれん草',a:'100g'},{n:'卵',a:'2個'},{n:'にんにく',a:'1/2かけ'},{n:'ごま油',a:'小さじ1'},{n:'塩こうじ',a:'少量'}],
    steps:['ほうれん草を洗って3cm幅に切る。','フライパンにごま油とにんにくを熱し、ほうれん草を炒める。','溶き卵を流し入れてざっくり混ぜ、塩こうじで味付け。'],
-   tip:'ほうれん草の鉄分が貧血予防に。ヘム鉄のサプリと組み合わせると吸収率が上がる。'},
+   tip:'ほうれん草の鉄分が貧血予防に。ヘム鉄のサプリと組み合わせると吸収率がさらに上がる。'},
   {id:30,type:'dinner',tags:['dinner','quick'],emoji:'🍜',bg:'linear-gradient(135deg,#fff9c4,#f57f17)',
    name:'鶏がら豆腐スープ＋ご飯',kcal:400,time:'10分',
    nutr:{kcal:400,p:'30g',f:'10g',c:'44g'},
    ingr:[{n:'絹豆腐',a:'1/2丁'},{n:'溶き卵',a:'1個'},{n:'鶏がらスープの素（減塩）',a:'小さじ1'},{n:'ねぎ',a:'適量'},{n:'ご飯',a:'120g'}],
-   steps:['水300mlに鶏がらスープの素としょうがを入れて沸騰させる。','豆腐を崩しながら入れ、溶き卵を流し入れてかき玉にする。','ねぎをちらして完成。'],
-   tip:'胃に優しく疲れた夜・体調が優れない日に最適。低塩分で血圧への負担も少ない。'}
+   steps:['水300mlに鶏がらスープの素としょうがを入れて沸騰させる。','豆腐を崩しながら入れ、溶き卵を流し入れてかき玉にする。','ねぎをちらして完成。ご飯と一緒に食べる。'],
+   tip:'胃に優しく消化が良いため、疲れた夜・体調が優れない日に最適。低塩分で血圧への負担も少ない。'}
+,
+  {id:31,type:'breakfast',tags:['breakfast','quick'],emoji:'🍳',bg:'linear-gradient(135deg,#fff9c4,#ffd54f)',
+   name:'目玉焼き＋トースト＋野菜ジュース',kcal:380,time:'10分',
+   nutr:{kcal:380,p:'18g',f:'14g',c:'42g'},
+   ingr:[{n:'食パン（6枚切り）',a:'2枚'},{n:'卵',a:'2個'},{n:'オリーブオイル',a:'小さじ1'},{n:'野菜ジュース（食塩無添加）',a:'200ml'},{n:'塩こしょう',a:'少量'}],
+   steps:['パンをトースターで3分焼く。','フライパンにオリーブオイルを熱し、卵を割り入れて目玉焼きにする。','塩こしょうで味付けして完成。野菜ジュースを添える。'],
+   tip:'野菜ジュースで手軽に野菜を補給できる。卵2個でタンパク質12g。忙しい朝の定番。'},
+  {id:32,type:'breakfast',tags:['breakfast','quick','lowsalt'],emoji:'🥗',bg:'linear-gradient(135deg,#e8f5e9,#66bb6a)',
+   name:'納豆ご飯＋みそ汁',kcal:420,time:'5分',
+   nutr:{kcal:420,p:'22g',f:'8g',c:'62g'},
+   ingr:[{n:'ご飯',a:'150g'},{n:'納豆',a:'1パック'},{n:'卵',a:'1個'},{n:'減塩みそ汁（即席）',a:'1杯'},{n:'刻みねぎ',a:'適量'}],
+   steps:['ご飯に納豆と卵を混ぜる。','お湯を注ぐだけのインスタントみそ汁を準備。','ねぎをのせて完成。5分以内でできる。'],
+   tip:'納豆のナットウキナーゼは朝に摂ると血栓予防効果が高い。タンパク質と発酵食品を同時に摂れる。'},
+  {id:33,type:'breakfast',tags:['breakfast','quick'],emoji:'🥤',bg:'linear-gradient(135deg,#e3f2fd,#42a5f5)',
+   name:'プロテインスムージー',kcal:350,time:'3分',
+   nutr:{kcal:350,p:'30g',f:'6g',c:'42g'},
+   ingr:[{n:'バナナ',a:'1本'},{n:'牛乳か豆乳',a:'200ml'},{n:'ホエイプロテイン（無糖）',a:'1スクープ'},{n:'蜂蜜',a:'小さじ1（任意）'}],
+   steps:['バナナと牛乳（豆乳）をミキサーに入れる。','プロテインを加えて30秒混ぜる。','グラスに注いで完成。洗い物はミキサーのみ。'],
+   tip:'出発前5分でできる栄養補給。バナナのカリウムが血圧改善に効果的。時間がない朝の最強メニュー。'},
+  {id:34,type:'breakfast',tags:['breakfast','quick','lowsalt'],emoji:'🥛',bg:'linear-gradient(135deg,#f3e5f5,#ab47bc)',
+   name:'ギリシャヨーグルト＋グラノーラ＋果物',kcal:320,time:'2分',
+   nutr:{kcal:320,p:'18g',f:'8g',c:'42g'},
+   ingr:[{n:'ギリシャヨーグルト（無糖）',a:'150g'},{n:'グラノーラ（砂糖少なめ）',a:'30g'},{n:'バナナかブルーベリー',a:'1/2個か50g'},{n:'蜂蜜',a:'小さじ1（任意）'}],
+   steps:['ギリシャヨーグルトを器に盛る。','グラノーラをのせる。','果物を添えて完成。調理不要。'],
+   tip:'ギリシャヨーグルトは通常のヨーグルトの約2倍のタンパク質。腸内環境改善にも効果的。'},
+  {id:35,type:'breakfast',tags:['breakfast'],emoji:'🍜',bg:'linear-gradient(135deg,#fff8e1,#ffa726)',
+   name:'卵雑炊',kcal:350,time:'10分',
+   nutr:{kcal:350,p:'16g',f:'8g',c:'52g'},
+   ingr:[{n:'ご飯',a:'130g'},{n:'卵',a:'2個'},{n:'だし',a:'300ml'},{n:'減塩醤油',a:'小さじ1'},{n:'ねぎ',a:'適量'}],
+   steps:['鍋にだしを入れて沸騰させる。','ご飯を加えて5分煮る。','溶き卵を流し入れ、半熟になったら醤油を加えて完成。'],
+   tip:'消化が良く胃に優しい。体調が優れない朝や二日酔いの朝に最適。温かいので体が目覚める。'},
+  {id:36,type:'breakfast',tags:['breakfast','quick','lowsalt'],emoji:'🍞',bg:'linear-gradient(135deg,#fce4ec,#f48fb1)',
+   name:'アボカドトースト＋ゆで卵',kcal:430,time:'8分',
+   nutr:{kcal:430,p:'20g',f:'22g',c:'38g'},
+   ingr:[{n:'食パン（全粒粉）',a:'2枚'},{n:'アボカド',a:'1/2個'},{n:'ゆで卵',a:'1個'},{n:'レモン汁',a:'少量'},{n:'塩こしょう',a:'少量'}],
+   steps:['パンをトースターで焼く。','アボカドを潰してレモン汁・塩こしょうで味付け。','トーストに塗り、スライスしたゆで卵をのせて完成。'],
+   tip:'アボカドの不飽和脂肪酸は血圧低下・コレステロール改善に効果的。全粒粉パンは食物繊維が豊富。'},
+  {id:37,type:'breakfast',tags:['breakfast','quick'],emoji:'🥣',bg:'linear-gradient(135deg,#e8eaf6,#7986cb)',
+   name:'オートミール＋バナナ＋牛乳',kcal:360,time:'5分',
+   nutr:{kcal:360,p:'14g',f:'6g',c:'60g'},
+   ingr:[{n:'オートミール',a:'40g'},{n:'牛乳か豆乳',a:'200ml'},{n:'バナナ',a:'1/2本'},{n:'蜂蜜',a:'小さじ1（任意）'}],
+   steps:['オートミールに牛乳を加えてレンジ600Wで2分。','バナナをスライスしてのせる。','蜂蜜を少量かけて完成。'],
+   tip:'オートミールは食物繊維が豊富でGI値が低い。腹持ちが良く昼食前の空腹感を抑えられる。'},
+  {id:38,type:'breakfast',tags:['breakfast','lowsalt'],emoji:'🍳',bg:'linear-gradient(135deg,#e0f7fa,#26c6da)',
+   name:'スクランブルエッグ＋サラダ＋ご飯',kcal:450,time:'10分',
+   nutr:{kcal:450,p:'24g',f:'14g',c:'56g'},
+   ingr:[{n:'卵',a:'2個'},{n:'牛乳',a:'大さじ1'},{n:'バター',a:'小さじ1/2'},{n:'ご飯',a:'130g'},{n:'野菜サラダ',a:'1パック'}],
+   steps:['フライパンにバターを溶かし、牛乳を加えた溶き卵を投入。','弱火でゆっくり混ぜながら半熟状に仕上げる。','ご飯・サラダと一緒に盛り付けて完成。'],
+   tip:'卵は完全栄養食。ゆっくり調理したスクランブルエッグはとろりとして食べやすい。'},
+  {id:39,type:'breakfast',tags:['breakfast','quick'],emoji:'🍱',bg:'linear-gradient(135deg,#f1f8e9,#9ccc65)',
+   name:'サラダチキン＋おにぎり（朝版）',kcal:400,time:'0分（購入のみ）',
+   nutr:{kcal:400,p:'36g',f:'8g',c:'48g'},
+   ingr:[{n:'サラダチキン（プレーン）',a:'1袋 115g'},{n:'おにぎり（鮭か梅）',a:'1個'},{n:'野菜ジュース',a:'200ml'}],
+   steps:['コンビニで購入するだけ。調理不要。','車内か職場到着前に食べてもOK。','野菜ジュースで不足しがちな野菜を補う。'],
+   tip:'出勤前に時間がない日の最強朝食。高タンパク・低カロリーで1日のスタートに最適。'},
+  {id:40,type:'breakfast',tags:['breakfast','lowsalt'],emoji:'🥚',bg:'linear-gradient(135deg,#fff3e0,#ffb74d)',
+   name:'和風朝食セット（おかず3品）',kcal:480,time:'15分',
+   nutr:{kcal:480,p:'26g',f:'12g',c:'60g'},
+   ingr:[{n:'ご飯',a:'150g'},{n:'焼き魚（さば缶か冷凍）',a:'1切れ'},{n:'卵焼きかゆで卵',a:'1個分'},{n:'ほうれん草のおひたし',a:'50g'},{n:'減塩みそ汁',a:'1杯'}],
+   steps:['前夜に作り置いたおかずを使えば5分で完成。','さば缶はそのまま器に盛れる（加熱不要）。','みそ汁はインスタントでOK。'],
+   tip:'和食の朝食は塩分管理がしやすく栄養バランスが良い。前夜に仕込んでおけば朝の負担が激減。'}
 ];
-const TRAINING={
-  weekday:{note:'血圧160超の日はトレーニング中止。運動前に必ず血圧確認。',exercises:[
-    {name:'ストレッチ（股関節・肩）',spec:'5〜8分',how:['床に座り両足の裏を合わせて股関節を開く。30秒×2セット。','壁に手をついて胸を張り肩甲骨を寄せる。10秒×5回。','首をゆっくり左右に傾け各20秒キープ。'],caution:'運転直後は股関節・肩が硬い。反動をつけずゆっくり伸ばす。痛みがあれば即中止。'},
-    {name:'スクワット（浅め）',spec:'20回×4セット / 休憩60秒',how:['足を肩幅より少し広めに開き、つま先をやや外側に向ける。','背筋を伸ばしたまま膝がつま先より前に出ないよう腰を落とす。','太ももが床と平行の手前（45度）で止め、息を吐きながら戻す。'],caution:'深くしゃがみすぎない。膝が内側に入らないよう注意。'},
-    {name:'腕立て伏せ（膝つきOK）',spec:'15回×3セット / 休憩60秒',how:['手を肩幅の1.5倍に開き、指先は斜め外側に向ける。','体を一直線に保ちながら胸を床に近づける（5〜10cm手前で止める）。','息を吐きながら押し上げる。きつければ膝をついて正しいフォームを優先。'],caution:'腰が落ちると腰痛の原因になる。体幹を一直線に保つ。'},
-    {name:'プランク',spec:'45秒×3セット / 休憩45秒',how:['肘を肩の真下につき前腕を床につける。足は腰幅に開く。','頭からかかとまで一直線になるよう体幹に力を入れる。','お腹を凹ませるイメージで腹圧をかけ続ける。呼吸は絶対に止めない。'],caution:'呼吸を止めると血圧が急上昇する。腰が上下してきたら終了の合図。'},
-    {name:'マウンテンクライマー',spec:'20回×3セット / 休憩60秒',how:['腕立て伏せの姿勢（腕を伸ばした状態）からスタート。','右膝を素早く胸に引き寄せ元に戻す。次に左膝。これで1回。','体幹を固定したままリズムよく交互に行う。'],caution:'有酸素要素が強く血圧が上がりやすい。ゆっくりから始め呼吸が乱れすぎたら一時停止。'},
-    {name:'室内ウォーキング / 踏み台昇降',spec:'15分',how:['廊下・部屋を少し速いペースで歩く（息が少し上がる程度）。','踏み台は階段の1段目が最適（ベッドは不安定で危険）。','腕を軽く振りながら歩くと消費カロリーが増える。'],caution:'就寝直前の激しい有酸素運動は睡眠の質を下げる。踏み台は安定したものを使い転倒注意。'}
-  ]},
-  sat:{note:'屋外ウォーキングは江戸川土手がベスト。天候不良時は室内踏み台昇降に置き換える。',exercises:[
-    {name:'屋外ウォーキング（速歩）',spec:'60〜90分 / 消費約400〜500kcal',how:['普通より1〜2割速いペース（会話できる程度の息上がり）で歩く。','背筋を伸ばし踵から着地してつま先で蹴り出す歩き方を意識。','最初の10分はゆっくり歩きウォーミングアップ。'],caution:'気温が高い日は熱中症注意。水500mlを必ず持参。胸の痛み・強い息切れは即中止。'},
-    {name:'腕立て伏せ（通常）',spec:'10回×3セット',how:['平日メニューと同じフォーム。膝をつかない通常版に挑戦。','できない場合は膝つきで行う。'],caution:'疲労が溜まっている場合はできる回数でOK。'},
-    {name:'ダンベルカール（or 2Lペットボトル）',spec:'15回×3セット / 左右',how:['椅子に座りペットボトル（2L）を持つ。','肘を体の横に固定したまま前腕だけをゆっくり持ち上げる（2秒上・3秒下）。','上げきったところで1秒キープ。反動は使わない。'],caution:'肘が動くと効果が半減する。肘は固定し二の腕だけを意識。'},
-    {name:'スクワット（深め）',spec:'20回×3セット',how:['平日より少し深めに腰を落とす（太ももが床と平行になるまで）。','3秒で下げ・1秒止め・2秒で上がるテンポで丁寧に行う。'],caution:'膝に痛みが出たら平日版の浅いスクワットに戻すこと。'}
-  ]},
-  sun:{note:'日曜は翌週に向けた体の回復が最優先。強度を上げず、リフレッシュ目的で行う。',exercises:[
-    {name:'ウォーキング（軽め）',spec:'30〜45分 / 散歩ペース',how:['速歩ではなく気持ちのよい散歩ペースで歩く。','景色を楽しんだり音楽を聴きながらでOK。','娘さんと一緒に歩くのが最もおすすめ。'],caution:'日曜は回復日のため息が上がるほど歩く必要はない。'},
-    {name:'全身ストレッチ',spec:'15〜20分',how:['首・肩：頭を左右に傾けて各20秒。肩を前後に大きく回す×10回。','胸・背中：両手を後ろで組んで胸を張る30秒。前屈30秒。','股関節：仰向けで片膝を胸に引き寄せて30秒×左右。'],caution:'反動をつけずゆっくりと静的ストレッチで行う。週の疲れをリセットすることが目的。'}
-  ]}
+
+var TRAINING = {
+  weekday: {
+    note: '血圧が160を超える日はトレーニング中止。運動前に必ず血圧を確認すること。',
+    exercises: [
+      { name: 'ストレッチ（股関節・肩）', spec: '5〜8分',
+        how: ['床に座り両足の裏を合わせて股関節を開く。30秒×2セット。', '壁に手をついて胸を張り肩甲骨を寄せる。10秒×5回。', '首をゆっくり左右に傾け各20秒キープ。'],
+        caution: '運転直後は股関節・肩が硬い。反動をつけずゆっくり伸ばす。痛みがあれば即中止。' },
+      { name: 'スクワット（浅め）', spec: '20回 × 4セット / 休憩60秒',
+        how: ['足を肩幅より少し広めに開き、つま先をやや外側に向ける。', '背筋を伸ばしたまま膝がつま先より前に出ないよう腰を落とす。', '太ももが床と平行の手前（45度）で止め、息を吐きながら戻す。', '膝を完全に伸ばしきらず常に少し曲げた状態をキープ。'],
+        caution: '体重を膝が支えるため深くしゃがみすぎない。膝が内側に入らないよう注意。' },
+      { name: '腕立て伏せ（膝つきOK）', spec: '15回 × 3セット / 休憩60秒',
+        how: ['手を肩幅の1.5倍に開き、指先は斜め外側に向ける。', '体を一直線に保ちながら胸を床に近づける（5〜10cm手前で止める）。', '息を吐きながら押し上げる。きつければ膝をついて正しいフォームを優先。'],
+        caution: '腰が落ちると腰痛の原因になる。体幹を一直線に保つ。首を前に出さない。' },
+      { name: 'プランク', spec: '45秒 × 3セット / 休憩45秒',
+        how: ['肘を肩の真下につき前腕を床につける。足は腰幅に開く。', '頭からかかとまで一直線になるよう体幹に力を入れる。', 'お腹を凹ませるイメージで腹圧をかけ続ける。呼吸は絶対に止めない。'],
+        caution: '呼吸を止めると血圧が急上昇する。腰が上下してきたら終了の合図。' },
+      { name: 'マウンテンクライマー', spec: '20回 × 3セット / 休憩60秒',
+        how: ['腕立て伏せの姿勢（腕を伸ばした状態）からスタート。', '右膝を素早く胸に引き寄せ元に戻す。次に左膝。これで1回。', '体幹を固定したままリズムよく交互に行う。'],
+        caution: '有酸素要素が強く血圧が上がりやすい。ゆっくりから始め呼吸が乱れすぎたら一時停止。' },
+      { name: '室内ウォーキング / 踏み台昇降', spec: '15分',
+        how: ['廊下・部屋を少し速いペースで歩く（息が少し上がる程度）。', '踏み台は階段の1段目が最適（ベッドは不安定で危険）。', '腕を軽く振りながら歩くと消費カロリーが増える。'],
+        caution: '就寝直前の激しい有酸素運動は睡眠の質を下げる。踏み台は安定したものを使い転倒注意。' }
+    ]
+  },
+  sat: {
+    note: '屋外ウォーキングは江戸川土手がベスト。天候不良時は室内踏み台昇降に置き換える。',
+    exercises: [
+      { name: '屋外ウォーキング（速歩）', spec: '60〜90分 / 消費約400〜500kcal',
+        how: ['普通より1〜2割速いペース（会話できる程度の息上がり）で歩く。', '背筋を伸ばし踵から着地してつま先で蹴り出す歩き方を意識。', '最初の10分はゆっくり歩きウォーミングアップ。'],
+        caution: '気温が高い日は熱中症注意。水500mlを必ず持参。胸の痛み・強い息切れは即中止。' },
+      { name: '腕立て伏せ（通常）', spec: '10回 × 3セット',
+        how: ['平日メニューと同じフォーム。膝をつかない通常版に挑戦。', 'できない場合は膝つきで行う。フォームを崩さないことを優先。'],
+        caution: '疲労が溜まっている場合はできる回数でOK。' },
+      { name: 'ダンベルカール（か2Lペットボトル）', spec: '15回 × 3セット / 左右',
+        how: ['椅子に座りペットボトル（2L）または軽いダンベルを持つ。', '肘を体の横に固定したまま前腕だけをゆっくり持ち上げる（2秒上・3秒下）。', '上げきったところで1秒キープ。反動は使わない。'],
+        caution: '肘が動くと効果が半減する。肘は固定し二の腕だけを意識。' },
+      { name: 'スクワット（深め）', spec: '20回 × 3セット',
+        how: ['平日より少し深めに腰を落とす（太ももが床と平行になるまで）。', '3秒で下げ・1秒止め・2秒で上がるテンポで丁寧に行う。'],
+        caution: '膝に痛みが出たら平日版の浅いスクワットに戻すこと。' }
+    ]
+  },
+  sun: {
+    note: '日曜は翌週に向けた体の回復が最優先。強度を上げず、リフレッシュ目的で行う。',
+    exercises: [
+      { name: 'ウォーキング（軽め）', spec: '30〜45分 / 散歩ペース',
+        how: ['速歩ではなく気持ちのよい散歩ペースで歩く。', '景色を楽しんだり音楽を聴きながらでOK。', '娘さんと一緒に歩くのが最もおすすめ（家族時間と運動を両立）。'],
+        caution: '日曜は回復日のため息が上がるほど歩く必要はない。' },
+      { name: '全身ストレッチ', spec: '15〜20分',
+        how: ['首・肩：頭を左右に傾けて各20秒。肩を前後に大きく回す×10回。', '胸・背中：両手を後ろで組んで胸を張る30秒。前屈して背中を伸ばす30秒。', '股関節：仰向けで片膝を胸に引き寄せて30秒×左右。', '太もも：立位で片足を後ろに引いて太もも前を伸ばす30秒×左右。'],
+        caution: '反動をつけずゆっくりと静的ストレッチで行う。週の疲れをリセットすることが目的。' }
+    ]
+  }
 };
 
-// ═══════════════════
-// STATE
-// ═══════════════════
-var logDate=today(),trainDay='weekday',period=7;
-var exOpen={},exChecks={},weeklyDone=[false,false,false,false,false,false,false];
-var irrCat='walk',rFilter='all',analysisPeriod=7,sheetPeriod=7,rtDay='weekday';
+// ====== STORAGE ======
+var MK = 'okz5';
 
-// ═══════════════════
-// LOAD / SAVE
-// ═══════════════════
-function load(){
-  try{
-    var m=getM();
-    if(m.meta){
-      if(m.meta.exChecks) exChecks=m.meta.exChecks;
-      if(m.meta.weeklyDone) weeklyDone=m.meta.weeklyDone;
-      if(m.meta.weight){var wi=document.getElementById('weightIn');if(wi)wi.value=m.meta.weight;}
-    }
-  }catch(e){console.error('load error',e);}
+function loadM() {
+  try {
+    var raw = localStorage.getItem(MK);
+    if (!raw) return getDefaultMaster();
+    return JSON.parse(raw);
+  } catch(e) { return getDefaultMaster(); }
 }
-function save(){
-  try{
-    var w=document.getElementById('weightIn').value;
-    if(w) sdf(today(),'weight',parseFloat(w));
-    var m=getM();
-    m.meta=m.meta||{};
-    m.meta.exChecks=exChecks;
-    m.meta.weeklyDone=weeklyDone;
-    m.meta.weight=w;
+
+function getDefaultMaster() {
+  return { days:{}, bp:[], irr:[], rtl:[], meta:{}, settings:{} };
+}
+
+function saveM(m) {
+  try {
+    localStorage.setItem(MK, JSON.stringify(m));
+    try { sessionStorage.setItem(MK, JSON.stringify(m)); } catch(e2) {}
+  } catch(e) {}
+}
+
+function getM() {
+  var m = loadM();
+  if (!m.bp) m.bp = [];
+  if (!m.days) m.days = {};
+  if (!m.irr) m.irr = [];
+  if (!m.rtl) m.rtl = [];
+  if (!m.meta) m.meta = {};
+  if (!m.settings) m.settings = {};
+  return m;
+}
+
+function gdd(d) {
+  var m = getM();
+  return m.days[d] || { lunch:[], snack:[], dinner:[] };
+}
+function sdd(d, data) { var m = getM(); m.days[d] = data; saveM(m); }
+function sdf(d, f, v) { var data = gdd(d); data[f] = v; sdd(d, data); }
+function gbp() { return getM().bp || []; }
+function sbp(a) { var m = getM(); m.bp = a; saveM(m); }
+function girr() { return getM().irr || []; }
+function sirr(a) { var m = getM(); m.irr = a; saveM(m); }
+function grtl() { return getM().rtl || []; }
+function srtl(a) { var m = getM(); m.rtl = a; saveM(m); }
+function gall() { return Object.keys(getM().days || {}).sort(); }
+function gsets() { return getM().settings || {}; }
+function ssets(s) { var m = getM(); m.settings = s; saveM(m); }
+
+function today() {
+  var d = new Date();
+  return d.getFullYear() + '-' + p2(d.getMonth()+1) + '-' + p2(d.getDate());
+}
+function p2(n) { return String(n).padStart(2, '0'); }
+
+// ====== STATE ======
+var logDate = today();
+var trainDay = 'weekday';
+var period = 7;
+var exOpen = {};
+var exChecks = {};
+var weeklyDone = [false,false,false,false,false,false,false];
+var irrCat = 'walk';
+var rFilter = 'all';
+var analysisPeriod = 7;
+var sheetPeriod = 7;
+var rtDay = 'weekday';
+
+// ====== SETTINGS ======
+function loadSettings() {
+  var s = gsets();
+  var n = document.getElementById('sUserName');
+  var g = document.getElementById('sGoalWeight');
+  var t = document.getElementById('sTargetKcal');
+  var a = document.getElementById('sAge');
+  var ht = document.getElementById('sHeight');
+  var c = document.getElementById('sCondition');
+  var u = document.getElementById('sSheetUrl');
+  if (n && s.userName) n.value = s.userName;
+  if (g && s.goalWeight) g.value = s.goalWeight;
+  if (t && s.targetKcal) t.value = s.targetKcal;
+  if (a && s.age) a.value = s.age;
+  if (ht && s.height) ht.value = s.height;
+  if (c && s.condition) c.value = s.condition;
+  if (u && s.sheetUrl) u.value = s.sheetUrl;
+  updateGoalDisplay();
+}
+
+function saveSettings() {
+  var s = gsets();
+  var n = document.getElementById('sUserName');
+  var g = document.getElementById('sGoalWeight');
+  var t = document.getElementById('sTargetKcal');
+  var a = document.getElementById('sAge');
+  var ht = document.getElementById('sHeight');
+  var c = document.getElementById('sCondition');
+  var u = document.getElementById('sSheetUrl');
+  if (n) s.userName = n.value.trim();
+  if (g) s.goalWeight = parseFloat(g.value) || 0;
+  if (t) s.targetKcal = parseInt(t.value) || 1600;
+  if (a) s.age = parseInt(a.value) || 0;
+  if (ht) s.height = parseFloat(ht.value) || 0;
+  if (c) s.condition = c.value.trim();
+  if (u) s.sheetUrl = u.value.trim();
+  ssets(s);
+  updateGoalDisplay();
+  var msg = document.getElementById('settingsSaved');
+  if (msg) { msg.style.display = 'block'; setTimeout(function(){ msg.style.display = 'none'; }, 2000); }
+}
+
+function updateGoalDisplay() {
+  var s = gsets();
+  var goal = s.goalWeight || 0;
+  var target = s.targetKcal || 1600;
+  var user = s.userName || '';
+  var el = document.getElementById('goalWeightDisp');
+  if (el) el.textContent = goal > 0 ? goal.toFixed(1) : '--.-';
+  var tg = document.getElementById('targetKcalDisp');
+  if (tg) tg.textContent = target;
+  var rm = document.getElementById('ringRem');
+  if (rm) {
+    var total = parseInt(document.getElementById('ringNum').textContent) || 0;
+    var rem = target - total;
+    rm.textContent = rem > 0 ? rem + ' rem' : 'OVER ' + Math.abs(rem);
+  }
+  var un = document.getElementById('heroUserName');
+  if (un) un.textContent = user ? user + "'s " : '';
+}
+
+function getTargetKcal() {
+  var s = gsets();
+  return s.targetKcal || 1600;
+}
+
+// ====== LOAD / SAVE META ======
+function load() {
+  try {
+    var m = getM();
+    if (m.meta) {
+      if (m.meta.exChecks) exChecks = m.meta.exChecks;
+      if (m.meta.weeklyDone) weeklyDone = m.meta.weeklyDone;
+    }
+    var todayRec = gdd(today());
+    if (todayRec.weight) {
+      var wi = document.getElementById('weightIn');
+      if (wi) wi.value = todayRec.weight;
+    }
+  } catch(e) {}
+}
+
+function save() {
+  try {
+    var m = getM();
+    if (!m.meta) m.meta = {};
+    m.meta.exChecks = exChecks;
+    m.meta.weeklyDone = weeklyDone;
     saveM(m);
-  }catch(e){console.error('save error',e);}
+  } catch(e) {}
 }
 
-// ═══════════════════
-// HEADER
-// ═══════════════════
-function initHeader(){
-  var d=new Date();
-  var days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
-  var months=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  document.getElementById('hDay').textContent=d.getDate();
-  document.getElementById('hMeta').textContent=days[d.getDay()]+' / '+months[d.getMonth()];
-}
-function updateBPHeader(){
-  try{
-    var a=gbp();
-    var el=document.getElementById('bpDisp');
-    if(el&&a&&a.length>0) el.textContent=a[0].sys+'/'+a[0].dia;
-  }catch(e){}
+// ====== HEADER ======
+function initHeader() {
+  var d = new Date();
+  var days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  var months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  var hd = document.getElementById('hDay');
+  var hm = document.getElementById('hMeta');
+  if (hd) hd.textContent = d.getDate();
+  if (hm) hm.textContent = days[d.getDay()] + ' / ' + months[d.getMonth()];
 }
 
-// ═══════════════════
-// NAVIGATION
-// ═══════════════════
-function switchPage(id,btn){
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('active');});
-  document.getElementById('page-'+id).classList.add('active');
-  btn.classList.add('active');
-  if(id==='graph') setTimeout(renderGraphs,60);
-  if(id==='analysis') renderAnalysis();
-  if(id==='sheet'){loadSheetSettings();renderSheetPreview();initGASCode();}
+function updateBPHeader() {
+  var a = gbp();
+  var el = document.getElementById('bpDisp');
+  if (el && a && a.length > 0) el.textContent = a[0].sys + '/' + a[0].dia;
 }
 
-// ═══════════════════
-// DATE PICKER
-// ═══════════════════
-function initDP(){
-  var dp=document.getElementById('logDate');
-  if(!dp)return;
-  dp.value=logDate;
-  dp.addEventListener('change',function(){logDate=dp.value;renderLog();});
+// ====== NAVIGATION ======
+function switchPage(id, btn) {
+  var pages = document.querySelectorAll('.page');
+  for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
+  var nbs = document.querySelectorAll('.nb');
+  for (var j = 0; j < nbs.length; j++) nbs[j].classList.remove('active');
+  var pg = document.getElementById('page-' + id);
+  if (pg) pg.classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'graph') { setTimeout(renderGraphs, 60); }
+  if (id === 'analysis') { renderAnalysis(); }
+  if (id === 'sheet') { renderSheetPreview(); }
+  if (id === 'settings') { loadSettings(); }
 }
-function shiftDate(d){
-  var dt=new Date(logDate);
-  dt.setDate(dt.getDate()+d);
-  logDate=dt.getFullYear()+'-'+p2(dt.getMonth()+1)+'-'+p2(dt.getDate());
-  document.getElementById('logDate').value=logDate;
+
+// ====== DATE PICKER ======
+function initDP() {
+  var dp = document.getElementById('logDate');
+  if (!dp) return;
+  dp.value = logDate;
+  dp.addEventListener('change', function(){ logDate = dp.value; renderLog(); });
+}
+
+function shiftDate(delta) {
+  var dt = new Date(logDate);
+  dt.setDate(dt.getDate() + delta);
+  logDate = dt.getFullYear() + '-' + p2(dt.getMonth()+1) + '-' + p2(dt.getDate());
+  var dp = document.getElementById('logDate');
+  if (dp) dp.value = logDate;
   renderLog();
 }
 
-// ═══════════════════
-// FOOD LOG
-// ═══════════════════
-function addFood(meal){
-  var f=document.getElementById('f-'+meal);
-  var k=document.getElementById('k-'+meal);
-  var name=f.value.trim();
-  var kcal=parseInt(k.value)||0;
-  if(!name)return;
-  var data=gdd(logDate);
-  data[meal].push({name:name,kcal:kcal});
-  sdd(logDate,data);
-  f.value='';k.value='';
+// ====== FOOD LOG ======
+function addFood(meal) {
+  var fi = document.getElementById('fi-' + meal);
+  var ki = document.getElementById('ki-' + meal);
+  if (!fi || !ki) return;
+  var name = fi.value.trim();
+  var kcal = parseInt(ki.value) || 0;
+  if (!name) return;
+  var data = gdd(logDate);
+  if (!data[meal]) data[meal] = [];
+  data[meal].push({ name: name, kcal: kcal });
+  sdd(logDate, data);
+  fi.value = '';
+  ki.value = '';
   renderLog();
 }
-function removeFood(meal,idx){
-  var data=gdd(logDate);
-  data[meal].splice(idx,1);
-  sdd(logDate,data);
+
+function removeFood(meal, idx) {
+  var data = gdd(logDate);
+  if (data[meal]) data[meal].splice(idx, 1);
+  sdd(logDate, data);
   renderLog();
 }
-function renderLog(){
-  var data=gdd(logDate);
-  var T=1600;var total=0;
-  var mm={lunch:['lNum','lBar'],snack:['sNum','sBar'],dinner:['dNum','dBar']};
-  ['lunch','snack','dinner'].forEach(function(m){
-    var mt=data[m].reduce(function(s,e){return s+e.kcal;},0);
-    total+=mt;
-    document.getElementById('t-'+m).textContent=mt;
-    document.getElementById(mm[m][0]).textContent=mt;
-    document.getElementById(mm[m][1]).style.width=Math.min(mt/T*100,100)+'%';
-    var c=document.getElementById('e-'+m);
-    if(data[m].length){
-      c.innerHTML=data[m].map(function(e,i){
-        return '<div class="entry"><span class="enm">'+e.name+'</span><span class="ekc">'+e.kcal+'kcal</span><button class="edel" onclick="removeFood(''+m+'','+i+')">x</button></div>';
-      }).join('');
-    }else{
-      c.innerHTML='<div class="no-entry">まだ記録なし</div>';
+
+function renderLog() {
+  var data = gdd(logDate);
+  var TARGET = getTargetKcal();
+  var total = 0;
+  var meals = ['lunch', 'snack', 'dinner'];
+  var numIds = ['lNum', 'sNum', 'dNum'];
+  var barIds = ['lBar', 'sBar', 'dBar'];
+
+  for (var mi = 0; mi < meals.length; mi++) {
+    var m = meals[mi];
+    var items = data[m] || [];
+    var mt = 0;
+    for (var ii = 0; ii < items.length; ii++) mt += items[ii].kcal;
+    total += mt;
+
+    var tEl = document.getElementById('t-' + m);
+    if (tEl) tEl.textContent = mt;
+    var nEl = document.getElementById(numIds[mi]);
+    if (nEl) nEl.textContent = mt;
+    var bEl = document.getElementById(barIds[mi]);
+    if (bEl) bEl.style.width = Math.min(mt / TARGET * 100, 100) + '%';
+
+    var container = document.getElementById('e-' + m);
+    if (!container) continue;
+    if (!items.length) {
+      container.innerHTML = '<div class="no-entry">まだ記録なし</div>';
+    } else {
+      var html = '';
+      for (var ei = 0; ei < items.length; ei++) {
+        html += '<div class="entry">'
+          + '<span class="enm">' + items[ei].name + '</span>'
+          + '<span class="ekc">' + items[ei].kcal + 'kcal</span>'
+          + '<button class="edel" onclick="removeFood(\'' + m + '\',' + ei + ')">x</button>'
+          + '</div>';
+      }
+      container.innerHTML = html;
     }
-  });
-  document.getElementById('ringNum').textContent=total;
-  document.getElementById('hKcal').textContent=total;
-  var rem=T-total;
-  document.getElementById('ringRem').textContent=rem>0?rem+' rem':'OVER '+Math.abs(rem);
-  var circ=264;
-  document.getElementById('ringFill').style.strokeDashoffset=circ-(circ*Math.min(total/T,1));
+  }
+
+  var rn = document.getElementById('ringNum');
+  if (rn) rn.textContent = total;
+  var hk = document.getElementById('hKcal');
+  if (hk) hk.textContent = total;
+  var rem = TARGET - total;
+  var rr = document.getElementById('ringRem');
+  if (rr) rr.textContent = rem > 0 ? rem + ' rem' : 'OVER ' + Math.abs(rem);
+  var circ = 264;
+  var rf = document.getElementById('ringFill');
+  if (rf) rf.style.strokeDashoffset = circ - (circ * Math.min(total / TARGET, 1));
 }
 
-// ═══════════════════
-// BLOOD PRESSURE
-// ═══════════════════
-function initBPDate(){var el=document.getElementById('bpDate');if(el)el.value=today();}
-function saveBP(){
-  var sys=document.getElementById('bpSys').value;
-  var dia=document.getElementById('bpDia').value;
-  var pulse=document.getElementById('bpPulse').value;
-  var dateInput=document.getElementById('bpDate').value||today();
-  if(!sys||!dia)return;
-  var now=new Date();
-  var a=gbp();
-  a.unshift({date:dateInput,time:p2(now.getHours())+':'+p2(now.getMinutes()),sys:+sys,dia:+dia,pulse:+pulse||0});
-  a.sort(function(x,y){return y.date.localeCompare(x.date)||y.time.localeCompare(x.time);});
-  if(a.length>60)a.pop();
+// ====== BP ======
+function initBPDate() { var el = document.getElementById('bpDate'); if (el) el.value = today(); }
+
+function saveBP() {
+  var sys = document.getElementById('bpSys');
+  var dia = document.getElementById('bpDia');
+  var pulse = document.getElementById('bpPulse');
+  var dateEl = document.getElementById('bpDate');
+  if (!sys || !dia || !sys.value || !dia.value) return;
+  var dateVal = dateEl ? (dateEl.value || today()) : today();
+  var now = new Date();
+  var a = gbp();
+  a.unshift({ date: dateVal, time: p2(now.getHours()) + ':' + p2(now.getMinutes()), sys: parseInt(sys.value), dia: parseInt(dia.value), pulse: parseInt(pulse ? pulse.value : 0) || 0 });
+  a.sort(function(x, y){ return y.date > x.date ? 1 : y.date < x.date ? -1 : 0; });
+  if (a.length > 60) a.pop();
   sbp(a);
-  document.getElementById('bpSys').value='';
-  document.getElementById('bpDia').value='';
-  document.getElementById('bpPulse').value='';
-  var el=document.getElementById('bpDisp');
-  if(el)el.textContent=sys+'/'+dia;
+  sys.value = ''; dia.value = ''; if (pulse) pulse.value = '';
+  var bd = document.getElementById('bpDisp');
+  if (bd) bd.textContent = a[0].sys + '/' + a[0].dia;
   renderBPH();
-  renderGraphs();
-}
-function bpSt(sys){return sys<120?{c:'good',t:'正常'}:sys<140?{c:'warn',t:'注意'}:{c:'high',t:'高め'};}
-function renderBPH(){
-  var a=gbp();
-  var c=document.getElementById('bpHist');
-  if(!a.length){if(c)c.innerHTML='<div style="font-size:.66rem;color:var(--muted);padding:7px 0">記録なし</div>';return;}
-  var el=document.getElementById('bpDisp');
-  if(el)el.textContent=a[0].sys+'/'+a[0].dia;
-  if(c){
-    c.innerHTML=a.slice(0,10).map(function(r){
-      var st=bpSt(r.sys);
-      return '<div class="bp-row"><span class="bpdt">'+r.date.slice(5)+' '+r.time+'</span><span class="bpsy">'+r.sys+'</span><span class="bpsp">/</span><span class="bpdi">'+r.dia+'</span><span class="bppu">'+r.pulse+'bpm</span><span class="bpbdg '+st.c+'">'+st.t+'</span></div>';
-    }).join('');
-  }
+  if (document.getElementById('page-graph').classList.contains('active')) renderGraphs();
 }
 
-// ═══════════════════
-// WEIGHT LOG
-// ═══════════════════
-function initWtDate(){var el=document.getElementById('wtDate');if(el)el.value=today();}
-function saveWeight(){
-  var val=document.getElementById('wtVal').value;
-  var dateInput=document.getElementById('wtDate').value||today();
-  if(!val)return;
-  sdf(dateInput,'weight',parseFloat(val));
-  if(dateInput===today()){var el=document.getElementById('weightIn');if(el)el.value=val;}
-  document.getElementById('wtVal').value='';
+function bpSt(sys) {
+  if (sys < 120) return { c: 'good', t: 'Normal' };
+  if (sys < 140) return { c: 'warn', t: 'Caution' };
+  return { c: 'high', t: 'High' };
+}
+
+function renderBPH() {
+  var a = gbp();
+  var c = document.getElementById('bpHist');
+  if (!c) return;
+  if (!a.length) { c.innerHTML = '<div class="no-hist">記録なし</div>'; return; }
+  var bd = document.getElementById('bpDisp');
+  if (bd) bd.textContent = a[0].sys + '/' + a[0].dia;
+  var html = '';
+  for (var i = 0; i < Math.min(a.length, 10); i++) {
+    var r = a[i];
+    var st = bpSt(r.sys);
+    html += '<div class="bp-row">'
+      + '<span class="bpdt">' + r.date.slice(5) + ' ' + r.time + '</span>'
+      + '<span class="bpsy">' + r.sys + '</span>'
+      + '<span class="bpsp">/</span>'
+      + '<span class="bpdi">' + r.dia + '</span>'
+      + '<span class="bppu">' + r.pulse + 'bpm</span>'
+      + '<span class="bpbdg ' + st.c + '">' + st.t + '</span>'
+      + '</div>';
+  }
+  c.innerHTML = html;
+}
+
+// ====== WEIGHT LOG ======
+function initWtDate() { var el = document.getElementById('wtDate'); if (el) el.value = today(); }
+
+function saveWeight() {
+  var val = document.getElementById('wtVal');
+  var dateEl = document.getElementById('wtDate');
+  if (!val || !val.value) return;
+  var dateVal = dateEl ? (dateEl.value || today()) : today();
+  sdf(dateVal, 'weight', parseFloat(val.value));
+  if (dateVal === today()) {
+    var wi = document.getElementById('weightIn');
+    if (wi) wi.value = val.value;
+  }
+  val.value = '';
   renderWtHist();
+  if (document.getElementById('page-graph').classList.contains('active')) renderGraphs();
+}
+
+function renderWtHist() {
+  var c = document.getElementById('wtHist');
+  if (!c) return;
+  var entries = [];
+  var dates = gall();
+  for (var i = 0; i < dates.length; i++) {
+    var r = gdd(dates[i]);
+    if (r.weight) entries.push({ date: dates[i], weight: r.weight });
+  }
+  entries.sort(function(a, b){ return b.date > a.date ? 1 : -1; });
+  if (!entries.length) { c.innerHTML = '<div class="no-hist">記録なし</div>'; return; }
+  var html = '';
+  for (var j = 0; j < Math.min(entries.length, 8); j++) {
+    var e = entries[j];
+    html += '<div class="bp-row">'
+      + '<span class="bpdt">' + e.date.slice(5) + '</span>'
+      + '<span class="wt-val">' + e.weight.toFixed(1) + ' kg</span>'
+      + '</div>';
+  }
+  c.innerHTML = html;
+}
+
+// ====== GRAPHS ======
+function setPeriod(d, btn) {
+  period = d;
+  var tabs = document.querySelectorAll('.ptab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('on');
+  if (btn) btn.classList.add('on');
   renderGraphs();
 }
-function renderWtHist(){
-  var c=document.getElementById('wtHist');
-  if(!c)return;
-  var entries=[];
-  gall().forEach(function(d){var r=gdd(d);if(r.weight)entries.push({date:d,weight:r.weight});});
-  entries.sort(function(a,b){return b.date.localeCompare(a.date);});
-  if(!entries.length){c.innerHTML='<div style="font-size:.66rem;color:var(--muted);padding:7px 0">記録なし</div>';return;}
-  c.innerHTML=entries.slice(0,8).map(function(e){
-    return '<div class="bp-row"><span class="bpdt">'+e.date.slice(5)+'</span><span style="font-family:var(--fm);font-size:.75rem;font-weight:700;color:var(--palm)">'+e.weight.toFixed(1)+'</span><span style="font-size:.6rem;color:var(--muted)"> kg</span></div>';
-  }).join('');
+
+function getWData() {
+  var all = [];
+  var dates = gall();
+  for (var i = 0; i < dates.length; i++) {
+    var r = gdd(dates[i]);
+    if (r.weight) all.push({ date: dates[i], weight: r.weight });
+  }
+  return all.sort(function(a, b){ return a.date > b.date ? 1 : -1; });
 }
 
-// ═══════════════════
-// GRAPHS
-// ═══════════════════
-function setPeriod(d,btn){
-  period=d;
-  document.querySelectorAll('.ptab').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on');
-  renderGraphs();
-}
-function getWData(){
-  var all=[];
-  gall().forEach(function(d){var r=gdd(d);if(r.weight&&!all.find(function(x){return x.date===d;}))all.push({date:d,weight:r.weight});});
-  return all.sort(function(a,b){return a.date.localeCompare(b.date);});
-}
-function getBData(){
-  var all=[];
-  gbp().forEach(function(r){if(!all.find(function(x){return x.date===r.date;}))all.push({date:r.date,sys:r.sys,dia:r.dia});});
-  return all.sort(function(a,b){return a.date.localeCompare(b.date);});
-}
-function fp(arr,f){
-  if(!period)return arr;
-  var c=new Date();c.setDate(c.getDate()-period);
-  var cs=c.getFullYear()+'-'+p2(c.getMonth()+1)+'-'+p2(c.getDate());
-  return arr.filter(function(d){return d[f]>=cs;});
-}
-function drawChart(cvId,xlId,pts,c1,c2,lo,hi){
-  var cv=document.getElementById(cvId);if(!cv)return;
-  var ctx=cv.getContext('2d');var dpr=window.devicePixelRatio||1;
-  var W=cv.parentElement.getBoundingClientRect().width;var H=120;
-  cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+'px';cv.style.height=H+'px';
-  ctx.scale(dpr,dpr);ctx.clearRect(0,0,W,H);
-  if(pts.length<2){ctx.fillStyle='rgba(122,158,176,.5)';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText('データ不足',W/2,H/2);return;}
-  var pl=28,pr=7,pt=7,pb=19,cw=W-pl-pr,ch=H-pt-pb,range=hi-lo||1;
-  for(var i=0;i<=4;i++){
-    var y=pt+(ch/4)*i;
-    ctx.strokeStyle='rgba(0,119,182,.07)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(pl+cw,y);ctx.stroke();
-    var v=hi-(range/4)*i;
-    ctx.fillStyle='rgba(122,158,176,.75)';ctx.font=(8*dpr/dpr)+'px JetBrains Mono,monospace';ctx.textAlign='right';
-    ctx.fillText(v.toFixed(1),pl-3,y+3);
+function getBData() {
+  var all = [];
+  var bp = gbp();
+  for (var i = 0; i < bp.length; i++) {
+    var r = bp[i];
+    var found = false;
+    for (var j = 0; j < all.length; j++) { if (all[j].date === r.date) { found = true; break; } }
+    if (!found) all.push({ date: r.date, sys: r.sys, dia: r.dia });
   }
-  var xs=pts.map(function(_,i){return pl+(i/(pts.length-1))*cw;});
-  var ys=pts.map(function(p){return pt+(1-(p.v-lo)/range)*ch;});
-  var grad=ctx.createLinearGradient(0,pt,0,pt+ch);
-  grad.addColorStop(0,c1+'48');grad.addColorStop(1,c1+'00');
-  ctx.fillStyle=grad;ctx.beginPath();
-  xs.forEach(function(x,i){if(i===0)ctx.moveTo(x,ys[i]);else ctx.lineTo(x,ys[i]);});
-  ctx.lineTo(xs[xs.length-1],pt+ch);ctx.lineTo(xs[0],pt+ch);ctx.closePath();ctx.fill();
-  var lg=ctx.createLinearGradient(pl,0,pl+cw,0);
-  lg.addColorStop(0,c1);lg.addColorStop(1,c2||c1);
-  ctx.strokeStyle=lg;ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.lineCap='round';
-  ctx.beginPath();xs.forEach(function(x,i){if(i===0)ctx.moveTo(x,ys[i]);else ctx.lineTo(x,ys[i]);});ctx.stroke();
-  pts.forEach(function(_,i){ctx.beginPath();ctx.arc(xs[i],ys[i],3.5,0,Math.PI*2);ctx.fillStyle=c1;ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();});
-  var xl=document.getElementById(xlId);
-  if(xl){
-    var step=Math.max(1,Math.floor(pts.length/5));
-    xl.innerHTML=pts.filter(function(_,i){return i%step===0||i===pts.length-1;}).map(function(p){return '<span>'+p.label+'</span>';}).join('');
-  }
-}
-function renderGraphs(){
-  var wd=fp(getWData(),'date');
-  if(wd.length){
-    var lt=wd[wd.length-1];var fi=wd[0];
-    document.getElementById('gW').innerHTML=lt.weight.toFixed(1)+'<span style="font-size:.95rem;color:var(--muted)">kg</span>';
-    var diff=lt.weight-fi.weight;var gel=document.getElementById('gWd');
-    gel.textContent=(diff<0?'':'+')+diff.toFixed(1)+'kg';
-    gel.className='gc-diff '+(diff<=0?'good':'bad');
-    var vals=wd.map(function(d){return d.weight;});
-    drawChart('cvW','xlW',wd.map(function(d){return{v:d.weight,label:d.date.slice(5)};}),
-      '#0077b6','#48cae4',Math.min.apply(null,vals)-1,Math.max.apply(null,vals)+.5);
-    var loss=fi.weight-lt.weight;
-    document.getElementById('totalLoss').textContent=(loss>0?'-':'+')+Math.abs(loss).toFixed(1)+'kg';
-    var sw=document.getElementById('startWeight');
-    if(sw) sw.innerHTML=fi.weight.toFixed(1)+'<span style="font-size:.75rem">kg</span>';
-  }
-  var bd=fp(getBData(),'date');
-  if(bd.length){
-    var lt2=bd[bd.length-1];var fi2=bd[0];
-    document.getElementById('gB').innerHTML=lt2.sys+'<span style="font-size:.95rem;color:var(--muted)">mmHg</span>';
-    var diff2=lt2.sys-fi2.sys;var gel2=document.getElementById('gBd');
-    gel2.textContent=(diff2<0?'':'+')+diff2+'mmHg';
-    gel2.className='gc-diff '+(diff2<=0?'good':'bad');
-    var vals2=bd.map(function(d){return d.sys;});
-    drawChart('cvB','xlB',bd.map(function(d){return{v:d.sys,label:d.date.slice(5)};}),
-      '#e63946','#f77f00',Math.min.apply(null,vals2)-5,Math.max.apply(null,vals2)+5);
-    var sbpEl=document.getElementById('startBP');
-    if(sbpEl&&fi2) sbpEl.innerHTML=fi2.sys+'/'+fi2.dia+'<span style="font-size:.75rem">mmHg</span>';
-  }
-  document.getElementById('daysLogged').textContent=gall().length;
+  return all.sort(function(a, b){ return a.date > b.date ? 1 : -1; });
 }
 
-// ═══════════════════
-// RECIPES
-// ═══════════════════
-function filterR(f,btn){
-  rFilter=f;
-  document.querySelectorAll('.rf-btn').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on');
-  renderRecipes();
-}
-function renderRecipes(){
-  var grid=document.getElementById('recipeGrid');
-  var list=rFilter==='all'?RECIPES:RECIPES.filter(function(r){return r.tags.indexOf(rFilter)>=0;});
-  grid.innerHTML=list.map(function(r){
-    return '<div class="recipe-card" onclick="openRecipe('+r.id+')">'
-      +'<div class="rc-thumb" style="background:'+r.bg+'">'
-      +'<span style="font-size:2.2rem">'+r.emoji+'</span>'
-      +'<span class="rc-tag '+r.type+'">'+(r.type==='lunch'?'昼食':'夕食')+'</span>'
-      +'</div>'
-      +'<div class="rc-body">'
-      +'<div class="rc-name">'+r.name+'</div>'
-      +'<div class="rc-footer">'
-      +'<span class="rc-kcal">'+r.kcal+' kcal</span>'
-      +'<span class="rc-time">'+r.time+'</span>'
-      +'</div></div></div>';
-  }).join('');
-}
-function openRecipe(id){
-  var r=RECIPES.find(function(x){return x.id===id;});if(!r)return;
-  var modal=document.getElementById('recipeModalContent');
-  var nutrHtml='<div class="rm-nutr">'
-    +'<div class="rm-nc"><span class="rm-nv">'+r.nutr.kcal+'</span><span class="rm-nl">kcal</span></div>'
-    +'<div class="rm-nc"><span class="rm-nv">'+r.nutr.p+'</span><span class="rm-nl">タンパク質</span></div>'
-    +'<div class="rm-nc"><span class="rm-nv">'+r.nutr.f+'</span><span class="rm-nl">脂質</span></div>'
-    +'<div class="rm-nc"><span class="rm-nv">'+r.nutr.c+'</span><span class="rm-nl">糖質</span></div>'
-    +'</div>';
-  var ingrHtml=r.ingr.map(function(i){return '<div class="rm-ingr"><span>'+i.n+'</span><span class="rm-amt">'+i.a+'</span></div>';}).join('');
-  var stepHtml=r.steps.map(function(s,i){return '<div class="rm-step"><div class="rm-sn">'+(i+1)+'</div><div class="rm-st">'+s+'</div></div>';}).join('');
-  modal.innerHTML='<div class="mhandle"></div>'
-    +'<div style="background:'+r.bg+';border-radius:14px;padding:16px;margin-bottom:14px">'
-    +'<div style="font-size:2.5rem;margin-bottom:6px">'+r.emoji+'</div>'
-    +'<div style="font-family:var(--fd);font-size:1.2rem;color:var(--text);line-height:1.2">'+r.name+'</div>'
-    +'<div style="font-size:.58rem;font-weight:800;color:rgba(0,0,0,.5);margin-top:3px">'+r.time+'</div>'
-    +'</div>'+nutrHtml
-    +'<div style="font-size:.6rem;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:7px">材料</div>'
-    +'<div style="margin-bottom:14px">'+ingrHtml+'</div>'
-    +'<div style="font-size:.6rem;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:7px">作り方</div>'
-    +'<div style="margin-bottom:12px">'+stepHtml+'</div>'
-    +'<div class="rm-tip">'+r.tip+'</div>'
-    +'<button class="print-btn" onclick="printRecipe('+r.id+')">印刷 / PDF保存</button>';
-  document.getElementById('recipeModal').classList.add('open');
-}
-function closeRM(e){if(e.target===document.getElementById('recipeModal'))document.getElementById('recipeModal').classList.remove('open');}
-function printRecipe(id){
-  var r=RECIPES.find(function(x){return x.id===id;});if(!r)return;
-  var win=window.open('','_blank','width=600,height=800');
-  var css='body{font-family:sans-serif;padding:24px;color:#1a3a4a;max-width:500px;margin:0 auto}'
-    +'h1{font-size:1.3rem;margin-bottom:4px;color:#0077b6}'
-    +'h2{font-size:.85rem;color:#7a9eb0;margin:14px 0 5px;border-bottom:1px solid #e0f4ff;padding-bottom:4px}'
-    +'.nutr{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:#e0f4ff;border-radius:8px;padding:12px;margin-bottom:14px;text-align:center}'
-    +'.nv{font-size:1.1rem;font-weight:700;color:#0077b6;display:block}'
-    +'.nl{font-size:.55rem;color:#7a9eb0;text-transform:uppercase}'
-    +'.ingr{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed #e0f4ff;font-size:.82rem}'
-    +'.amt{color:#f77f00;font-weight:700}'
-    +'.step{display:flex;gap:8px;margin-bottom:6px;font-size:.8rem}'
-    +'.sn{background:#0077b6;color:white;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;flex-shrink:0}'
-    +'.tip{background:#e0f7ff;border-left:3px solid #48cae4;padding:8px 10px;font-size:.75rem;border-radius:0 6px 6px 0;margin-top:10px}';
-  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+r.name+'</title><style>'+css+'</style></head><body>'
-    +'<div style="font-size:2rem;margin-bottom:6px">'+r.emoji+'</div>'
-    +'<h1>'+r.name+'</h1>'
-    +'<p style="font-size:.7rem;color:#7a9eb0">'+r.time+' / '+(r.type==='lunch'?'昼食向け':'夕食向け')+'</p>'
-    +'<div class="nutr">'
-    +'<div><span class="nv">'+r.nutr.kcal+'</span><span class="nl">kcal</span></div>'
-    +'<div><span class="nv">'+r.nutr.p+'</span><span class="nl">タンパク質</span></div>'
-    +'<div><span class="nv">'+r.nutr.f+'</span><span class="nl">脂質</span></div>'
-    +'<div><span class="nv">'+r.nutr.c+'</span><span class="nl">糖質</span></div>'
-    +'</div>'
-    +'<h2>材料</h2>'
-    +r.ingr.map(function(i){return '<div class="ingr"><span>'+i.n+'</span><span class="amt">'+i.a+'</span></div>';}).join('')
-    +'<h2>作り方</h2>'
-    +r.steps.map(function(s,i){return '<div class="step"><div class="sn">'+(i+1)+'</div><span>'+s+'</span></div>';}).join('')
-    +'<div class="tip">'+r.tip+'</div>'
-    +'</body></html>';
-  win.document.write(html);
-  win.document.close();
-  setTimeout(function(){win.print();},500);
+function filterByPeriod(arr, field) {
+  if (!period) return arr;
+  var c = new Date();
+  c.setDate(c.getDate() - period);
+  var cs = c.getFullYear() + '-' + p2(c.getMonth()+1) + '-' + p2(c.getDate());
+  var result = [];
+  for (var i = 0; i < arr.length; i++) { if (arr[i][field] >= cs) result.push(arr[i]); }
+  return result;
 }
 
-// ═══════════════════
-// TRAINING
-// ═══════════════════
-function setTD(day,btn){
-  trainDay=day;
-  document.querySelectorAll('.tdt').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on');
+function drawChart(cvId, xlId, pts, c1, c2, lo, hi) {
+  var cv = document.getElementById(cvId);
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var dpr = window.devicePixelRatio || 1;
+  var W = cv.parentElement.getBoundingClientRect().width || 300;
+  var H = 120;
+  cv.width = W * dpr; cv.height = H * dpr;
+  cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+  if (!pts || pts.length < 2) {
+    ctx.fillStyle = 'rgba(122,158,176,.5)';
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('データ不足', W / 2, H / 2);
+    return;
+  }
+  var pl=28, pr=7, pt=7, pb=19;
+  var cw = W - pl - pr;
+  var ch = H - pt - pb;
+  var range = hi - lo || 1;
+  for (var gi = 0; gi <= 4; gi++) {
+    var gy = pt + (ch / 4) * gi;
+    ctx.strokeStyle = 'rgba(0,119,182,.07)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pl, gy); ctx.lineTo(pl + cw, gy); ctx.stroke();
+    var gv = hi - (range / 4) * gi;
+    ctx.fillStyle = 'rgba(122,158,176,.75)';
+    ctx.font = '8px monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(gv.toFixed(1), pl - 3, gy + 3);
+  }
+  var xs = [], ys = [];
+  for (var pi = 0; pi < pts.length; pi++) {
+    xs.push(pl + (pi / (pts.length - 1)) * cw);
+    ys.push(pt + (1 - (pts[pi].v - lo) / range) * ch);
+  }
+  var grad = ctx.createLinearGradient(0, pt, 0, pt + ch);
+  grad.addColorStop(0, c1 + '48'); grad.addColorStop(1, c1 + '00');
+  ctx.fillStyle = grad; ctx.beginPath();
+  for (var fi = 0; fi < pts.length; fi++) {
+    if (fi === 0) ctx.moveTo(xs[0], ys[0]); else ctx.lineTo(xs[fi], ys[fi]);
+  }
+  ctx.lineTo(xs[xs.length-1], pt + ch);
+  ctx.lineTo(xs[0], pt + ch);
+  ctx.closePath(); ctx.fill();
+  var lg = ctx.createLinearGradient(pl, 0, pl + cw, 0);
+  lg.addColorStop(0, c1); lg.addColorStop(1, c2 || c1);
+  ctx.strokeStyle = lg; ctx.lineWidth = 2.5;
+  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ctx.beginPath();
+  for (var li = 0; li < pts.length; li++) {
+    if (li === 0) ctx.moveTo(xs[0], ys[0]); else ctx.lineTo(xs[li], ys[li]);
+  }
+  ctx.stroke();
+  for (var di = 0; di < pts.length; di++) {
+    ctx.beginPath(); ctx.arc(xs[di], ys[di], 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = c1; ctx.fill();
+    ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.stroke();
+  }
+  var xl = document.getElementById(xlId);
+  if (xl) {
+    var step = Math.max(1, Math.floor(pts.length / 5));
+    var labels = [];
+    for (var xi = 0; xi < pts.length; xi++) {
+      if (xi % step === 0 || xi === pts.length - 1) labels.push('<span>' + pts[xi].label + '</span>');
+    }
+    xl.innerHTML = labels.join('');
+  }
+}
+
+function renderGraphs() {
+  var wd = filterByPeriod(getWData(), 'date');
+  var gwEl = document.getElementById('gW');
+  var gwdEl = document.getElementById('gWd');
+  var tlEl = document.getElementById('totalLoss');
+  var swEl = document.getElementById('startWeight');
+  if (wd.length && gwEl) {
+    var lt = wd[wd.length - 1];
+    var fi = wd[0];
+    gwEl.innerHTML = lt.weight.toFixed(1) + '<span style="font-size:.9rem;color:var(--muted)">kg</span>';
+    var diff = lt.weight - fi.weight;
+    if (gwdEl) { gwdEl.textContent = (diff < 0 ? '' : '+') + diff.toFixed(1) + 'kg'; gwdEl.className = 'gc-diff ' + (diff <= 0 ? 'good' : 'bad'); }
+    var vals = [];
+    for (var wi = 0; wi < wd.length; wi++) vals.push(wd[wi].weight);
+    var minV = Math.min.apply(null, vals) - 1;
+    var maxV = Math.max.apply(null, vals) + 0.5;
+    var wPts = [];
+    for (var wpi = 0; wpi < wd.length; wpi++) wPts.push({ v: wd[wpi].weight, label: wd[wpi].date.slice(5) });
+    drawChart('cvW', 'xlW', wPts, '#0077b6', '#48cae4', minV, maxV);
+    var loss = fi.weight - lt.weight;
+    if (tlEl) tlEl.textContent = (loss > 0 ? '-' : '+') + Math.abs(loss).toFixed(1) + 'kg';
+    if (swEl) swEl.innerHTML = fi.weight.toFixed(1) + '<span style="font-size:.75rem">kg</span>';
+  }
+  var bd = filterByPeriod(getBData(), 'date');
+  var gbEl = document.getElementById('gB');
+  var gbdEl = document.getElementById('gBd');
+  var sbpEl = document.getElementById('startBP');
+  if (bd.length && gbEl) {
+    var lt2 = bd[bd.length - 1];
+    var fi2 = bd[0];
+    gbEl.innerHTML = lt2.sys + '<span style="font-size:.9rem;color:var(--muted)">mmHg</span>';
+    var diff2 = lt2.sys - fi2.sys;
+    if (gbdEl) { gbdEl.textContent = (diff2 < 0 ? '' : '+') + diff2 + 'mmHg'; gbdEl.className = 'gc-diff ' + (diff2 <= 0 ? 'good' : 'bad'); }
+    var vals2 = [];
+    for (var bi = 0; bi < bd.length; bi++) vals2.push(bd[bi].sys);
+    var minV2 = Math.min.apply(null, vals2) - 5;
+    var maxV2 = Math.max.apply(null, vals2) + 5;
+    var bPts = [];
+    for (var bpi = 0; bpi < bd.length; bpi++) bPts.push({ v: bd[bpi].sys, label: bd[bpi].date.slice(5) });
+    drawChart('cvB', 'xlB', bPts, '#e63946', '#f77f00', minV2, maxV2);
+    if (sbpEl && fi2) sbpEl.innerHTML = fi2.sys + '/' + fi2.dia + '<span style="font-size:.75rem">mmHg</span>';
+  }
+  var dlEl = document.getElementById('daysLogged');
+  if (dlEl) dlEl.textContent = gall().length;
+}
+
+// ====== TRAINING ======
+function setTD(day, btn) {
+  trainDay = day;
+  var tabs = document.querySelectorAll('.tdt');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('on');
+  if (btn) btn.classList.add('on');
   renderTraining();
 }
-function toggleEx(i){
-  var k=trainDay+'_'+i;exOpen[k]=!exOpen[k];renderTraining();
+function toggleEx(i) { var k = trainDay + '_' + i; exOpen[k] = !exOpen[k]; renderTraining(); }
+function toggleChk(i) {
+  var k = trainDay + '_' + i;
+  exChecks[k] = !exChecks[k];
+  if (exChecks[k]) weeklyDone[new Date().getDay()] = true;
+  save(); renderTraining(); renderWeek();
 }
-function toggleChk(i){
-  var k=trainDay+'_'+i;exChecks[k]=!exChecks[k];
-  if(exChecks[k])weeklyDone[new Date().getDay()]=true;
-  save();renderTraining();renderWeek();
-}
-function renderTraining(){
-  var menu=TRAINING[trainDay];
-  var c=document.getElementById('trainContent');
-  var html='<div class="cs" style="margin-bottom:10px"><p>'+menu.note+'</p></div>';
-  menu.exercises.forEach(function(ex,i){
-    var k=trainDay+'_'+i;
-    var open=exOpen[k]||false;
-    var ck=exChecks[k]||false;
-    var howHtml=ex.how.map(function(h,j){
-      return '<div class="hstep"><div class="hn">'+(j+1)+'</div><div class="ht">'+h+'</div></div>';
-    }).join('');
-    html+='<div class="exc'+(open?' open':'')+(ck?' done-c':'')+'"><div class="exhd" onclick="toggleEx('+i+')">'
-      +'<div class="exnb">'+(i+1)+'</div>'
-      +'<div class="exmt"><div class="exnm">'+ex.name+'</div><div class="exsp">'+ex.spec+'</div></div>'
-      +'<span class="exdb">完了!</span><span class="exch">▼</span>'
-      +'</div><div class="exbody">'
-      +'<div class="exsl">やり方</div>'+howHtml
-      +'<div class="cs"><p><strong>注意点：</strong>'+ex.caution+'</p></div>'
-      +'<div class="cr'+(ck?' ck':'')+'" onclick="toggleChk('+i+')">'
-      +'<div class="crb">'+(ck?'✓':'')+'</div>'
-      +'<span class="crl">'+(ck?'完了！':'完了としてマーク')+'</span>'
-      +'</div></div></div>';
-  });
-  c.innerHTML=html;
-}
-function renderWeek(){
-  var labels=['日','月','火','水','木','金','土'];
-  var td=new Date().getDay();
-  document.getElementById('weekCells').innerHTML=labels.map(function(l,i){
-    return '<div class="wci"><span class="wcd">'+l+'</span>'
-      +'<div class="wdot'+(i===td?' today':'')+(weeklyDone[i]?' done':'')+'" onclick="toggleWD('+i+')">'
-      +(weeklyDone[i]?'✓':'')+'</div></div>';
-  }).join('');
-}
-function toggleWD(i){weeklyDone[i]=!weeklyDone[i];save();renderWeek();}
 
-// ═══════════════════
-// IRREGULAR
-// ═══════════════════
-function openIrr(){document.getElementById('iDate').value=today();document.getElementById('irrModal').classList.add('open');}
-function closeIrr(e){if(e.target===document.getElementById('irrModal'))document.getElementById('irrModal').classList.remove('open');}
-function selCat(btn,cat){
-  document.querySelectorAll('#irrModal .cch').forEach(function(b){b.classList.remove('sel');});
-  btn.classList.add('sel');irrCat=cat;
+function renderTraining() {
+  var menu = TRAINING[trainDay];
+  if (!menu) return;
+  var c = document.getElementById('trainContent');
+  if (!c) return;
+  var html = '<div class="cs" style="margin-bottom:10px"><p>' + menu.note + '</p></div>';
+  for (var i = 0; i < menu.exercises.length; i++) {
+    var ex = menu.exercises[i];
+    var k = trainDay + '_' + i;
+    var open = exOpen[k] || false;
+    var ck = exChecks[k] || false;
+    var howHtml = '';
+    for (var j = 0; j < ex.how.length; j++) {
+      howHtml += '<div class="hstep"><div class="hn">' + (j+1) + '</div><div class="ht">' + ex.how[j] + '</div></div>';
+    }
+    html += '<div class="exc' + (open ? ' open' : '') + (ck ? ' done-c' : '') + '">'
+      + '<div class="exhd" onclick="toggleEx(' + i + ')">'
+      + '<div class="exnb">' + (i+1) + '</div>'
+      + '<div class="exmt"><div class="exnm">' + ex.name + '</div><div class="exsp">' + ex.spec + '</div></div>'
+      + '<span class="exdb">完了</span><span class="exch">v</span>'
+      + '</div>'
+      + '<div class="exbody">'
+      + '<div class="exsl">HOW TO</div>' + howHtml
+      + '<div class="cs"><p>CAUTION: ' + ex.caution + '</p></div>'
+      + '<div class="cr' + (ck ? ' ck' : '') + '" onclick="toggleChk(' + i + ')">'
+      + '<div class="crb">' + (ck ? 'v' : '') + '</div>'
+      + '<span class="crl">' + (ck ? '完了！' : '完了としてマーク') + '</span>'
+      + '</div></div></div>';
+  }
+  c.innerHTML = html;
 }
-function saveIrr(){
-  var note=document.getElementById('iNote').value.trim();
-  var min=document.getElementById('iMin').value;
-  var date=document.getElementById('iDate').value||today();
-  var detail=document.getElementById('iDetail').value.trim();
-  if(!note)return;
-  var a=girr();
-  a.unshift({id:Date.now(),cat:irrCat,note:note,min:+min||0,date:date,detail:detail});
+
+function renderWeek() {
+  var labels = ['日','月','火','水','木','金','土'];
+  var td = new Date().getDay();
+  var c = document.getElementById('weekCells');
+  if (!c) return;
+  var html = '';
+  for (var i = 0; i < 7; i++) {
+    html += '<div class="wci">'
+      + '<span class="wcd">' + labels[i] + '</span>'
+      + '<div class="wdot' + (i === td ? ' today' : '') + (weeklyDone[i] ? ' done' : '') + '" onclick="toggleWD(' + i + ')">'
+      + (weeklyDone[i] ? 'v' : '')
+      + '</div></div>';
+  }
+  c.innerHTML = html;
+}
+function toggleWD(i) { weeklyDone[i] = !weeklyDone[i]; save(); renderWeek(); }
+
+// ====== IRREGULAR ======
+function openIrr() {
+  var el = document.getElementById('iDate'); if (el) el.value = today();
+  var m = document.getElementById('irrModal'); if (m) m.classList.add('open');
+}
+function closeIrr(e) {
+  if (e.target === document.getElementById('irrModal')) document.getElementById('irrModal').classList.remove('open');
+}
+function selCat(btn, cat) {
+  var chips = document.querySelectorAll('#irrModal .cch');
+  for (var i = 0; i < chips.length; i++) chips[i].classList.remove('sel');
+  if (btn) btn.classList.add('sel');
+  irrCat = cat;
+}
+function saveIrr() {
+  var noteEl = document.getElementById('iNote');
+  var minEl = document.getElementById('iMin');
+  var dateEl = document.getElementById('iDate');
+  var detailEl = document.getElementById('iDetail');
+  if (!noteEl || !noteEl.value.trim()) return;
+  var a = girr();
+  a.unshift({ id: Date.now(), cat: irrCat, note: noteEl.value.trim(), min: parseInt(minEl ? minEl.value : 0) || 0, date: dateEl ? (dateEl.value || today()) : today(), detail: detailEl ? detailEl.value.trim() : '' });
   sirr(a);
-  weeklyDone[new Date().getDay()]=true;save();renderWeek();
-  document.getElementById('iNote').value='';
-  document.getElementById('iMin').value='';
-  document.getElementById('iDetail').value='';
-  document.getElementById('irrModal').classList.remove('open');
+  weeklyDone[new Date().getDay()] = true; save(); renderWeek();
+  if (noteEl) noteEl.value = '';
+  if (minEl) minEl.value = '';
+  if (detailEl) detailEl.value = '';
+  var modal = document.getElementById('irrModal');
+  if (modal) modal.classList.remove('open');
   renderIrrLog();
 }
-var CAT={walk:'ウォーキング',muscle:'筋トレ',stretch:'ストレッチ',cardio:'有酸素',other:'その他'};
-function renderIrrLog(){
-  var a=girr();var c=document.getElementById('irrLog');
-  if(!a.length){c.innerHTML='<div style="font-size:.68rem;color:var(--muted);padding:9px 0;text-align:center">イレギュラーの記録なし</div>';return;}
-  c.innerHTML=a.slice(0,20).map(function(r){
-    return '<div class="irre"><span class="icat '+r.cat+'">'+(CAT[r.cat]||r.cat)+'</span>'
-      +'<div class="ict"><div class="ictnm">'+r.note+'</div>'
-      +(r.detail?'<div class="ictdt">'+r.detail+'</div>':'')
-      +'<div class="icttm">'+r.date+(r.min?' · '+r.min+'分':'')+'</div>'
-      +'</div><button class="idel" onclick="delIrr('+r.id+')">x</button></div>';
-  }).join('');
+var CAT = { walk: 'ウォーキング', muscle: '筋トレ', stretch: 'ストレッチ', cardio: '有酸素', other: 'その他' };
+function renderIrrLog() {
+  var a = girr();
+  var c = document.getElementById('irrLog');
+  if (!c) return;
+  if (!a.length) { c.innerHTML = '<div class="no-hist">イレギュラー記録なし</div>'; return; }
+  var html = '';
+  for (var i = 0; i < Math.min(a.length, 20); i++) {
+    var r = a[i];
+    html += '<div class="irre">'
+      + '<span class="icat ' + r.cat + '">' + (CAT[r.cat] || r.cat) + '</span>'
+      + '<div class="ict">'
+      + '<div class="ictnm">' + r.note + '</div>'
+      + (r.detail ? '<div class="ictdt">' + r.detail + '</div>' : '')
+      + '<div class="icttm">' + r.date + (r.min ? ' - ' + r.min + 'min' : '') + '</div>'
+      + '</div>'
+      + '<button class="idel" onclick="delIrr(' + r.id + ')">x</button>'
+      + '</div>';
+  }
+  c.innerHTML = html;
 }
-function delIrr(id){
-  sirr(girr().filter(function(r){return r.id!==id;}));renderIrrLog();
+function delIrr(id) {
+  var a = girr().filter(function(r){ return r.id !== id; });
+  sirr(a); renderIrrLog();
 }
 
-// ═══════════════════
-// ROUTINE LOG
-// ═══════════════════
-var RT_LABEL={weekday:'平日メニュー',sat:'土曜メニュー',sun:'日曜メニュー'};
-function openRoutineLog(){
-  document.getElementById('rtDate').value=today();
-  document.getElementById('routineModal').classList.add('open');
+// ====== ROUTINE LOG ======
+var RT_LABEL = { weekday: '平日', sat: '土曜', sun: '日曜' };
+function openRoutineLog() {
+  var el = document.getElementById('rtDate'); if (el) el.value = today();
+  var m = document.getElementById('routineModal'); if (m) m.classList.add('open');
 }
-function closeRoutineModal(e){
-  if(e.target===document.getElementById('routineModal'))
-    document.getElementById('routineModal').classList.remove('open');
+function closeRoutineModal(e) {
+  if (e.target === document.getElementById('routineModal')) document.getElementById('routineModal').classList.remove('open');
 }
-function selRtDay(btn,day){
-  document.querySelectorAll('#routineModal .cch').forEach(function(b){b.classList.remove('sel');});
-  btn.classList.add('sel');rtDay=day;
+function selRtDay(btn, day) {
+  var chips = document.querySelectorAll('#routineModal .cch');
+  for (var i = 0; i < chips.length; i++) chips[i].classList.remove('sel');
+  if (btn) btn.classList.add('sel');
+  rtDay = day;
 }
-function saveRoutineLog(){
-  var date=document.getElementById('rtDate').value||today();
-  var note=document.getElementById('rtNote').value.trim();
-  var min=parseInt(document.getElementById('rtMin').value)||0;
-  var memo=document.getElementById('rtMemo').value.trim();
-  var a=grtl();
-  a.unshift({id:Date.now(),date:date,day:rtDay,note:note,min:min,memo:memo});
-  a.sort(function(x,y){return y.date.localeCompare(x.date);});
+function saveRoutineLog() {
+  var dateEl = document.getElementById('rtDate');
+  var noteEl = document.getElementById('rtNote');
+  var minEl = document.getElementById('rtMin');
+  var memoEl = document.getElementById('rtMemo');
+  var dateVal = dateEl ? (dateEl.value || today()) : today();
+  var a = grtl();
+  a.unshift({ id: Date.now(), date: dateVal, day: rtDay, note: noteEl ? noteEl.value.trim() : '', min: parseInt(minEl ? minEl.value : 0) || 0, memo: memoEl ? memoEl.value.trim() : '' });
+  a.sort(function(x, y){ return y.date > x.date ? 1 : -1; });
   srtl(a);
-  var d2=new Date(date);weeklyDone[d2.getDay()]=true;save();renderWeek();
-  document.getElementById('rtNote').value='';
-  document.getElementById('rtMin').value='';
-  document.getElementById('rtMemo').value='';
-  document.getElementById('routineModal').classList.remove('open');
+  var d2 = new Date(dateVal);
+  weeklyDone[d2.getDay()] = true; save(); renderWeek();
+  if (noteEl) noteEl.value = '';
+  if (minEl) minEl.value = '';
+  if (memoEl) memoEl.value = '';
+  var modal = document.getElementById('routineModal');
+  if (modal) modal.classList.remove('open');
   renderRoutineLog();
 }
-function renderRoutineLog(){
-  var a=grtl();var c=document.getElementById('routineLogList');
-  if(!c)return;
-  if(!a.length){c.innerHTML='<div style="font-size:.68rem;color:var(--muted);padding:9px 0;text-align:center">ルーティン記録なし</div>';return;}
-  c.innerHTML=a.slice(0,20).map(function(r){
-    return '<div class="irre">'
-      +'<span class="icat muscle" style="background:rgba(0,119,182,.12);color:var(--ocean)">'+(RT_LABEL[r.day]||r.day)+'</span>'
-      +'<div class="ict"><div class="ictnm">'+(r.note||'ルーティントレーニング完了')+'</div>'
-      +(r.memo?'<div class="ictdt">'+r.memo+'</div>':'')
-      +'<div class="icttm">'+r.date+(r.min?' · '+r.min+'分':'')+'</div>'
-      +'</div><button class="idel" onclick="delRtl('+r.id+')">x</button></div>';
-  }).join('');
+function renderRoutineLog() {
+  var a = grtl();
+  var c = document.getElementById('routineLogList');
+  if (!c) return;
+  if (!a.length) { c.innerHTML = '<div class="no-hist">ルーティン記録なし</div>'; return; }
+  var html = '';
+  for (var i = 0; i < Math.min(a.length, 20); i++) {
+    var r = a[i];
+    html += '<div class="irre">'
+      + '<span class="icat muscle" style="background:rgba(0,119,182,.12);color:var(--ocean)">' + (RT_LABEL[r.day] || r.day) + '</span>'
+      + '<div class="ict">'
+      + '<div class="ictnm">' + (r.note || 'Routine training') + '</div>'
+      + (r.memo ? '<div class="ictdt">' + r.memo + '</div>' : '')
+      + '<div class="icttm">' + r.date + (r.min ? ' - ' + r.min + 'min' : '') + '</div>'
+      + '</div>'
+      + '<button class="idel" onclick="delRtl(' + r.id + ')">x</button>'
+      + '</div>';
+  }
+  c.innerHTML = html;
 }
-function delRtl(id){srtl(grtl().filter(function(r){return r.id!==id;}));renderRoutineLog();}
+function delRtl(id) {
+  var a = grtl().filter(function(r){ return r.id !== id; });
+  srtl(a); renderRoutineLog();
+}
 
-// ═══════════════════
-// ANALYSIS
-// ═══════════════════
-function setAnalysisPeriod(d,btn){
-  analysisPeriod=d;
-  document.querySelectorAll('.ps-btn').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on');renderAnalysis();
+// ====== ANALYSIS ======
+function setAnalysisPeriod(d, btn) {
+  analysisPeriod = d;
+  var tabs = document.querySelectorAll('.ps-btn');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('on');
+  if (btn) btn.classList.add('on');
+  renderAnalysis();
 }
-function getDateRange(){
-  var dates=[];var end=new Date();var start=new Date();
-  if(analysisPeriod>0)start.setDate(end.getDate()-analysisPeriod+1);
-  else{var all=gall();if(all.length)start.setTime(new Date(all[0]).getTime());}
-  for(var d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
-    dates.push(d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()));
+function getDateRange(ap) {
+  var dates = [];
+  var end = new Date();
+  var start = new Date();
+  if (ap > 0) start.setDate(end.getDate() - ap + 1);
+  else {
+    var all = gall();
+    if (all.length) start = new Date(all[0]);
+  }
+  for (var d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    dates.push(d.getFullYear() + '-' + p2(d.getMonth()+1) + '-' + p2(d.getDate()));
   }
   return dates;
 }
-function renderAnalysis(){
-  var dates=getDateRange();
-  var wData=getWData();var bpData=getBData();var irrData=girr();
-  var daysWithData=0,totalKcal=0;var foodLog=[];
-  dates.forEach(function(d){
-    var rec=gdd(d);var meals=rec.lunch.concat(rec.snack,rec.dinner);
-    if(meals.length>0){
+function renderAnalysis() {
+  var dates = getDateRange(analysisPeriod);
+  var wData = getWData();
+  var bpData = getBData();
+  var irrData = girr();
+  var daysWithData = 0;
+  var totalKcal = 0;
+  var foodLog = [];
+  for (var di = 0; di < dates.length; di++) {
+    var d = dates[di];
+    var rec = gdd(d);
+    var meals = (rec.lunch || []).concat(rec.snack || [], rec.dinner || []);
+    if (meals.length > 0) {
       daysWithData++;
-      var dayKcal=meals.reduce(function(s,e){return s+e.kcal;},0);
-      totalKcal+=dayKcal;
-      foodLog.push({date:d,kcal:dayKcal,items:meals.map(function(e){return e.name;})});
+      var dayKcal = 0;
+      for (var mi = 0; mi < meals.length; mi++) dayKcal += meals[mi].kcal;
+      totalKcal += dayKcal;
+      var itemNames = [];
+      for (var ii = 0; ii < meals.length; ii++) itemNames.push(meals[ii].name);
+      foodLog.push({ date: d, kcal: dayKcal, items: itemNames });
     }
-  });
-  var periodW=wData.filter(function(d){return dates.indexOf(d.date)>=0;});
-  var firstW=periodW[0];var lastW=periodW[periodW.length-1];
-  var wChange=firstW&&lastW?(lastW.weight-firstW.weight).toFixed(1):'--';
-  var irrInPeriod=irrData.filter(function(r){return dates.indexOf(r.date)>=0;});
-  document.getElementById('analysisSummary').innerHTML=
-    '<div class="ss-cell"><div class="ss-lbl">記録日数</div><div class="ss-val">'+daysWithData+'/'+dates.length+'日</div></div>'
-    +'<div class="ss-cell"><div class="ss-lbl">平均摂取</div><div class="ss-val">'+(daysWithData>0?Math.round(totalKcal/daysWithData):0)+'kcal</div></div>'
-    +'<div class="ss-cell"><div class="ss-lbl">体重変化</div><div class="ss-val" style="color:'+(parseFloat(wChange)<0?'var(--palm)':'var(--hibiscus)')+'">'+wChange+'kg</div></div>'
-    +'<div class="ss-cell"><div class="ss-lbl">運動回数</div><div class="ss-val">'+irrInPeriod.length+'回</div></div>';
-  var foodSummary='';
-  foodLog.slice(0,7).forEach(function(d){
-    foodSummary+='  '+d.date+'('+d.kcal+'kcal): '+d.items.slice(0,4).join('、')+(d.items.length>4?'など':'')+'
-';
-  });
-  var wSummary='';periodW.forEach(function(d){wSummary+='  '+d.date+': '+d.weight+'kg
-';});
-  var bpSummary='';bpData.filter(function(d){return dates.indexOf(d.date)>=0;}).forEach(function(d){bpSummary+='  '+d.date+': '+d.sys+'/'+d.dia+'mmHg
-';});
-  var irrSummary='';irrInPeriod.forEach(function(r){irrSummary+='  '+r.date+'('+( CAT[r.cat]||r.cat)+'): '+r.note+(r.min?' '+r.min+'分':'')+'
-';});
-  var avgKcal=daysWithData>0?Math.round(totalKcal/daysWithData):0;
-  var prompt='あなたは健康管理の専門家です。以下は私の'+(analysisPeriod>0?analysisPeriod+'日間':'全期間')+'の健康記録データです。現状の分析と改善提案をお願いします。
-
-'
-    +'【基本プロフィール】
-- 年齢：40代 / 身長：168cm
-- 食事プラン：1日2食（昼12時・夜21時）、目標1,600kcal
-
-'
-    +'【食事記録（'+daysWithData+'日分）】
-'+( foodSummary||'  記録なし
-')+'平均：'+avgKcal+'kcal/日
-
-'
-    +'【体重推移】
-'+(wSummary||'  記録なし
-')+(firstW&&lastW?'変化：'+firstW.weight+'→'+lastW.weight+'kg('+wChange+'kg)
-':'')+'
-'
-    +'【血圧推移】
-'+(bpSummary||'  記録なし
-')+'
-'
-    +'【運動記録】
-'+(irrSummary||'  記録なし
-')+'
-'
-    +'【分析してほしい内容】
-1. カロリー摂取の傾向
-2. 体重・血圧の改善状況
-3. 食事バランス
-4. 運動継続状況
-5. 今後1週間の具体的改善アドバイス
-6. 特に注意すべき点';
-  document.getElementById('promptBox').textContent=prompt;
+  }
+  var periodW = wData.filter(function(d){ return dates.indexOf(d.date) >= 0; });
+  var firstW = periodW[0];
+  var lastW = periodW[periodW.length - 1];
+  var wChange = firstW && lastW ? (lastW.weight - firstW.weight).toFixed(1) : '--';
+  var irrInPeriod = irrData.filter(function(r){ return dates.indexOf(r.date) >= 0; });
+  var sumEl = document.getElementById('analysisSummary');
+  if (sumEl) {
+    sumEl.innerHTML = '<div class="ss-cell"><div class="ss-lbl">記録日数</div><div class="ss-val">' + daysWithData + '/' + dates.length + '日</div></div>'
+      + '<div class="ss-cell"><div class="ss-lbl">平均摂取</div><div class="ss-val">' + (daysWithData > 0 ? Math.round(totalKcal / daysWithData) : 0) + 'kcal</div></div>'
+      + '<div class="ss-cell"><div class="ss-lbl">体重変化</div><div class="ss-val" style="color:' + (parseFloat(wChange) < 0 ? 'var(--palm)' : 'var(--hibiscus)') + '">' + wChange + 'kg</div></div>'
+      + '<div class="ss-cell"><div class="ss-lbl">運動回数</div><div class="ss-val">' + irrInPeriod.length + '回</div></div>';
+  }
+  var s = gsets();
+  var foodSummary = '';
+  for (var fi = 0; fi < Math.min(foodLog.length, 7); fi++) {
+    var fl = foodLog[fi];
+    foodSummary += '  ' + fl.date + '（' + fl.kcal + 'kcal）: ' + fl.items.slice(0, 4).join('、') + (fl.items.length > 4 ? '他' : '') + '\n';
+  }
+  var wSummary = '';
+  for (var wi = 0; wi < periodW.length; wi++) wSummary += '  ' + periodW[wi].date + ': ' + periodW[wi].weight + 'kg\n';
+  var bpSummary = '';
+  for (var bi = 0; bi < bpData.length; bi++) {
+    if (dates.indexOf(bpData[bi].date) >= 0) bpSummary += '  ' + bpData[bi].date + ': ' + bpData[bi].sys + '/' + bpData[bi].dia + 'mmHg\n';
+  }
+  var irrSummary = '';
+  for (var ii = 0; ii < irrInPeriod.length; ii++) {
+    var ir = irrInPeriod[ii];
+    irrSummary += '  ' + ir.date + '（' + (CAT[ir.cat] || ir.cat) + '）: ' + ir.note + (ir.min ? ' ' + ir.min + '分' : '') + '\n';
+  }
+  var avgKcal = daysWithData > 0 ? Math.round(totalKcal / daysWithData) : 0;
+  var prompt = 'あなたは健康管理の専門家です。以下は私の' + (analysisPeriod > 0 ? analysisPeriod + '日間' : '全期間') + 'の健康記録データです。現状の分析と改善提案をお願いします。\n\n'
+    + '【プロフィール】\n'
+    + '名前：' + (s.userName || 'ユーザー') + '\n'
+    + '年齢：' + (s.age || '--') + '歳\n'
+    + '身長：' + (s.height || '--') + 'cm\n'
+    + '目標体重：' + (s.goalWeight || '--') + 'kg\n'
+    + '1日の目標カロリー：' + (s.targetKcal || 1600) + 'kcal\n'
+    + '健康メモ：' + (s.condition || 'なし') + '\n\n'
+    + '【食事記録（' + daysWithData + '日分）】\n'
+    + (foodSummary || '  記録なし\n')
+    + '平均摂取カロリー：' + avgKcal + 'kcal/日\n\n'
+    + '【体重推移】\n'
+    + (wSummary || '  記録なし\n')
+    + (firstW && lastW ? '変化：' + firstW.weight + 'kg → ' + lastW.weight + 'kg（' + wChange + 'kg）\n' : '') + '\n'
+    + '【血圧推移】\n'
+    + (bpSummary || '  記録なし\n') + '\n'
+    + '【運動記録】\n'
+    + (irrSummary || '  記録なし\n') + '\n'
+    + '【分析してほしい内容】\n'
+    + '1. カロリー摂取の傾向と問題点\n'
+    + '2. 体重・血圧の改善状況の評価\n'
+    + '3. 食事内容のバランス（タンパク質・塩分・野菜）\n'
+    + '4. トレーニング継続状況の評価\n'
+    + '5. 今後1週間の具体的な改善アドバイス（食事・運動・生活習慣）\n'
+    + '6. 健康メモを踏まえた特に注意すべき点\n'
+    + '\nできるだけ具体的な数値や食品名を使って回答してください。\n';
+  var pb = document.getElementById('promptBox');
+  if (pb) pb.textContent = prompt;
 }
-function copyPrompt(){
-  var text=document.getElementById('promptBox').textContent;
-  var btn=document.getElementById('copyBtn');
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(text).then(function(){
-      btn.textContent='✓ コピーしました！';btn.classList.add('copied');
-      setTimeout(function(){btn.innerHTML='📋 プロンプトをコピー';btn.classList.remove('copied');},2500);
+function copyPrompt() {
+  var text = document.getElementById('promptBox');
+  if (!text) return;
+  var btn = document.getElementById('copyBtn');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text.textContent).then(function(){
+      if (btn) { btn.textContent = 'コピーしました！'; setTimeout(function(){ btn.textContent = 'プロンプトをコピー'; }, 2000); }
     });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text.textContent;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    if (btn) { btn.textContent = 'コピーしました！'; setTimeout(function(){ btn.textContent = 'プロンプトをコピー'; }, 2000); }
   }
 }
 
-// ═══════════════════
-// SPREADSHEET
-// ═══════════════════
-function saveSheetSettings(){
-  var user=document.getElementById('sheetUser').value.trim();
-  var url=document.getElementById('sheetUrl').value.trim();
-  var m=getM();m.sheetSettings={user:user,url:url};saveM(m);
-  var st=document.getElementById('sheetSettingStatus');
-  if(st){st.textContent='✓ 設定を保存しました';setTimeout(function(){st.textContent='';},2000);}
+// ====== SHEET ======
+function setSheetPeriod(d, btn) {
+  sheetPeriod = d;
+  var tabs = document.querySelectorAll('#page-sheet .ps-btn');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('on');
+  if (btn) btn.classList.add('on');
+  renderSheetPreview();
 }
-function loadSheetSettings(){
-  var m=getM();
-  if(m.sheetSettings){
-    var u=document.getElementById('sheetUser');
-    var s=document.getElementById('sheetUrl');
-    if(u&&m.sheetSettings.user)u.value=m.sheetSettings.user;
-    if(s&&m.sheetSettings.url)s.value=m.sheetSettings.url;
+function buildSheetRows() {
+  var dates = getDateRange(sheetPeriod);
+  var bpMap = {};
+  var bpArr = gbp();
+  for (var bi = 0; bi < bpArr.length; bi++) {
+    if (!bpMap[bpArr[bi].date]) bpMap[bpArr[bi].date] = bpArr[bi];
   }
-}
-function setSheetPeriod(d,btn){
-  sheetPeriod=d;
-  document.querySelectorAll('#page-sheet .ps-btn').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on');renderSheetPreview();
-}
-function getSheetDates(){
-  var dates=[];var end=new Date();var start=new Date();
-  if(sheetPeriod>0)start.setDate(end.getDate()-sheetPeriod+1);
-  else{var all=gall();if(all.length)start.setTime(new Date(all[0]).getTime());}
-  for(var d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
-    dates.push(d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()));
+  var rows = [];
+  for (var di = 0; di < dates.length; di++) {
+    var d = dates[di];
+    var food = gdd(d);
+    var bk = 0, lk = 0, sk = 0, dk = 0;
+    var bi2 = [], li = [], si = [], ddi = [];
+    for (var ai = 0; ai < (food.breakfast || []).length; ai++) { bk += food.breakfast[ai].kcal; bi2.push(food.breakfast[ai].name); }
+    for (var xi = 0; xi < (food.lunch || []).length; xi++) { lk += food.lunch[xi].kcal; li.push(food.lunch[xi].name); }
+    for (var yi = 0; yi < (food.snack || []).length; yi++) { sk += food.snack[yi].kcal; si.push(food.snack[yi].name); }
+    for (var zi = 0; zi < (food.dinner || []).length; zi++) { dk += food.dinner[zi].kcal; ddi.push(food.dinner[zi].name); }
+    var bp = bpMap[d];
+    rows.push({ date: d, weight: food.weight ? food.weight.toFixed(1) : '', bpSys: bp ? bp.sys : '', bpDia: bp ? bp.dia : '', pulse: bp ? bp.pulse : '', breakfastKcal: bk || '', breakfastItems: bi2.join(', '), lunchKcal: lk || '', lunchItems: li.join(', '), snackKcal: sk || '', snackItems: si.join(', '), dinnerKcal: dk || '', dinnerItems: ddi.join(', '), totalKcal: (bk + lk + sk + dk) || '' });
   }
-  return dates;
-}
-function buildSheetRows(){
-  var dates=getSheetDates();
-  var bpMap={};gbp().forEach(function(r){if(!bpMap[r.date])bpMap[r.date]=r;});
-  var rows=[];
-  dates.forEach(function(d){
-    var food=gdd(d);
-    var lk=food.lunch.reduce(function(s,e){return s+e.kcal;},0);
-    var sk=food.snack.reduce(function(s,e){return s+e.kcal;},0);
-    var dk=food.dinner.reduce(function(s,e){return s+e.kcal;},0);
-    var tk=lk+sk+dk;
-    var li=food.lunch.map(function(e){return e.name;}).join('・');
-    var si=food.snack.map(function(e){return e.name;}).join('・');
-    var di=food.dinner.map(function(e){return e.name;}).join('・');
-    var bp=bpMap[d];var wt=food.weight;
-    rows.push({date:d,weight:wt?wt.toFixed(1):'',bpSys:bp?bp.sys:'',bpDia:bp?bp.dia:'',pulse:bp?bp.pulse:'',lunchKcal:lk||'',lunchItems:li,snackKcal:sk||'',snackItems:si,dinnerKcal:dk||'',dinnerItems:di,totalKcal:tk||''});
-  });
   return rows;
 }
-function renderSheetPreview(){
-  var rows=buildSheetRows();
-  var tbl=document.getElementById('sheetPreview');
-  if(!tbl)return;
-  var headers=['日付','体重(kg)','血圧上','血圧下','脈拍','昼kcal','昼食内容','間食kcal','間食内容','夜kcal','夕食内容','合計kcal'];
-  var th='background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;padding:8px 10px;text-align:center;font-size:.62rem;font-weight:800;white-space:nowrap;';
-  var td='padding:7px 8px;font-size:.65rem;border-bottom:1px solid rgba(0,119,182,.1);text-align:center;color:var(--text);';
-  var tdl='padding:7px 8px;font-size:.65rem;border-bottom:1px solid rgba(0,119,182,.1);text-align:left;color:var(--text);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
-  var html='<thead><tr>'+headers.map(function(h){return '<th style="'+th+'">'+h+'</th>';}).join('')+'</tr></thead><tbody>';
-  rows.forEach(function(r,i){
-    var bg=i%2===0?'background:rgba(255,255,255,.9)':'background:rgba(0,119,182,.03)';
-    var tc=r.totalKcal>1600?'color:var(--hibiscus);font-weight:800':r.totalKcal>0?'color:var(--palm);font-weight:800':'';
-    html+='<tr style="'+bg+'">'
-      +'<td style="'+td+'font-weight:700;color:var(--ocean)">'+r.date.slice(5)+'</td>'
-      +'<td style="'+td+'font-weight:700;color:var(--palm)">'+r.weight+'</td>'
-      +'<td style="'+td+'color:var(--hibiscus);font-weight:700">'+r.bpSys+'</td>'
-      +'<td style="'+td+'color:var(--ocean);font-weight:700">'+r.bpDia+'</td>'
-      +'<td style="'+td+'">'+r.pulse+'</td>'
-      +'<td style="'+td+'color:var(--sunset)">'+r.lunchKcal+'</td>'
-      +'<td style="'+tdl+'">'+r.lunchItems+'</td>'
-      +'<td style="'+td+'color:var(--sunset)">'+r.snackKcal+'</td>'
-      +'<td style="'+tdl+'">'+r.snackItems+'</td>'
-      +'<td style="'+td+'color:var(--sunset)">'+r.dinnerKcal+'</td>'
-      +'<td style="'+tdl+'">'+r.dinnerItems+'</td>'
-      +'<td style="'+td+tc+'">'+r.totalKcal+'</td>'
-      +'</tr>';
-  });
-  html+='</tbody>';
-  tbl.innerHTML=html;
+function renderSheetPreview() {
+  var rows = buildSheetRows();
+  var tbl = document.getElementById('sheetPreview');
+  if (!tbl) return;
+  var headers = ['日付','体重','血圧上','血圧下','脈拍','朝食kcal','朝食内容','昼食kcal','昼食内容','間食kcal','間食内容','夕食kcal','夕食内容','合計'];
+  var thS = 'background:linear-gradient(135deg,#0077b6,#48cae4);color:white;padding:7px 8px;font-size:.6rem;font-weight:800;white-space:nowrap;';
+  var tdS = 'padding:6px 7px;font-size:.63rem;border-bottom:1px solid rgba(0,119,182,.08);text-align:center;';
+  var tdSL = 'padding:6px 7px;font-size:.63rem;border-bottom:1px solid rgba(0,119,182,.08);text-align:left;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+  var html = '<thead><tr>';
+  for (var hi = 0; hi < headers.length; hi++) html += '<th style="' + thS + '">' + headers[hi] + '</th>';
+  html += '</tr></thead><tbody>';
+  for (var ri = 0; ri < rows.length; ri++) {
+    var r = rows[ri];
+    var bg = ri % 2 === 0 ? 'background:rgba(255,255,255,.88)' : 'background:rgba(0,119,182,.03)';
+    var tc = r.totalKcal > 1600 ? 'color:#e63946;font-weight:800' : r.totalKcal > 0 ? 'color:#2d6a4f;font-weight:800' : '';
+    html += '<tr style="' + bg + '">'
+      + '<td style="' + tdS + 'color:#0077b6;font-weight:700">' + r.date.slice(5) + '</td>'
+      + '<td style="' + tdS + 'color:#2d6a4f;font-weight:700">' + r.weight + '</td>'
+      + '<td style="' + tdS + 'color:#e63946;font-weight:700">' + r.bpSys + '</td>'
+      + '<td style="' + tdS + 'color:#0077b6;font-weight:700">' + r.bpDia + '</td>'
+      + '<td style="' + tdS + '">' + r.pulse + '</td>'
+      + '<td style="' + tdS + 'color:#f77f00">' + r.breakfastKcal + '</td>'
+      + '<td style="' + tdSL + '">' + r.breakfastItems + '</td>'
+      + '<td style="' + tdS + 'color:#f77f00">' + r.lunchKcal + '</td>'
+      + '<td style="' + tdSL + '">' + r.lunchItems + '</td>'
+      + '<td style="' + tdS + 'color:#f77f00">' + r.snackKcal + '</td>'
+      + '<td style="' + tdSL + '">' + r.snackItems + '</td>'
+      + '<td style="' + tdS + 'color:#f77f00">' + r.dinnerKcal + '</td>'
+      + '<td style="' + tdSL + '">' + r.dinnerItems + '</td>'
+      + '<td style="' + tdS + ';' + tc + '">' + r.totalKcal + '</td>'
+      + '</tr>';
+  }
+  html += '</tbody>';
+  tbl.innerHTML = html;
 }
-function exportCSV(){
-  var rows=buildSheetRows();
-  var m=getM();var user=(m.sheetSettings&&m.sheetSettings.user)||'user';
-  var headers=['日付','体重(kg)','血圧上','血圧下','脈拍','昼kcal','昼食内容','間食kcal','間食内容','夜kcal','夕食内容','合計kcal'];
-  var csv='﻿'+headers.join(',')+'
-';
-  rows.forEach(function(r){
-    csv+=[r.date,r.weight,r.bpSys,r.bpDia,r.pulse,r.lunchKcal,'"'+r.lunchItems+'"',r.snackKcal,'"'+r.snackItems+'"',r.dinnerKcal,'"'+r.dinnerItems+'"',r.totalKcal].join(',')+'
-';
-  });
-  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  var url=URL.createObjectURL(blob);
-  var a=document.createElement('a');
-  a.href=url;a.download='health_'+user+'_'+p2(new Date().getMonth()+1)+p2(new Date().getDate())+'.csv';
-  a.click();URL.revokeObjectURL(url);
+function exportCSV() {
+  var rows = buildSheetRows();
+  var s = gsets();
+  var user = s.userName || 'user';
+  var headers = ['日付','体重(kg)','血圧上','血圧下','脈拍','朝食kcal','朝食内容','昼食kcal','昼食内容','間食kcal','間食内容','夕食kcal','夕食内容','合計kcal'];
+  var csv = '\uFEFF' + headers.join(',') + '\n';
+  for (var ri = 0; ri < rows.length; ri++) {
+    var r = rows[ri];
+    csv += [r.date, r.weight, r.bpSys, r.bpDia, r.pulse, r.breakfastKcal, '"' + r.breakfastItems + '"', r.lunchKcal, '"' + r.lunchItems + '"', r.snackKcal, '"' + r.snackItems + '"', r.dinnerKcal, '"' + r.dinnerItems + '"', r.totalKcal].join(',') + '\n';
+  }
+  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'health_' + user + '_' + p2(new Date().getMonth()+1) + p2(new Date().getDate()) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
 }
-function copySheetData(){
-  var rows=buildSheetRows();
-  var headers=['日付','体重(kg)','血圧上','血圧下','脈拍','昼kcal','昼食内容','間食kcal','間食内容','夜kcal','夕食内容','合計kcal'];
-  var text=headers.join('	')+'
-';
-  rows.forEach(function(r){
-    text+=[r.date,r.weight,r.bpSys,r.bpDia,r.pulse,r.lunchKcal,r.lunchItems,r.snackKcal,r.snackItems,r.dinnerKcal,r.dinnerItems,r.totalKcal].join('	')+'
-';
-  });
-  if(navigator.clipboard){
+function copySheetData() {
+  var rows = buildSheetRows();
+  var headers = ['日付','体重','血圧上','血圧下','脈拍','朝食kcal','朝食内容','昼食kcal','昼食内容','間食kcal','間食内容','夕食kcal','夕食内容','合計'];
+  var text = headers.join('\t') + '\n';
+  for (var ri = 0; ri < rows.length; ri++) {
+    var r = rows[ri];
+    text += [r.date, r.weight, r.bpSys, r.bpDia, r.pulse, r.breakfastKcal, r.breakfastItems, r.lunchKcal, r.lunchItems, r.snackKcal, r.snackItems, r.dinnerKcal, r.dinnerItems, r.totalKcal].join('\t') + '\n';
+  }
+  if (navigator.clipboard) {
     navigator.clipboard.writeText(text).then(function(){
-      var btn=document.querySelector('[onclick="copySheetData()"]');
-      if(btn){btn.textContent='✓ コピーしました！';setTimeout(function(){btn.innerHTML='📋 Googleスプレッドシート貼り付け用コピー';},2500);}
+      var btn = document.querySelector('[onclick="copySheetData()"]');
+      if (btn) { btn.textContent = 'Copied!'; setTimeout(function(){ btn.textContent = 'Copy for Google Sheets'; }, 2000); }
     });
   }
 }
-function openGoogleSheet(){
-  var m=getM();var url=m.sheetSettings&&m.sheetSettings.url;
-  if(url)window.open(url,'_blank');
-  else window.open('https://docs.google.com/spreadsheets/create','_blank');
-}
-function initGASCode(){
-  var el=document.getElementById('gasCode');
-  if(!el)return;
-  var lines=[
-    '// Health OKZ - Google Apps Script',
-    'var SHEET_NAME = "Health Log";',
-    'function doPost(e) {',
-    '  try {',
-    '    var data = JSON.parse(e.postData.contents);',
-    '    var ss = SpreadsheetApp.getActiveSpreadsheet();',
-    '    var sheet = ss.getSheetByName(SHEET_NAME);',
-    '    if (!sheet) {',
-    '      sheet = ss.insertSheet(SHEET_NAME);',
-    '      var h = ["日付","体重","血圧上","血圧下","脈拍","昼kcal","昼食","間食kcal","間食","夜kcal","夕食","合計","記録者"];',
-    '      sheet.getRange(1,1,1,h.length).setValues([h]);',
-    '      sheet.getRange(1,1,1,h.length).setBackground("#0077b6").setFontColor("#fff").setFontWeight("bold");',
-    '      sheet.setFrozenRows(1);',
-    '    }',
-    '    sheet.appendRow([data.date,data.weight,data.bpSys,data.bpDia,data.pulse,',
-    '      data.lunchKcal,data.lunchItems,data.snackKcal,data.snackItems,',
-    '      data.dinnerKcal,data.dinnerItems,data.totalKcal,data.user||"?"]);',
-    '    sheet.autoResizeColumns(1,13);',
-    '    return ContentService.createTextOutput(JSON.stringify({status:"ok"})).setMimeType(ContentService.MimeType.JSON);',
-    '  } catch(err) {',
-    '    return ContentService.createTextOutput(JSON.stringify({status:"error",msg:err.toString()})).setMimeType(ContentService.MimeType.JSON);',
-    '  }',
-    '}',
-    'function doGet(e) {',
-    '  return ContentService.createTextOutput("Health OKZ GAS OK").setMimeType(ContentService.MimeType.TEXT);',
-    '}'
-  ];
-  el.textContent=lines.join('
-');
-}
-function copyGAS(){
-  var text=document.getElementById('gasCode').textContent;
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(text).then(function(){
-      var btn=document.querySelector('[onclick="copyGAS()"]');
-      if(btn){btn.textContent='✓ コピーしました！';setTimeout(function(){btn.innerHTML='📋 GASコードをコピー';},2500);}
-    });
-  }
+function openGoogleSheet() {
+  var s = gsets();
+  var url = s.sheetUrl;
+  window.open(url || 'https://docs.google.com/spreadsheets/create', '_blank');
 }
 
-// ═══════════════════
-// INIT
-// ═══════════════════
+// ====== RECIPES ======
+function filterR(f, btn) {
+  rFilter = f;
+  var tabs = document.querySelectorAll('.rf-btn');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('on');
+  if (btn) btn.classList.add('on');
+  renderRecipes();
+}
+function renderRecipes() {
+  var grid = document.getElementById('recipeGrid');
+  if (!grid) return;
+  var list = [];
+  for (var i = 0; i < RECIPES.length; i++) {
+    if (rFilter === 'all' || RECIPES[i].tags.indexOf(rFilter) >= 0) list.push(RECIPES[i]);
+  }
+  var html = '';
+  for (var ri = 0; ri < list.length; ri++) {
+    var r = list[ri];
+    html += '<div class="recipe-card" onclick="openRecipe(' + r.id + ')">'
+      + '<div class="rc-thumb" style="background:' + r.bg + '">'
+      + '<span style="font-size:2rem">' + r.emoji + '</span>'
+      + '<span class="rc-tag ' + r.type + '">' + (r.type === 'lunch' ? 'Lunch' : 'Dinner') + '</span>'
+      + '</div>'
+      + '<div class="rc-body">'
+      + '<div class="rc-name">' + r.name + '</div>'
+      + '<div class="rc-footer">'
+      + '<span class="rc-kcal">' + r.kcal + ' kcal</span>'
+      + '<span class="rc-time">' + r.time + '</span>'
+      + '</div></div></div>';
+  }
+  grid.innerHTML = html;
+}
+function openRecipe(id) {
+  var r = null;
+  for (var i = 0; i < RECIPES.length; i++) { if (RECIPES[i].id === id) { r = RECIPES[i]; break; } }
+  if (!r) return;
+  var modal = document.getElementById('recipeModalContent');
+  if (!modal) return;
+  var nutr = '<div class="rm-nutr">'
+    + '<div class="rm-nc"><span class="rm-nv">' + r.nutr.kcal + '</span><span class="rm-nl">kcal</span></div>'
+    + '<div class="rm-nc"><span class="rm-nv">' + r.nutr.p + '</span><span class="rm-nl">Protein</span></div>'
+    + '<div class="rm-nc"><span class="rm-nv">' + r.nutr.f + '</span><span class="rm-nl">Fat</span></div>'
+    + '<div class="rm-nc"><span class="rm-nv">' + r.nutr.c + '</span><span class="rm-nl">Carb</span></div>'
+    + '</div>';
+  var ingr = '';
+  for (var ii = 0; ii < r.ingr.length; ii++) ingr += '<div class="rm-ingr"><span>' + r.ingr[ii].n + '</span><span class="rm-amt">' + r.ingr[ii].a + '</span></div>';
+  var steps = '';
+  for (var si = 0; si < r.steps.length; si++) steps += '<div class="rm-step"><div class="rm-sn">' + (si+1) + '</div><div class="rm-st">' + r.steps[si] + '</div></div>';
+  modal.innerHTML = '<div class="mhandle"></div>'
+    + '<div style="background:' + r.bg + ';border-radius:12px;padding:14px;margin-bottom:12px">'
+    + '<div style="font-size:2rem;margin-bottom:4px">' + r.emoji + '</div>'
+    + '<div style="font-family:var(--fd);font-size:1.1rem;color:var(--text)">' + r.name + '</div>'
+    + '<div style="font-size:.56rem;color:rgba(0,0,0,.5);margin-top:2px">' + r.time + '</div>'
+    + '</div>' + nutr
+    + '<div class="exsl">材料</div>' + ingr
+    + '<div class="exsl" style="margin-top:12px">作り方</div>' + steps
+    + '<div class="rm-tip">' + r.tip + '</div>'
+    + '<button class="print-btn" onclick="printRecipe(' + r.id + ')">印刷 / PDF保存</button>';
+  var m = document.getElementById('recipeModal');
+  if (m) m.classList.add('open');
+}
+function closeRM(e) {
+  if (e.target === document.getElementById('recipeModal')) document.getElementById('recipeModal').classList.remove('open');
+}
+function printRecipe(id) {
+  var r = null;
+  for (var i = 0; i < RECIPES.length; i++) { if (RECIPES[i].id === id) { r = RECIPES[i]; break; } }
+  if (!r) return;
+  var w = window.open('', '_blank', 'width=580,height=760');
+  var css = 'body{font-family:sans-serif;padding:20px;color:#1a3a4a;max-width:480px;margin:0 auto}'
+    + 'h1{font-size:1.2rem;color:#0077b6;margin-bottom:3px}'
+    + 'h2{font-size:.8rem;color:#7a9eb0;margin:12px 0 5px;border-bottom:1px solid #e0f4ff;padding-bottom:3px}'
+    + '.n{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#e0f4ff;border-radius:8px;padding:10px;margin-bottom:12px;text-align:center}'
+    + '.nv{font-size:1rem;font-weight:700;color:#0077b6;display:block}'
+    + '.nl{font-size:.52rem;color:#7a9eb0}'
+    + '.i{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed #e0f4ff;font-size:.78rem}'
+    + '.a{color:#f77f00;font-weight:700}'
+    + '.s{display:flex;gap:7px;margin-bottom:5px;font-size:.76rem}'
+    + '.sn{background:#0077b6;color:white;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.58rem;flex-shrink:0}'
+    + '.t{background:#e0f7ff;border-left:3px solid #48cae4;padding:7px 9px;font-size:.72rem;border-radius:0 5px 5px 0;margin-top:9px}';
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + r.name + '</title><style>' + css + '</style></head><body>'
+    + '<div style="font-size:1.8rem;margin-bottom:4px">' + r.emoji + '</div>'
+    + '<h1>' + r.name + '</h1>'
+    + '<p style="font-size:.65rem;color:#7a9eb0">' + r.time + ' / ' + (r.type === 'breakfast' ? '朝食向け' : r.type === 'breakfast' ? '朝食向け' : r.type === 'lunch' ? '昼食向け' : '夕食向け') + '</p>'
+    + '<div class="n"><div><span class="nv">' + r.nutr.kcal + '</span><span class="nl">kcal</span></div><div><span class="nv">' + r.nutr.p + '</span><span class="nl">Protein</span></div><div><span class="nv">' + r.nutr.f + '</span><span class="nl">Fat</span></div><div><span class="nv">' + r.nutr.c + '</span><span class="nl">Carb</span></div></div>'
+    + '<h2>Ingredients</h2>';
+  for (var ii = 0; ii < r.ingr.length; ii++) html += '<div class="i"><span>' + r.ingr[ii].n + '</span><span class="a">' + r.ingr[ii].a + '</span></div>';
+  html += '<h2>Steps</h2>';
+  for (var si = 0; si < r.steps.length; si++) html += '<div class="s"><div class="sn">' + (si+1) + '</div><span>' + r.steps[si] + '</span></div>';
+  html += '<div class="t">' + r.tip + '</div></body></html>';
+  w.document.write(html);
+  w.document.close();
+  setTimeout(function(){ w.print(); }, 500);
+}
+
+// ====== INIT ======
 window.addEventListener('DOMContentLoaded', function() {
-  // EnterキーでフォームをナビゲートADD実行
-  ['lunch','snack','dinner'].forEach(function(m) {
-    var fi=document.getElementById('f-'+m);
-    var ki=document.getElementById('k-'+m);
-    if(fi) fi.addEventListener('keydown',function(e){if(e.key==='Enter'&&ki)ki.focus();});
-    if(ki) ki.addEventListener('keydown',function(e){if(e.key==='Enter')addFood(m);});
-  });
-  // 体重ヘッダー入力
-  var wi=document.getElementById('weightIn');
-  if(wi) wi.addEventListener('change',function(){
-    var v=parseFloat(this.value);if(v){sdf(today(),'weight',v);save();}
-  });
-  // 初期化
   load();
+  loadSettings();
   initHeader();
   initDP();
   initBPDate();
@@ -1685,30 +2041,44 @@ window.addEventListener('DOMContentLoaded', function() {
   renderIrrLog();
   renderRoutineLog();
   updateBPHeader();
-  loadSheetSettings();
-  // 今日の体重をヘッダーに反映
-  var todayRec=gdd(today());
-  if(todayRec.weight){
-    var el=document.getElementById('weightIn');if(el)el.value=todayRec.weight;
+  updateGoalDisplay();
+
+  var wi = document.getElementById('weightIn');
+  if (wi) wi.addEventListener('change', function(){
+    var v = parseFloat(this.value);
+    if (v) { sdf(today(), 'weight', v); save(); }
+  });
+
+  var meals = ['breakfast', 'lunch', 'snack', 'dinner'];
+  for (var mi = 0; mi < meals.length; mi++) {
+    (function(m){
+      var fi = document.getElementById('fi-' + m);
+      var ki = document.getElementById('ki-' + m);
+      if (fi) fi.addEventListener('keydown', function(e){ if (e.key === 'Enter' && ki) ki.focus(); });
+      if (ki) ki.addEventListener('keydown', function(e){ if (e.key === 'Enter') addFood(m); });
+    })(meals[mi]);
   }
-  // 曜日に応じたトレーニングメニュー
-  var dow=new Date().getDay();
-  var tabs=document.querySelectorAll('.tdt');
-  if(dow===6&&tabs.length>1){
-    tabs.forEach(function(b){b.classList.remove('on');});
-    tabs[1].classList.add('on');trainDay='sat';renderTraining();
-  } else if(dow===0&&tabs.length>2){
-    tabs.forEach(function(b){b.classList.remove('on');});
-    tabs[2].classList.add('on');trainDay='sun';renderTraining();
+
+  var dow = new Date().getDay();
+  var tabs = document.querySelectorAll('.tdt');
+  if (dow === 6 && tabs.length > 1) {
+    for (var ti = 0; ti < tabs.length; ti++) tabs[ti].classList.remove('on');
+    tabs[1].classList.add('on');
+    trainDay = 'sat';
+    renderTraining();
+  } else if (dow === 0 && tabs.length > 2) {
+    for (var ti2 = 0; ti2 < tabs.length; ti2++) tabs[ti2].classList.remove('on');
+    tabs[2].classList.add('on');
+    trainDay = 'sun';
+    renderTraining();
   }
 });
 
-window.addEventListener('resize',function(){
-  if(document.getElementById('page-graph')&&
-     document.getElementById('page-graph').classList.contains('active')){
-    renderGraphs();
-  }
+window.addEventListener('resize', function(){
+  var pg = document.getElementById('page-graph');
+  if (pg && pg.classList.contains('active')) renderGraphs();
 });
+
 </script>
 </body>
 </html>
