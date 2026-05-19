@@ -473,7 +473,7 @@ canvas.cv{width:100%;height:100%}
     <div style="font-family:var(--fd);font-size:1rem;color:var(--palm);margin-bottom:10px">体重の記録</div>
     <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
       <div class="bf"><label>記録日</label><input type="date" id="wtDate" style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
-      <div class="bf"><label>体重 (kg)</label><input type="number" step="0.1" id="wtVal" placeholder="97.4" style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+      <div class="bf"><label>体重 (kg)</label><input type="number" step="0.1" id="wtVal" placeholder="例: 68.5" style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
       <button class="rec-btn" style="background:linear-gradient(135deg,var(--palm),var(--palm2))" onclick="saveWeight()">体重を保存</button>
     </div>
     <div class="bp-hist" id="wtHist" style="margin-top:10px"></div>
@@ -484,10 +484,10 @@ canvas.cv{width:100%;height:100%}
     <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
       <div class="bf"><label>記録日</label><input type="date" id="bpDate" style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div class="bf"><label>収縮期（上）</label><input type="number" id="bpSys" placeholder="121" style="width:100%;padding:10px 10px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
-        <div class="bf"><label>拡張期（下）</label><input type="number" id="bpDia" placeholder="96" style="width:100%;padding:10px 10px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+        <div class="bf"><label>収縮期（上）</label><input type="number" id="bpSys" placeholder="例: 120" style="width:100%;padding:10px 10px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+        <div class="bf"><label>拡張期（下）</label><input type="number" id="bpDia" placeholder="例: 80" style="width:100%;padding:10px 10px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
       </div>
-      <div class="bf"><label>脈拍</label><input type="number" id="bpPulse" placeholder="72" style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+      <div class="bf"><label>脈拍</label><input type="number" id="bpPulse" placeholder="例: 72" style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
       <button class="rec-btn" onclick="saveBP()">血圧を保存</button>
     </div>
     <div class="bp-hist" id="bpHist" style="margin-top:10px"></div>
