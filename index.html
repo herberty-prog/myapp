@@ -1004,14 +1004,7 @@ function removeFood(meal,idx){
 function renderLog(){
   const data=gdd(logDate);const T=1600;let total=0;
   const mm={lunch:['lNum','lBar'],snack:['sNum','sBar'],dinner:['dNum','dBar']};
-  ['lunch','snack','dinner'].forEach(m=>{
-    const mt=data[m].reduce((s,e)=>s+e.kcal,0);total+=mt;
-    document.getElementById('t-'+m).textContent=mt;
-    document.getElementById(mm[m][0]).textContent=mt;
-    document.getElementById(mm[m][1]).style.width=Math.min(mt/T*100,100)+'%';
-    const c=document.getElementById('e-'+m);
-    c.innerHTML=data[m].length?data[m].map((e,i)=>`<div class="entry"><span class="enm">${e.name}</span><span class="ekc">${e.kcal}kcal</span><button class="edel" onclick="removeFood('${m}',${i})">×</button></div>`).join(''):'<div class="no-entry">まだ記録なし</div>';
-  });
+  
   document.getElementById('ringNum').textContent=total;
   document.getElementById('hKcal').textContent=total;
   const rem=T-total;
@@ -1493,55 +1486,17 @@ function copyPrompt(){
 }
 
 // ═══════════════════════════════
-// ENTER KEYS
 // ═══════════════════════════════
-['lunch','snack','dinner'].forEach(m=>{
-  window.addEventListener('DOMContentLoaded',()=>{
-    document.getElementById('f-'+m)?.addEventListener('keydown',e=>{if(e.key==='Enter') document.getElementById('k-'+m).focus();});
-    document.getElementById('k-'+m)?.addEventListener('keydown',e=>{if(e.key==='Enter') addFood(m);});
-  });
-});
+
 
 // ═══════════════════════════════
-// WEIGHT INPUT（ヘッダー）
-// ═══════════════════════════════
-document.addEventListener('DOMContentLoaded',()=>{
-  const wi=document.getElementById('weightIn');
-  if(wi) wi.addEventListener('change',function(){
-    const v=parseFloat(this.value);if(v){sdf(today(),'weight',v);save();}
-  });
+
 });
 
 // ═══════════════════════════════
 // INIT
 // ═══════════════════════════════
-window.addEventListener('DOMContentLoaded',()=>{
-  load();
-  initHeader();
-  initDP();
-  initBPDate();
-  initWtDate();
-  renderLog();
-  renderBPH();
-  renderWtHist();
-  renderRecipes();
-  renderTraining();
-  renderWeek();
-  renderIrrLog();
-  renderRoutineLog();
-  loadSheetSettings();
-  updateBPHeader();
-  // 今日の体重をヘッダーに反映
-  const todayRec=gdd(today());
-  if(todayRec.weight){
-    const el=document.getElementById('weightIn');
-    if(el) el.value=todayRec.weight;
-  }
-  // 曜日に応じたトレーニングメニュー
-  const dow=new Date().getDay();const tabs=document.querySelectorAll('.tdt');
-  if(dow===6){tabs.forEach(b=>b.classList.remove('on'));tabs[1].classList.add('on');trainDay='sat';renderTraining();}
-  else if(dow===0){tabs.forEach(b=>b.classList.remove('on'));tabs[2].classList.add('on');trainDay='sun';renderTraining();}
-});
+
 
 
 // ═══════════════════════════════
@@ -1779,6 +1734,70 @@ function doGet(e) {
 window.addEventListener('resize',()=>{
   if(document.getElementById('page-graph').classList.contains('active')) renderGraphs();
 });
-</script>
+
+// ═══════════════════════════════
+// INITIALIZATION
+// ═══════════════════════════════
+window.addEventListener('DOMContentLoaded', function() {
+  // フォームのEnterキー対応
+  ['lunch','snack','dinner'].forEach(function(m) {
+    var fi = document.getElementById('f-'+m);
+    var ki = document.getElementById('k-'+m);
+    if(fi) fi.addEventListener('keydown', function(e){ if(e.key==='Enter' && ki) ki.focus(); });
+    if(ki) ki.addEventListener('keydown', function(e){ if(e.key==='Enter') addFood(m); });
+  });
+
+  // 体重入力（ヘッダー）
+  var wi = document.getElementById('weightIn');
+  if(wi) wi.addEventListener('change', function() {
+    var v = parseFloat(this.value);
+    if(v) { sdf(today(), 'weight', v); save(); }
+  });
+
+  // 初期化処理
+  load();
+  initHeader();
+  initDP();
+  initBPDate();
+  initWtDate();
+  renderLog();
+  renderBPH();
+  renderWtHist();
+  renderRecipes();
+  renderTraining();
+  renderWeek();
+  renderIrrLog();
+  renderRoutineLog();
+  updateBPHeader();
+  loadSheetSettings();
+
+  // 今日の体重をヘッダーに反映
+  var todayRec = gdd(today());
+  if(todayRec.weight) {
+    var el = document.getElementById('weightIn');
+    if(el) el.value = todayRec.weight;
+  }
+
+  // 曜日に応じたトレーニングメニュー
+  var dow = new Date().getDay();
+  var tabs = document.querySelectorAll('.tdt');
+  if(dow === 6 && tabs.length > 1) {
+    tabs.forEach(function(b){ b.classList.remove('on'); });
+    tabs[1].classList.add('on');
+    trainDay = 'sat';
+    renderTraining();
+  } else if(dow === 0 && tabs.length > 2) {
+    tabs.forEach(function(b){ b.classList.remove('on'); });
+    tabs[2].classList.add('on');
+    trainDay = 'sun';
+    renderTraining();
+  }
+});
+
+window.addEventListener('resize', function() {
+  if(document.getElementById('page-graph') &&
+     document.getElementById('page-graph').classList.contains('active')) {
+    renderGraphs();
+  }</script>
 </body>
 </html>
