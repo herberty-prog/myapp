@@ -6,36 +6,11 @@
 <link rel="icon" type="image/png" href="icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Aloha OKZ">
+<meta name="apple-mobile-web-app-title" content="Health OKZ">
 <meta name="theme-color" content="#0077b6">
 
-<script>
-// 即座にストレージチェック
-(function(){
-  try{
-    localStorage.setItem('okz_chk','1');
-    if(localStorage.getItem('okz_chk')!=='1'){
-      document.addEventListener('DOMContentLoaded',function(){
-        var b=document.createElement('div');
-        b.style.cssText='position:fixed;top:0;left:0;right:0;background:#e63946;color:white;text-align:center;padding:8px;font-size:12px;z-index:9999;font-family:sans-serif';
-        b.textContent='⚠️ データ保存が無効です。Safariの設定→プライバシー→サイトデータを確認してください';
-        document.body.appendChild(b);
-      });
-    }
-    localStorage.removeItem('okz_chk');
-  }catch(e){
-    document.addEventListener('DOMContentLoaded',function(){
-      var b=document.createElement('div');
-      b.style.cssText='position:fixed;top:0;left:0;right:0;background:#e63946;color:white;text-align:center;padding:8px;font-size:12px;z-index:9999;font-family:sans-serif';
-      b.textContent='⚠️ データ保存が無効です。プライベートブラウジングをオフにしてください';
-      document.body.appendChild(b);
-    });
-  }
-})();
-</script>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>OKZ — Aloha Health</title>
+<title>OKZ — Health OKZ</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
 
@@ -403,7 +378,7 @@ canvas.cv{width:100%;height:100%}
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-top">
-      <div><div class="brand-name">Aloha OKZ</div><div class="brand-sub">Personal Health System</div></div>
+      <div><div class="brand-name">Health OKZ</div><div class="brand-sub">Personal Health System</div></div>
       <div><div class="hero-dn" id="hDay">--</div><div class="hero-dm" id="hMeta">---</div></div>
     </div>
     <div class="stat-strip">
@@ -461,9 +436,9 @@ canvas.cv{width:100%;height:100%}
   <div class="gc"><div class="gc-hd"><div><div class="gc-lbl">WEIGHT</div><div class="gc-cur" id="gW">--<span style="font-size:.95rem;color:var(--muted)">kg</span></div></div><div class="gc-diff good" id="gWd"></div></div><div class="chart-a"><canvas class="cv" id="cvW"></canvas></div><div class="chart-xl" id="xlW"></div></div>
   <div class="gc"><div class="gc-hd"><div><div class="gc-lbl">BLOOD PRESSURE</div><div class="gc-cur" id="gB">--<span style="font-size:.95rem;color:var(--muted)">mmHg</span></div></div><div class="gc-diff good" id="gBd"></div></div><div class="chart-a"><canvas class="cv" id="cvB"></canvas></div><div class="chart-xl" id="xlB"></div></div>
   <div class="sg">
-    <div class="sc"><div class="sc-lbl">START</div><div class="sc-val oc">100.0<span style="font-size:.75rem">kg</span></div></div>
+    <div class="sc"><div class="sc-lbl">START</div><div class="sc-val oc" id="startWeight">--<span style="font-size:.75rem">kg</span></div></div>
     <div class="sc"><div class="sc-lbl">TOTAL LOSS</div><div class="sc-val gn" id="totalLoss">--</div></div>
-    <div class="sc"><div class="sc-lbl">START BP</div><div class="sc-val rd">146<span style="font-size:.75rem">/98</span></div></div>
+    <div class="sc"><div class="sc-lbl">START BP</div><div class="sc-val rd" id="startBP">--<span style="font-size:.75rem">mmHg</span></div></div>
     <div class="sc"><div class="sc-lbl">DAYS LOGGED</div><div class="sc-val am" id="daysLogged">--</div></div>
   </div>
   <div class="bp-card">
@@ -531,12 +506,82 @@ canvas.cv{width:100%;height:100%}
   <div class="hcard"><div class="habar sd"></div><div class="hinn"><div class="htit">Mindset</div><ul class="hlist" style="margin-top:7px"><li><span class="hdot" style="background:var(--palm2)"></span><span><strong>空腹のピークは15分で終わる</strong></span></li><li><span class="hdot" style="background:var(--palm2)"></span><span><strong>空腹 = 脂肪燃焼中</strong> — ポジティブなサイン</span></li><li><span class="hdot" style="background:var(--palm2)"></span><span><strong>2週間で慣れる</strong></span></li><li><span class="hdot" style="background:var(--hibiscus)"></span><span style="color:var(--hibiscus)"><strong>めまい・動悸は低血糖</strong> — 即補食する</span></li></ul></div></div>
 </div>
 
+<!-- SPREADSHEET PAGE -->
+<div id="page-sheet" class="page">
+  <div class="shd" style="margin-top:8px">
+    <div class="shd-title">Spreadsheet</div>
+    <span class="shd-meta">データ出力・連携</span>
+  </div>
+
+  <!-- Google連携設定 -->
+  <div class="analysis-card" style="margin-bottom:10px">
+    <div class="analysis-title" style="font-size:1rem;margin-bottom:4px">Google アカウント連携</div>
+    <div class="analysis-sub" style="margin-bottom:10px">各自のGoogleアカウントに紐付けて記録を保存します</div>
+    <div class="ifield">
+      <label>ユーザー名（識別用）</label>
+      <input class="iinput" id="sheetUser" placeholder="例：OKZ" style="margin-bottom:8px">
+    </div>
+    <div class="ifield">
+      <label>Google スプレッドシート URL（任意）</label>
+      <input class="iinput" id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/...">
+    </div>
+    <button class="isave" style="margin-top:10px;padding:11px" onclick="saveSheetSettings()">設定を保存</button>
+    <div id="sheetSettingStatus" style="font-size:.68rem;color:var(--palm);text-align:center;margin-top:6px"></div>
+  </div>
+
+  <!-- 期間選択 -->
+  <div class="analysis-card" style="margin-bottom:10px">
+    <div class="analysis-title" style="font-size:1rem;margin-bottom:8px">出力期間を選択</div>
+    <div class="period-sel" style="margin-bottom:12px">
+      <button class="ps-btn on" onclick="setSheetPeriod(7,this)">7日</button>
+      <button class="ps-btn" onclick="setSheetPeriod(14,this)">14日</button>
+      <button class="ps-btn" onclick="setSheetPeriod(30,this)">30日</button>
+      <button class="ps-btn" onclick="setSheetPeriod(0,this)">全期間</button>
+    </div>
+
+    <!-- プレビューテーブル -->
+    <div style="overflow-x:auto;margin-bottom:10px">
+      <table id="sheetPreview" style="width:100%;border-collapse:collapse;font-size:.7rem;min-width:500px"></table>
+    </div>
+
+    <!-- 出力ボタン群 -->
+    <button class="copy-btn" onclick="exportCSV()" style="margin-bottom:8px">
+      📥 CSVダウンロード（Excelで開ける）
+    </button>
+    <button class="copy-btn" onclick="copySheetData()" style="margin-bottom:8px;background:linear-gradient(135deg,var(--palm),var(--palm2))">
+      📋 Googleスプレッドシート貼り付け用コピー
+    </button>
+    <button class="copy-btn" onclick="openGoogleSheet()" style="background:linear-gradient(135deg,#ea4335,#fbbc04)">
+      🔗 Googleスプレッドシートを開く
+    </button>
+  </div>
+
+  <!-- GASコード -->
+  <div class="analysis-card">
+    <div class="analysis-title" style="font-size:1rem;margin-bottom:4px">自動連携の設定方法</div>
+    <div class="analysis-sub" style="margin-bottom:10px">Google Apps Scriptを使って自動でシートに記録できます</div>
+    <div style="background:rgba(0,119,182,.05);border-radius:10px;padding:12px;font-size:.68rem;color:var(--text);line-height:1.8;margin-bottom:10px">
+      <strong>手順：</strong><br>
+      1. Googleスプレッドシートを新規作成<br>
+      2. メニュー「拡張機能」→「Apps Script」を開く<br>
+      3. 下のコードをコピーして貼り付け<br>
+      4. 保存して「デプロイ」→「新しいデプロイ」<br>
+      5. 種類「ウェブアプリ」・アクセス「全員」で公開<br>
+      6. 発行されたURLをこのアプリに貼り付ける
+    </div>
+    <div class="prompt-box" id="gasCode" style="font-size:.62rem;max-height:200px"></div>
+    <button class="copy-btn" onclick="copyGAS()" style="margin-top:8px">📋 GASコードをコピー</button>
+  </div>
+</div>
+
 <!-- BOTTOM NAV -->
+<nav class="bnav"><!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="nb active" onclick="switchPage('food',this)"><div class="nb-ic">🍱</div><span class="nb-lb">Food</span></button>
   <button class="nb" onclick="switchPage('recipe',this)"><div class="nb-ic">👨‍🍳</div><span class="nb-lb">Recipe</span></button>
   <button class="nb" onclick="switchPage('graph',this)"><div class="nb-ic">📈</div><span class="nb-lb">Graph</span></button>
   <button class="nb" onclick="switchPage('train',this)"><div class="nb-ic">💪</div><span class="nb-lb">Train</span></button>
+  <button class="nb" onclick="switchPage('sheet',this)"><div class="nb-ic">📊</div><span class="nb-lb">Sheet</span></button>
   <button class="nb" onclick="switchPage('analysis',this)"><div class="nb-ic">🤖</div><span class="nb-lb">AI分析</span></button>
   <button class="nb" onclick="switchPage('hunger',this)"><div class="nb-ic">🌺</div><span class="nb-lb">Hunger</span></button>
 </nav>
@@ -915,6 +960,7 @@ function switchPage(id,btn){
   btn.classList.add('active');
   if(id==='graph') setTimeout(renderGraphs,60);
   if(id==='analysis') renderAnalysis();
+  if(id==='sheet'){loadSheetSettings();renderSheetPreview();initGASCode();}
 }
 
 // ═══════════════════════════════
@@ -1045,13 +1091,11 @@ function saveWeight(){
 function renderWtHist(){
   const c=document.getElementById('wtHist');
   if(!c) return;
-  const fixed=[{date:'2025-05-15',weight:100.0},{date:'2025-05-16',weight:97.7},{date:'2025-05-17',weight:96.9}];
   const entries=[];
   gall().forEach(d=>{
     const rec=gdd(d);
     if(rec.weight) entries.push({date:d,weight:rec.weight});
   });
-  fixed.forEach(f=>{if(!entries.find(e=>e.date===f.date)) entries.push(f);});
   entries.sort((a,b)=>b.date.localeCompare(a.date));
   if(!entries.length){c.innerHTML='<div style="font-size:.66rem;color:var(--muted);padding:7px 0">記録なし</div>';return;}
   c.innerHTML=entries.slice(0,8).map(e=>`
@@ -1073,15 +1117,13 @@ function setPeriod(d,btn){
 }
 
 function getWData(){
-  const fixed=[{date:'2025-05-15',weight:100.0},{date:'2025-05-16',weight:97.7},{date:'2025-05-17',weight:96.9}];
-  const all=[...fixed];
+  const all=[];
   gall().forEach(d=>{const r=gdd(d);if(r.weight&&!all.find(x=>x.date===d)) all.push({date:d,weight:r.weight});});
   return all.sort((a,b)=>a.date.localeCompare(b.date));
 }
 
 function getBData(){
-  const fixed=[{date:'2025-05-15',sys:146,dia:98},{date:'2025-05-16',sys:123,dia:100},{date:'2025-05-17',sys:121,dia:96}];
-  const all=[...fixed];
+  const all=[];
   gbp().forEach(r=>{if(!all.find(x=>x.date===r.date)) all.push({date:r.date,sys:r.sys,dia:r.dia});});
   return all.sort((a,b)=>a.date.localeCompare(b.date));
 }
@@ -1128,29 +1170,38 @@ function drawChart(cvId,xlId,pts,c1,c2,lo,hi){
 function renderGraphs(){
   const wd=fp(getWData(),'date');
   if(wd.length){
-    const lt=wd[wd.length-1],fi=wd[0];
+    const lt=wd[wd.length-1];
+    const fi=wd[0];
     document.getElementById('gW').innerHTML=lt.weight.toFixed(1)+'<span style="font-size:.95rem;color:var(--muted)">kg</span>';
-    const diff=lt.weight-fi.weight;const gel=document.getElementById('gWd');
-    gel.textContent=(diff<0?'':'+')+''+diff.toFixed(1)+'kg';gel.className='gc-diff '+(diff<=0?'good':'bad');
+    const diff=lt.weight-fi.weight;
+    const gel=document.getElementById('gWd');
+    gel.textContent=(diff<0?'':'+')+''+diff.toFixed(1)+'kg';
+    gel.className='gc-diff '+(diff<=0?'good':'bad');
     const vals=wd.map(d=>d.weight);
     drawChart('cvW','xlW',wd.map(d=>({v:d.weight,label:d.date.slice(5)})),'#0077b6','#48cae4',Math.min(...vals)-1,Math.max(...vals)+.5);
-    document.getElementById('totalLoss').textContent=(100.0-lt.weight>0?'-':'')+Math.abs(100.0-lt.weight).toFixed(1)+'kg';
+    const lossVal=fi.weight-lt.weight;
+    document.getElementById('totalLoss').textContent=(lossVal>0?'-':'+')+Math.abs(lossVal).toFixed(1)+'kg';
+    const sw=document.getElementById('startWeight');
+    if(sw) sw.innerHTML=fi.weight.toFixed(1)+'<span style="font-size:.75rem">kg</span>';
   }
   const bd=fp(getBData(),'date');
   if(bd.length){
-    const lt=bd[bd.length-1],fi=bd[0];
+    const lt=bd[bd.length-1];
+    const fi=bd[0];
     document.getElementById('gB').innerHTML=lt.sys+'<span style="font-size:.95rem;color:var(--muted)">mmHg</span>';
-    const diff=lt.sys-fi.sys;const gel=document.getElementById('gBd');
-    gel.textContent=(diff<0?'':'+')+''+diff+'mmHg';gel.className='gc-diff '+(diff<=0?'good':'bad');
+    const diff=lt.sys-fi.sys;
+    const gel=document.getElementById('gBd');
+    gel.textContent=(diff<0?'':'+')+''+diff+'mmHg';
+    gel.className='gc-diff '+(diff<=0?'good':'bad');
     const vals=bd.map(d=>d.sys);
     drawChart('cvB','xlB',bd.map(d=>({v:d.sys,label:d.date.slice(5)})),'#e63946','#f77f00',Math.min(...vals)-5,Math.max(...vals)+5);
+    const sbp=document.getElementById('startBP');
+    if(sbp&&fi) sbp.innerHTML=fi.sys+'/'+fi.dia+'<span style="font-size:.75rem">mmHg</span>';
   }
   document.getElementById('daysLogged').textContent=gall().length;
 }
 
-// ═══════════════════════════════
-// RECIPES
-// ═══════════════════════════════
+
 function filterR(f,btn){
   rFilter=f;
   document.querySelectorAll('.rf-btn').forEach(b=>b.classList.remove('on'));
@@ -1262,6 +1313,7 @@ function saveIrr(){
   document.getElementById('irrModal').classList.remove('open');
   renderIrrLog();
   renderRoutineLog();
+  loadSheetSettings();
 }
 const CAT={walk:'ウォーキング',muscle:'筋トレ',stretch:'ストレッチ',cardio:'有酸素',other:'その他'};
 function renderIrrLog(){
@@ -1270,7 +1322,8 @@ function renderIrrLog(){
   c.innerHTML=a.slice(0,20).map(r=>`<div class="irre"><span class="icat ${r.cat}">${CAT[r.cat]||r.cat}</span><div class="ict"><div class="ictnm">${r.note}</div>${r.detail?`<div class="ictdt">${r.detail}</div>`:''}<div class="icttm">${r.date}${r.min?' · '+r.min+'分':''}</div></div><button class="idel" onclick="delIrr(${r.id})">×</button></div>`).join('');
 }
 function delIrr(id){sirr(girr().filter(r=>r.id!==id));renderIrrLog();
-  renderRoutineLog();}
+  renderRoutineLog();
+  loadSheetSettings();}
 
 // ═══════════════════════════════
 // ROUTINE LOG
@@ -1382,6 +1435,7 @@ function renderAnalysis(){
   });
   const periodW=wData.filter(d=>dates.includes(d.date));
   const firstW=periodW[0];const lastW=periodW[periodW.length-1];
+  if(firstW){const sw=document.getElementById('startWeight');if(sw)sw.innerHTML=firstW.weight.toFixed(1)+'<span style="font-size:.75rem">kg</span>';}
   const wChange=firstW&&lastW?(lastW.weight-firstW.weight).toFixed(1):'--';
   const irrInPeriod=irrData.filter(r=>dates.includes(r.date));
   document.getElementById('analysisSummary').innerHTML=`
@@ -1475,6 +1529,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   renderWeek();
   renderIrrLog();
   renderRoutineLog();
+  loadSheetSettings();
   updateBPHeader();
   // 今日の体重をヘッダーに反映
   const todayRec=gdd(today());
@@ -1487,6 +1542,239 @@ window.addEventListener('DOMContentLoaded',()=>{
   if(dow===6){tabs.forEach(b=>b.classList.remove('on'));tabs[1].classList.add('on');trainDay='sat';renderTraining();}
   else if(dow===0){tabs.forEach(b=>b.classList.remove('on'));tabs[2].classList.add('on');trainDay='sun';renderTraining();}
 });
+
+
+// ═══════════════════════════════
+// SPREADSHEET機能
+// ═══════════════════════════════
+let sheetPeriod=7;
+
+function saveSheetSettings(){
+  const user=document.getElementById('sheetUser').value.trim();
+  const url=document.getElementById('sheetUrl').value.trim();
+  const m=getM();
+  m.sheetSettings={user,url};
+  saveM(m);
+  document.getElementById('sheetSettingStatus').textContent='✓ 設定を保存しました';
+  setTimeout(()=>{document.getElementById('sheetSettingStatus').textContent='';},2000);
+}
+
+function loadSheetSettings(){
+  const m=getM();
+  if(m.sheetSettings){
+    const u=document.getElementById('sheetUser');
+    const s=document.getElementById('sheetUrl');
+    if(u&&m.sheetSettings.user) u.value=m.sheetSettings.user;
+    if(s&&m.sheetSettings.url) s.value=m.sheetSettings.url;
+  }
+}
+
+function setSheetPeriod(d,btn){
+  sheetPeriod=d;
+  document.querySelectorAll('#page-sheet .ps-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderSheetPreview();
+}
+
+function getSheetDates(){
+  const dates=[];const end=new Date();const start=new Date();
+  if(sheetPeriod>0) start.setDate(end.getDate()-sheetPeriod+1);
+  else{ const all=gall();if(all.length) start.setTime(new Date(all[0]).getTime()); }
+  for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
+    dates.push(d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()));
+  }
+  return dates;
+}
+
+function buildSheetRows(){
+  const dates=getSheetDates();
+  const bpMap={};gbp().forEach(r=>{if(!bpMap[r.date]) bpMap[r.date]=r;});
+  const rows=[];
+  dates.forEach(d=>{
+    const food=gdd(d);
+    const lunchKcal=food.lunch.reduce((s,e)=>s+e.kcal,0);
+    const snackKcal=food.snack.reduce((s,e)=>s+e.kcal,0);
+    const dinnerKcal=food.dinner.reduce((s,e)=>s+e.kcal,0);
+    const totalKcal=lunchKcal+snackKcal+dinnerKcal;
+    const lunchItems=food.lunch.map(e=>e.name).join('・')||'';
+    const snackItems=food.snack.map(e=>e.name).join('・')||'';
+    const dinnerItems=food.dinner.map(e=>e.name).join('・')||'';
+    const bp=bpMap[d];
+    const wt=food.weight;
+    rows.push({
+      date:d,
+      weight:wt?wt.toFixed(1):'',
+      bpSys:bp?bp.sys:'',
+      bpDia:bp?bp.dia:'',
+      pulse:bp?bp.pulse:'',
+      lunchKcal:lunchKcal||'',
+      lunchItems,
+      snackKcal:snackKcal||'',
+      snackItems,
+      dinnerKcal:dinnerKcal||'',
+      dinnerItems,
+      totalKcal:totalKcal||''
+    });
+  });
+  return rows;
+}
+
+function renderSheetPreview(){
+  const rows=buildSheetRows();
+  const tbl=document.getElementById('sheetPreview');
+  if(!tbl)return;
+  const headers=['日付','体重(kg)','血圧上','血圧下','脈拍','昼kcal','昼食内容','間食kcal','間食内容','夜kcal','夕食内容','合計kcal'];
+  const thStyle='background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;padding:8px 10px;text-align:center;font-size:.62rem;font-weight:800;white-space:nowrap;';
+  const tdStyle='padding:7px 8px;font-size:.65rem;border-bottom:1px solid rgba(0,119,182,.1);text-align:center;color:var(--text);';
+  const tdStyleL='padding:7px 8px;font-size:.65rem;border-bottom:1px solid rgba(0,119,182,.1);text-align:left;color:var(--text);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+
+  let html=`<thead><tr>${headers.map(h=>`<th style="${thStyle}">${h}</th>`).join('')}</tr></thead><tbody>`;
+  rows.forEach((r,i)=>{
+    const bg=i%2===0?'background:rgba(255,255,255,.9)':'background:rgba(0,119,182,.03)';
+    const totalColor=r.totalKcal>1600?'color:var(--hibiscus);font-weight:800':r.totalKcal>0?'color:var(--palm);font-weight:800':'';
+    html+=`<tr style="${bg}">
+      <td style="${tdStyle}font-weight:700;color:var(--ocean)">${r.date.slice(5)}</td>
+      <td style="${tdStyle}font-weight:700;color:var(--palm)">${r.weight}</td>
+      <td style="${tdStyle}color:var(--hibiscus);font-weight:700">${r.bpSys}</td>
+      <td style="${tdStyle}color:var(--ocean);font-weight:700">${r.bpDia}</td>
+      <td style="${tdStyle}">${r.pulse}</td>
+      <td style="${tdStyle}color:var(--sunset)">${r.lunchKcal}</td>
+      <td style="${tdStyleL}">${r.lunchItems}</td>
+      <td style="${tdStyle}color:var(--sunset)">${r.snackKcal}</td>
+      <td style="${tdStyleL}">${r.snackItems}</td>
+      <td style="${tdStyle}color:var(--sunset)">${r.dinnerKcal}</td>
+      <td style="${tdStyleL}">${r.dinnerItems}</td>
+      <td style="${tdStyle};${totalColor}">${r.totalKcal}</td>
+    </tr>`;
+  });
+  html+='</tbody>';
+  tbl.innerHTML=html;
+}
+
+function exportCSV(){
+  const rows=buildSheetRows();
+  const user=getM().sheetSettings?.user||'user';
+  const headers=['日付','体重(kg)','血圧上','血圧下','脈拍','昼kcal','昼食内容','間食kcal','間食内容','夜kcal','夕食内容','合計kcal'];
+  let csv='﻿'; // BOM for Excel
+  csv+=headers.join(',')+'
+';
+  rows.forEach(r=>{
+    csv+=[
+      r.date,r.weight,r.bpSys,r.bpDia,r.pulse,
+      r.lunchKcal,`"${r.lunchItems}"`,
+      r.snackKcal,`"${r.snackItems}"`,
+      r.dinnerKcal,`"${r.dinnerItems}"`,
+      r.totalKcal
+    ].join(',')+'
+';
+  });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`health_${user}_${p2(new Date().getMonth()+1)}${p2(new Date().getDate())}.csv`;
+  a.click();URL.revokeObjectURL(url);
+}
+
+function copySheetData(){
+  const rows=buildSheetRows();
+  const headers=['日付','体重(kg)','血圧上','血圧下','脈拍','昼kcal','昼食内容','間食kcal','間食内容','夜kcal','夕食内容','合計kcal'];
+  let text=headers.join('	')+'
+';
+  rows.forEach(r=>{
+    text+=[
+      r.date,r.weight,r.bpSys,r.bpDia,r.pulse,
+      r.lunchKcal,r.lunchItems,
+      r.snackKcal,r.snackItems,
+      r.dinnerKcal,r.dinnerItems,
+      r.totalKcal
+    ].join('	')+'
+';
+  });
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>{
+      const btn=event.target;btn.textContent='✓ コピーしました！';
+      setTimeout(()=>{btn.innerHTML='📋 Googleスプレッドシート貼り付け用コピー';},2500);
+    });
+  }
+}
+
+function openGoogleSheet(){
+  const m=getM();
+  const url=m.sheetSettings?.url;
+  if(url){window.open(url,'_blank');}
+  else{window.open('https://docs.google.com/spreadsheets/create','_blank');}
+}
+
+function copyGAS(){
+  const gasCode=document.getElementById('gasCode').textContent;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(gasCode).then(()=>{
+      const btn=event.target;btn.textContent='✓ コピーしました！';
+      setTimeout(()=>{btn.innerHTML='📋 GASコードをコピー';},2500);
+    });
+  }
+}
+
+function initGASCode(){
+  const el=document.getElementById('gasCode');
+  if(!el)return;
+  el.textContent=`// Health OKZ - Google Apps Script
+// スプレッドシートにデータを自動記録するスクリプト
+
+const SHEET_NAME = 'Health Log';
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let sheet = ss.getSheetByName(SHEET_NAME);
+    
+    // シートがなければ作成してヘッダーを追加
+    if (!sheet) {
+      sheet = ss.insertSheet(SHEET_NAME);
+      const headers = ['日付','体重(kg)','血圧上','血圧下','脈拍',
+                       '昼kcal','昼食内容','間食kcal','間食内容',
+                       '夜kcal','夕食内容','合計kcal','記録者'];
+      sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+      // ヘッダーのスタイル設定
+      const headerRange = sheet.getRange(1, 1, 1, headers.length);
+      headerRange.setBackground('#0077b6');
+      headerRange.setFontColor('#ffffff');
+      headerRange.setFontWeight('bold');
+      sheet.setFrozenRows(1);
+    }
+    
+    // データを追加
+    const row = [
+      data.date, data.weight, data.bpSys, data.bpDia, data.pulse,
+      data.lunchKcal, data.lunchItems,
+      data.snackKcal, data.snackItems,
+      data.dinnerKcal, data.dinnerItems,
+      data.totalKcal, data.user || 'unknown'
+    ];
+    sheet.appendRow(row);
+    
+    // 列幅の自動調整
+    sheet.autoResizeColumns(1, 13);
+    
+    return ContentService
+      .createTextOutput(JSON.stringify({status:'success'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({status:'error',message:err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  return ContentService
+    .createTextOutput('Health OKZ GAS is running.')
+    .setMimeType(ContentService.MimeType.TEXT);
+}`;
+}
+
+
 
 window.addEventListener('resize',()=>{
   if(document.getElementById('page-graph').classList.contains('active')) renderGraphs();
