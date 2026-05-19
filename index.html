@@ -743,6 +743,9 @@ canvas.cv{width:100%;height:100%}
 </div>
 
 <script>
+
+
+
 var RECIPES = [
   {id:1,type:'lunch',tags:['lunch','quick','lowsalt'],emoji:'🍱',bg:'linear-gradient(135deg,#e0f4ff,#0077b6)',
    name:'サラダチキン＋おにぎり＋野菜サラダ',kcal:620,time:'0分（購入のみ）',
@@ -1217,6 +1220,230 @@ function resetAllData() {
     alert('削除中にエラーが発生しました: ' + e.message);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+// ═══════════════════════════════
+// トレーニングメニュー編集
+// ═══════════════════════════════
+var editDay = 'weekday';
+
+function getCustomTraining() {
+  var m = getM();
+  if (m.customTraining) return m.customTraining;
+  return null;
+}
+
+function saveCustomTraining(custom) {
+  var m = getM();
+  m.customTraining = custom;
+  saveM(m);
+}
+
+function getEffectiveTraining() {
+  var custom = getCustomTraining();
+  if (!custom) return TRAINING;
+  var result = {};
+  var days = ['weekday', 'sat', 'sun'];
+  for (var di = 0; di < days.length; di++) {
+    var d = days[di];
+    if (custom[d] && custom[d].exercises) {
+      result[d] = custom[d];
+    } else {
+      result[d] = TRAINING[d];
+    }
+  }
+  return result;
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function setEditDay(day, btn) {
+  editDay = day;
+  var tabs = document.querySelectorAll('#trainEditDayTabs .ps-btn');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('on');
+  if (btn) btn.classList.add('on');
+  renderTrainEditList();
+}
+
+function toggleTEI(idx) {
+  var el = document.getElementById('tei-' + idx);
+  if (!el) return;
+  var body = document.getElementById('tei-body-' + idx);
+  if (!body) return;
+  if (body.style.display === 'none' || body.style.display === '') {
+    body.style.display = 'block';
+    el.style.borderColor = 'var(--ocean)';
+  } else {
+    body.style.display = 'none';
+    el.style.borderColor = 'rgba(0,119,182,.15)';
+  }
+}
+
+function renderTrainEditList() {
+  var container = document.getElementById('trainEditList');
+  if (!container) return;
+  var effective = getEffectiveTraining();
+  var menu = effective[editDay];
+  if (!menu) return;
+  var exs = menu.exercises || [];
+  var html = '';
+  for (var i = 0; i < exs.length; i++) {
+    var ex = exs[i];
+    var howVal = (ex.how || []).join('\n');
+    html += '<div class="train-edit-item" id="tei-' + i + '" style="background:white;border:1.5px solid rgba(0,119,182,.15);border-radius:12px;padding:12px;margin-bottom:10px">'
+      + '<div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="toggleTEI(' + i + ')">'
+      + '<div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;font-size:.78rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">' + (i + 1) + '</div>'
+      + '<span style="flex:1;font-size:.88rem;font-weight:800;color:var(--text)" id="tei-label-' + i + '">' + escHtml(ex.name || '（種目名未入力）') + '</span>'
+      + '<span style="font-size:.7rem;color:var(--muted)">▼</span>'
+      + '</div>'
+      + '<div id="tei-body-' + i + '" style="display:none;margin-top:12px;border-top:1px solid rgba(0,119,182,.08);padding-top:12px">'
+      + '<div style="margin-bottom:8px"><label style="display:block;font-size:.56rem;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">種目名</label>'
+      + '<input style="width:100%;padding:9px 11px;border:1.5px solid rgba(0,119,182,.15);border-radius:9px;background:#fff;font-family:var(--fb);font-size:.82rem;color:#1a3a4a;outline:none;box-sizing:border-box" id="tei-name-' + i + '" value="' + escHtml(ex.name || '') + '" placeholder="例: スクワット"></div>'
+      + '<div style="margin-bottom:8px"><label style="display:block;font-size:.56rem;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">セット数・時間</label>'
+      + '<input style="width:100%;padding:9px 11px;border:1.5px solid rgba(0,119,182,.15);border-radius:9px;background:#fff;font-family:var(--fb);font-size:.82rem;color:#1a3a4a;outline:none;box-sizing:border-box" id="tei-spec-' + i + '" value="' + escHtml(ex.spec || '') + '" placeholder="例: 20回 × 3セット"></div>'
+      + '<div style="margin-bottom:8px"><label style="display:block;font-size:.56rem;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">やり方（1行1ステップ）</label>'
+      + '<textarea style="width:100%;padding:9px 11px;border:1.5px solid rgba(0,119,182,.15);border-radius:9px;background:#fff;font-family:var(--fb);font-size:.78rem;color:#1a3a4a;outline:none;resize:vertical;min-height:80px;line-height:1.6;box-sizing:border-box" id="tei-how-' + i + '" placeholder="各ステップを改行で区切る">' + escHtml(howVal) + '</textarea>'
+      + '<div style="font-size:.62rem;color:var(--muted);margin-top:3px">改行で1ステップずつ入力</div></div>'
+      + '<div style="margin-bottom:8px"><label style="display:block;font-size:.56rem;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:3px">注意点</label>'
+      + '<textarea style="width:100%;padding:9px 11px;border:1.5px solid rgba(0,119,182,.15);border-radius:9px;background:#fff;font-family:var(--fb);font-size:.78rem;color:#1a3a4a;outline:none;resize:vertical;min-height:55px;line-height:1.6;box-sizing:border-box" id="tei-caution-' + i + '" placeholder="例: 膝が内側に入らないよう注意">' + escHtml(ex.caution || '') + '</textarea></div>'
+      + '<button onclick="deleteTrainItem(' + i + ')" style="width:100%;padding:9px;background:rgba(230,57,70,.07);color:var(--hibiscus);border:1.5px solid rgba(230,57,70,.2);border-radius:9px;font-family:var(--fb);font-size:.78rem;font-weight:800;cursor:pointer">この種目を削除</button>'
+      + '</div></div>';
+  }
+  if (!exs.length) {
+    html = '<div style="font-size:.75rem;color:var(--muted);text-align:center;padding:20px 0">種目がありません。下の「＋ 種目を追加」から追加してください。</div>';
+  }
+  container.innerHTML = html;
+}
+
+function addTrainItem() {
+  // customがなければTRAININGをディープコピーして作成
+  var custom = getCustomTraining();
+  if (!custom) {
+    custom = JSON.parse(JSON.stringify(TRAINING));
+  }
+  if (!custom[editDay]) {
+    custom[editDay] = JSON.parse(JSON.stringify(TRAINING[editDay] || { note: '', exercises: [] }));
+  }
+  if (!custom[editDay].exercises) {
+    custom[editDay].exercises = [];
+  }
+  custom[editDay].exercises.push({ name: '', spec: '', how: [], caution: '' });
+  saveCustomTraining(custom);
+  renderTrainEditList();
+  // 追加した種目を自動で開く
+  var newIdx = custom[editDay].exercises.length - 1;
+  setTimeout(function() {
+    var body = document.getElementById('tei-body-' + newIdx);
+    var item = document.getElementById('tei-' + newIdx);
+    if (body) {
+      body.style.display = 'block';
+      if (item) item.style.borderColor = 'var(--ocean)';
+      body.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, 100);
+}
+
+function deleteTrainItem(idx) {
+  // confirmを使わずにシンプルに削除（iOSのWebViewでconfirmが動作しない場合がある）
+  var nameEl = document.getElementById('tei-name-' + idx);
+  var nameStr = nameEl ? (nameEl.value || '種目') : '種目';
+  var custom = getCustomTraining();
+  if (!custom) {
+    custom = JSON.parse(JSON.stringify(TRAINING));
+  }
+  if (!custom[editDay]) {
+    custom[editDay] = JSON.parse(JSON.stringify(TRAINING[editDay]));
+  }
+  custom[editDay].exercises.splice(idx, 1);
+  saveCustomTraining(custom);
+  renderTrainEditList();
+}
+
+function saveTrainMenu() {
+  var container = document.getElementById('trainEditList');
+  if (!container) return;
+  var custom = getCustomTraining();
+  if (!custom) {
+    custom = JSON.parse(JSON.stringify(TRAINING));
+  }
+  if (!custom[editDay]) {
+    custom[editDay] = JSON.parse(JSON.stringify(TRAINING[editDay]));
+  }
+  // 現在画面に表示されているアイテム数をDOMから取得
+  var items = container.querySelectorAll('.train-edit-item');
+  var count = items.length;
+  var exercises = [];
+  for (var i = 0; i < count; i++) {
+    var nameEl   = document.getElementById('tei-name-' + i);
+    var specEl   = document.getElementById('tei-spec-' + i);
+    var howEl    = document.getElementById('tei-how-' + i);
+    var cauEl    = document.getElementById('tei-caution-' + i);
+    if (!nameEl) continue;
+    var howText  = howEl ? howEl.value : '';
+    var howLines = howText.split('\n').filter(function(l) { return l.trim() !== ''; });
+    exercises.push({
+      name:    nameEl.value.trim(),
+      spec:    specEl ? specEl.value.trim() : '',
+      how:     howLines,
+      caution: cauEl  ? cauEl.value.trim()  : ''
+    });
+  }
+  custom[editDay].exercises = exercises;
+  saveCustomTraining(custom);
+  // トレーニングページを即時更新
+  renderTraining();
+  // ラベルのみ更新（入力値を保持するため再描画はしない）
+  updateTrainEditLabels();
+  var msg = document.getElementById('trainSaved');
+  if (msg) {
+    msg.style.display = 'block';
+    setTimeout(function() { msg.style.display = 'none'; }, 2000);
+  }
+}
+
+function updateTrainEditLabels() {
+  var effective = getEffectiveTraining();
+  var exs = (effective[editDay] && effective[editDay].exercises) || [];
+  for (var i = 0; i < exs.length; i++) {
+    var nameEl = document.getElementById('tei-name-' + i);
+    var labelEl = document.getElementById('tei-label-' + i);
+    if (nameEl && labelEl) {
+      var val = nameEl.value.trim();
+      labelEl.textContent = val || '（種目名未入力）';
+    }
+  }
+}
+
+
+function resetTrainToDefault() {
+  var m = getM();
+  delete m.customTraining;
+  saveM(m);
+  renderTrainEditList();
+  renderTraining();
+  var msg = document.getElementById('trainSaved');
+  if (msg) {
+    msg.textContent = 'デフォルトに戻しました！';
+    msg.style.display = 'block';
+    setTimeout(function() {
+      msg.style.display = 'none';
+      msg.textContent = '保存しました！';
+    }, 2000);
+  }
+}
+
 
 // ====== LOAD / SAVE META ======
 function load() {
