@@ -579,6 +579,20 @@ canvas.cv{width:100%;height:100%}
     <button class="save-settings-btn" onclick="saveSettings()">設定を保存</button>
     <div class="saved-msg" id="settingsSaved">設定を保存しました！</div>
   </div>
+
+  <div class="settings-card" style="margin-top:10px;border:1.5px solid rgba(230,57,70,.2)">
+    <div style="font-size:1rem;font-weight:800;color:var(--hibiscus);margin-bottom:8px">データ管理</div>
+    <div style="font-size:.72rem;color:var(--muted);margin-bottom:12px;line-height:1.6">
+      記録した体重・血圧・食事・トレーニングデータをすべて削除します。<br>
+      <strong style="color:var(--hibiscus)">この操作は元に戻せません。</strong>
+    </div>
+    <button class="save-settings-btn"
+      style="background:linear-gradient(135deg,#e63946,#c0392b)"
+      onclick="confirmReset()">
+      すべてのデータを削除する
+    </button>
+    <div class="saved-msg" id="resetDone" style="color:var(--hibiscus)">削除しました。</div>
+  </div>
 </div>
 
 <!-- HUNGER PAGE -->
@@ -1119,6 +1133,48 @@ function updateGoalDisplay() {
 function getTargetKcal() {
   var s = gsets();
   return s.targetKcal || 1600;
+}
+
+function confirmReset() {
+  if (!window.confirm('すべての記録データ（体重・血圧・食事・トレーニング）を削除します。\nよろしいですか？')) return;
+  if (!window.confirm('本当に削除しますか？\nこの操作は元に戻せません。')) return;
+  resetAllData();
+}
+
+function resetAllData() {
+  try {
+    // マスターキーを初期化
+    var emptyMaster = { days:{}, bp:[], irr:[], rtl:[], meta:{}, settings: gsets() };
+    saveM(emptyMaster);
+    // sessionStorageも初期化
+    try { sessionStorage.removeItem(MK); } catch(e) {}
+    // 状態変数も初期化
+    exChecks = {};
+    weeklyDone = [false,false,false,false,false,false,false];
+    logDate = today();
+    // 画面を再描画
+    var dp = document.getElementById('logDate');
+    if (dp) dp.value = logDate;
+    renderLog();
+    renderBPH();
+    renderWtHist();
+    renderWeek();
+    renderIrrLog();
+    renderRoutineLog();
+    renderGraphs();
+    // ヘッダーリセット
+    var wi = document.getElementById('weightIn');
+    if (wi) wi.value = '';
+    var bd = document.getElementById('bpDisp');
+    if (bd) bd.textContent = '--/--';
+    var hk = document.getElementById('hKcal');
+    if (hk) hk.textContent = '0';
+    // 完了メッセージ
+    var msg = document.getElementById('resetDone');
+    if (msg) { msg.style.display = 'block'; setTimeout(function(){ msg.style.display = 'none'; }, 3000); }
+  } catch(e) {
+    alert('削除中にエラーが発生しました: ' + e.message);
+  }
 }
 
 // ====== LOAD / SAVE META ======
