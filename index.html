@@ -284,6 +284,23 @@ canvas.cv{width:100%;height:100%}
 .hdot{width:5px;height:5px;border-radius:99px;background:var(--aqua);flex-shrink:0;margin-top:6px}
 .hkc{font-family:var(--fm);font-size:.58rem;color:var(--sunset);font-weight:700;white-space:nowrap}
 /* RESPONSIVE */
+.train-edit-item{background:white;border:1.5px solid rgba(0,119,182,.15);border-radius:12px;padding:13px;margin-bottom:10px}
+.train-edit-item.open{border-color:var(--ocean)}
+.tei-head{display:flex;align-items:center;gap:8px;cursor:pointer}
+.tei-num{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;font-size:.78rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tei-name{flex:1;font-size:.88rem;font-weight:800;color:var(--text)}
+.tei-arrow{font-size:.7rem;color:var(--muted)}
+.tei-body{display:none;margin-top:12px;border-top:1px solid rgba(0,119,182,.08);padding-top:12px}
+.train-edit-item.open .tei-body{display:block}
+.te-field{margin-bottom:10px}
+.te-field label{display:block;font-size:.56rem;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
+.te-input{width:100%;padding:9px 11px;border:1.5px solid rgba(0,119,182,.15);border-radius:9px;background:#fff;font-family:var(--fb);font-size:.8rem;color:#1a3a4a;outline:none}
+.te-input:focus{border-color:var(--aqua)}
+.te-textarea{width:100%;padding:9px 11px;border:1.5px solid rgba(0,119,182,.15);border-radius:9px;background:#fff;font-family:var(--fb);font-size:.78rem;color:#1a3a4a;outline:none;resize:vertical;min-height:80px;line-height:1.6}
+.te-textarea:focus{border-color:var(--aqua)}
+.te-hint{font-size:.62rem;color:var(--muted);margin-top:3px;line-height:1.5}
+.te-del{width:100%;padding:9px;background:rgba(230,57,70,.08);color:var(--hibiscus);border:1.5px solid rgba(230,57,70,.18);border-radius:9px;font-family:var(--fb);font-size:.78rem;font-weight:800;cursor:pointer;margin-top:6px}
+.te-del:active{background:rgba(230,57,70,.18)}
 @media(min-width:700px){
   .hero{padding:52px 5% 0}
   .page{padding:12px 5% 0}
@@ -578,6 +595,30 @@ canvas.cv{width:100%;height:100%}
     <div class="sf"><label>Googleスプレッドシート URL（任意）</label><input type="text" id="sSheetUrl" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
     <button class="save-settings-btn" onclick="saveSettings()">設定を保存</button>
     <div class="saved-msg" id="settingsSaved">設定を保存しました！</div>
+  </div>
+
+  <!-- トレーニングメニュー編集 -->
+  <div class="settings-card" style="margin-top:10px">
+    <div style="font-size:1rem;font-weight:800;color:var(--ocean);margin-bottom:8px">トレーニングメニュー編集</div>
+    <div style="font-size:.72rem;color:var(--muted);margin-bottom:12px;line-height:1.6">
+      種目を追加・編集・削除できます。変更はすぐに反映されます。
+    </div>
+    <div class="period-sel" style="margin-bottom:12px">
+      <button class="ps-btn on" onclick="setEditDay('weekday',this)">平日</button>
+      <button class="ps-btn" onclick="setEditDay('sat',this)">土曜</button>
+      <button class="ps-btn" onclick="setEditDay('sun',this)">日曜</button>
+    </div>
+    <div id="trainEditList"></div>
+    <button class="save-settings-btn" style="margin-top:10px;background:linear-gradient(135deg,var(--palm),var(--palm2))" onclick="addTrainItem()">
+      + 種目を追加
+    </button>
+    <button class="save-settings-btn" style="margin-top:8px" onclick="saveTrainMenu()">
+      メニューを保存
+    </button>
+    <div class="saved-msg" id="trainSaved">保存しました！</div>
+    <button class="save-settings-btn" style="margin-top:8px;background:linear-gradient(135deg,#888,#aaa);font-size:.78rem" onclick="resetTrainToDefault()">
+      デフォルトに戻す
+    </button>
   </div>
 
   <div class="settings-card" style="margin-top:10px;border:1.5px solid rgba(230,57,70,.2)">
@@ -1232,7 +1273,7 @@ function switchPage(id, btn) {
   if (id === 'graph') { setTimeout(renderGraphs, 60); }
   if (id === 'analysis') { renderAnalysis(); }
   if (id === 'sheet') { renderSheetPreview(); }
-  if (id === 'settings') { loadSettings(); }
+  if (id === 'settings') { loadSettings(); renderTrainEditList(); }
 }
 
 // ====== DATE PICKER ======
@@ -1595,7 +1636,7 @@ function toggleChk(i) {
 }
 
 function renderTraining() {
-  var menu = TRAINING[trainDay];
+  var menu = getEffectiveTraining()[trainDay];
   if (!menu) return;
   var c = document.getElementById('trainContent');
   if (!c) return;
