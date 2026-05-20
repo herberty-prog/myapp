@@ -746,6 +746,9 @@ canvas.cv{width:100%;height:100%}
 
 
 
+
+
+
 var RECIPES = [
   {id:1,type:'lunch',tags:['lunch','quick','lowsalt'],emoji:'🍱',bg:'linear-gradient(135deg,#e0f4ff,#0077b6)',
    name:'サラダチキン＋おにぎり＋野菜サラダ',kcal:620,time:'0分（購入のみ）',
@@ -1080,7 +1083,7 @@ function getM() {
 
 function gdd(d) {
   var m = getM();
-  return m.days[d] || { lunch:[], snack:[], dinner:[] };
+  return m.days[d] || { breakfast:[], lunch:[], snack:[], dinner:[] };
 }
 function sdd(d, data) { var m = getM(); m.days[d] = data; saveM(m); }
 function sdf(d, f, v) { var data = gdd(d); data[f] = v; sdd(d, data); }
@@ -1548,9 +1551,9 @@ function renderLog() {
   var data = gdd(logDate);
   var TARGET = getTargetKcal();
   var total = 0;
-  var meals = ['lunch', 'snack', 'dinner'];
-  var numIds = ['lNum', 'sNum', 'dNum'];
-  var barIds = ['lBar', 'sBar', 'dBar'];
+  var meals = ['breakfast', 'lunch', 'snack', 'dinner'];
+  var numIds = ['bNum', 'lNum', 'sNum', 'dNum'];
+  var barIds = ['bBar', 'lBar', 'sBar', 'dBar'];
 
   for (var mi = 0; mi < meals.length; mi++) {
     var m = meals[mi];
@@ -2366,6 +2369,21 @@ window.addEventListener('DOMContentLoaded', function() {
   renderRoutineLog();
   updateBPHeader();
   updateGoalDisplay();
+
+  // EnterキーでフォームをナビゲートADD実行
+  var mealList = ['breakfast', 'lunch', 'snack', 'dinner'];
+  for (var mi = 0; mi < mealList.length; mi++) {
+    (function(m) {
+      var fi = document.getElementById('fi-' + m);
+      var ki = document.getElementById('ki-' + m);
+      if (fi) fi.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && ki) ki.focus();
+      });
+      if (ki) ki.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') addFood(m);
+      });
+    })(mealList[mi]);
+  }
 
   var wi = document.getElementById('weightIn');
   if (wi) wi.addEventListener('change', function(){
