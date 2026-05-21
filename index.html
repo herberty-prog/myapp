@@ -744,6 +744,7 @@ canvas.cv{width:100%;height:100%}
         <option value="weekday">平日メニュー（詳細表示）</option>
         <option value="sat">土曜メニュー（詳細表示）</option>
         <option value="sun">日曜メニュー（詳細表示）</option>
+        <option value="rest">休み</option>
         <option value="custom">任意入力</option>
       </select>
     </div>
@@ -766,6 +767,8 @@ canvas.cv{width:100%;height:100%}
 </div>
 
 <script>
+
+
 
 
 
@@ -1401,8 +1404,6 @@ function deleteTrainItem(idx) {
 }
 
 function saveTrainMenu() {
-  var container = document.getElementById('trainEditList');
-  if (!container) return;
   var custom = getCustomTraining();
   if (!custom) {
     custom = JSON.parse(JSON.stringify(TRAINING));
@@ -1410,16 +1411,16 @@ function saveTrainMenu() {
   if (!custom[editDay]) {
     custom[editDay] = JSON.parse(JSON.stringify(TRAINING[editDay]));
   }
-  // 現在画面に表示されているアイテム数をDOMから取得
-  var items = container.querySelectorAll('.train-edit-item');
-  var count = items.length;
+  // querySelectorAllに依存しない: IDを直接インクリメントして取得
+  // tei-name-0 が存在する限りループ
   var exercises = [];
-  for (var i = 0; i < count; i++) {
-    var nameEl   = document.getElementById('tei-name-' + i);
+  var i = 0;
+  while (true) {
+    var nameEl = document.getElementById('tei-name-' + i);
+    if (!nameEl) break;
     var specEl   = document.getElementById('tei-spec-' + i);
     var howEl    = document.getElementById('tei-how-' + i);
     var cauEl    = document.getElementById('tei-caution-' + i);
-    if (!nameEl) continue;
     var howText  = howEl ? howEl.value : '';
     var howLines = howText.split('\n').filter(function(l) { return l.trim() !== ''; });
     exercises.push({
@@ -1428,6 +1429,18 @@ function saveTrainMenu() {
       how:     howLines,
       caution: cauEl  ? cauEl.value.trim()  : ''
     });
+    i++;
+    if (i > 30) break; // 安全上限
+  }
+  if (exercises.length === 0) {
+    // DOM要素が見つからない場合は保存しない
+    var msg = document.getElementById('trainSaved');
+    if (msg) {
+      msg.textContent = '入力欄が見つかりません。再度開いてください。';
+      msg.style.display = 'block';
+      setTimeout(function() { msg.style.display = 'none'; msg.textContent = '保存しました！'; }, 2500);
+    }
+    return;
   }
   custom[editDay].exercises = exercises;
   saveCustomTraining(custom);
@@ -1437,8 +1450,9 @@ function saveTrainMenu() {
   updateTrainEditLabels();
   var msg = document.getElementById('trainSaved');
   if (msg) {
+    msg.textContent = exercises.length + '種目を保存しました！';
     msg.style.display = 'block';
-    setTimeout(function() { msg.style.display = 'none'; }, 2000);
+    setTimeout(function() { msg.style.display = 'none'; msg.textContent = '保存しました！'; }, 2000);
   }
 }
 
@@ -1890,6 +1904,31 @@ function renderGraphs() {
   }
   var dlEl = document.getElementById('daysLogged');
   if (dlEl) dlEl.textContent = gall().length;
+
+  // カロリー推移グラフ
+  var kd = filterByPeriod(getKcalData(), 'date');
+  var gkEl = document.getElementById('gK');
+  var gkAvgEl = document.getElementById('gKavg');
+  if (kd.length && gkEl) {
+    var lastK = kd[kd.length - 1];
+    gkEl.innerHTML = lastK.kcal + '<span style="font-size:.9rem;color:var(--muted)">kcal</span>';
+    var totalK = 0;
+    for (var ki = 0; ki < kd.length; ki++) totalK += kd[ki].kcal;
+    var avgK = Math.round(totalK / kd.length);
+    if (gkAvgEl) {
+      var target = getTargetKcal();
+      var diff3 = avgK - target;
+      gkAvgEl.textContent = '平均' + avgK + 'kcal';
+      gkAvgEl.className = 'gc-diff ' + (diff3 <= 0 ? 'good' : 'bad');
+    }
+    var kVals = [];
+    for (var kvi = 0; kvi < kd.length; kvi++) kVals.push(kd[kvi].kcal);
+    var minK = Math.min.apply(null, kVals) - 50;
+    var maxK = Math.max.apply(null, kVals) + 50;
+    var kPts = [];
+    for (var kpi = 0; kpi < kd.length; kpi++) kPts.push({ v: kd[kpi].kcal, label: kd[kpi].date.slice(5) });
+    drawChart('cvK', 'xlK', kPts, '#f77f00', '#ffd166', minK, maxK);
+  }
 }
 
 // ====== TRAINING ======
@@ -2023,7 +2062,7 @@ function delIrr(id) {
 }
 
 // ====== ROUTINE LOG ======
-var RT_LABEL = { weekday: '平日', sat: '土曜', sun: '日曜' };
+var RT_LABEL = { weekday: '平日', sat: '土曜', sun: '日曜', rest: '休み', custom: '任意' };
 function openRoutineLog() {
   var el = document.getElementById('rtDate'); if (el) el.value = today();
   var mt = document.getElementById('rtMenuType'); if (mt) mt.value = 'weekday';
@@ -2040,6 +2079,9 @@ function onRtMenuTypeChange() {
   if (val === 'custom') {
     if (detail) detail.innerHTML = '';
     if (customField) customField.style.display = 'block';
+  } else if (val === 'rest') {
+    if (detail) detail.innerHTML = '<div style="font-size:.78rem;color:var(--muted);padding:10px 0;text-align:center">休養日として記録します</div>';
+    if (customField) customField.style.display = 'none';
   } else {
     if (customField) customField.style.display = 'none';
     renderRtMenuDetail(val);
@@ -2139,9 +2181,9 @@ function renderRoutineLog() {
   var c = document.getElementById('routineLogList');
   if (!c) return;
   if (!a.length) { c.innerHTML = '<div class="no-hist">ルーティン記録なし</div>'; return; }
-  var MENU_BG = { weekday:'rgba(0,119,182,.09)', sat:'rgba(82,183,136,.09)', sun:'rgba(247,127,0,.09)', custom:'rgba(230,57,70,.08)' };
-  var MENU_TC = { weekday:'var(--ocean)', sat:'var(--palm2)', sun:'var(--sunset)', custom:'var(--hibiscus)' };
-  var MENU_IC = { weekday:'💪', sat:'🚶', sun:'🌿', custom:'⚡' };
+  var MENU_BG = { weekday:'rgba(0,119,182,.09)', sat:'rgba(82,183,136,.09)', sun:'rgba(247,127,0,.09)', rest:'rgba(180,180,180,.09)', custom:'rgba(230,57,70,.08)' };
+  var MENU_TC = { weekday:'var(--ocean)', sat:'var(--palm2)', sun:'var(--sunset)', rest:'var(--muted)', custom:'var(--hibiscus)' };
+  var MENU_IC = { weekday:'💪', sat:'🚶', sun:'🌿', rest:'😴', custom:'⚡' };
   var html = '';
   for (var i = 0; i < Math.min(a.length, 30); i++) {
     var r = a[i];
@@ -2214,7 +2256,7 @@ function renderAnalysis() {
   for (var di = 0; di < dates.length; di++) {
     var d = dates[di];
     var rec = gdd(d);
-    var meals = (rec.lunch || []).concat(rec.snack || [], rec.dinner || []);
+    var meals = (rec.breakfast || []).concat(rec.lunch || [], rec.snack || [], rec.dinner || []);
     if (meals.length > 0) {
       daysWithData++;
       var dayKcal = 0;
@@ -2251,7 +2293,7 @@ function renderAnalysis() {
   for (var bi = 0; bi < bpData.length; bi++) {
     if (dates.indexOf(bpData[bi].date) >= 0) bpSummary += '  ' + bpData[bi].date + ': ' + bpData[bi].sys + '/' + bpData[bi].dia + 'mmHg\n';
   }
-  var RT_DAY_LABEL = { weekday: '平日メニュー', sat: '土曜メニュー', sun: '日曜メニュー' };
+  var RT_DAY_LABEL = { weekday: '平日メニュー', sat: '土曜メニュー', sun: '日曜メニュー', rest: '休養日', custom: '任意トレーニング' };
   var irrSummary = '';
   for (var rti = 0; rti < rtlInPeriod.length; rti++) {
     var rt = rtlInPeriod[rti];
