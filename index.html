@@ -485,6 +485,19 @@ canvas.cv{width:100%;height:100%}
     <div class="sc"><div class="sc-lbl">開始時血圧</div><div class="sc-val rd" id="startBP">--<span style="font-size:.75rem">mmHg</span></div></div>
     <div class="sc"><div class="sc-lbl">記録日数</div><div class="sc-val am" id="daysLogged">--</div></div>
   </div>
+  <!-- カロリー推移グラフ -->
+  <div class="gc">
+    <div class="gc-hd">
+      <div>
+        <div class="gc-lbl">摂取カロリー推移</div>
+        <div class="gc-cur" id="gK">--<span style="font-size:.9rem;color:var(--muted)">kcal</span></div>
+      </div>
+      <div class="gc-diff good" id="gKavg"></div>
+    </div>
+    <div class="chart-a"><canvas class="cv" id="cvK"></canvas></div>
+    <div class="chart-xl" id="xlK"></div>
+  </div>
+
   <!-- Weight Log -->
   <div class="bp-card">
     <div style="font-family:var(--fd);font-size:1rem;color:var(--palm);margin-bottom:10px">体重の記録</div>
@@ -722,17 +735,27 @@ canvas.cv{width:100%;height:100%}
 <div class="mover" id="routineModal" onclick="closeRoutineModal(event)">
   <div class="msheet">
     <div class="mhandle"></div>
-    <div class="mttl">ルーティン記録</div>
-    <div class="msub">過去のルーティントレーニングを記録する</div>
+    <div class="mttl">トレーニング記録</div>
+    <div class="msub">実施したトレーニングを記録する</div>
     <div class="ifield"><label>記録日</label><input class="iinput" id="rtDate" type="date"></div>
-    <div class="ifield"><label>メニュー</label><div class="cc">
-      <button class="cch sel" onclick="selRtDay(this,'weekday')">平日</button>
-      <button class="cch" onclick="selRtDay(this,'sat')">土曜</button>
-      <button class="cch" onclick="selRtDay(this,'sun')">日曜</button>
-    </div></div>
-    <div class="ifield"><label>実施した種目（任意）</label><input class="iinput" id="rtNote" placeholder="例：スクワット・腕立て・プランク完了"></div>
+    <div class="ifield">
+      <label>メニュー種別</label>
+      <select class="iinput" id="rtMenuType" onchange="onRtMenuTypeChange()">
+        <option value="weekday">平日メニュー（詳細表示）</option>
+        <option value="sat">土曜メニュー（詳細表示）</option>
+        <option value="sun">日曜メニュー（詳細表示）</option>
+        <option value="custom">任意入力</option>
+      </select>
+    </div>
+    <!-- メニュー詳細チェックリスト -->
+    <div id="rtMenuDetail" style="margin-bottom:10px"></div>
+    <!-- 任意入力欄 -->
+    <div class="ifield" id="rtCustomField" style="display:none">
+      <label>内容・メモ</label>
+      <input class="iinput" id="rtNote" placeholder="例：ジョギング30分、公園でストレッチ">
+    </div>
     <div class="ifield"><label>時間（分）</label><input class="iinput" id="rtMin" type="number" placeholder="45"></div>
-    <div class="ifield"><label>メモ・体調など</label><input class="iinput" id="rtMemo" placeholder="例：体調良好、全種目完了"></div>
+    <div class="ifield"><label>体調・メモ（任意）</label><input class="iinput" id="rtMemo" placeholder="例：体調良好、全種目完了"></div>
     <button class="isave" onclick="saveRoutineLog()">記録する</button>
   </div>
 </div>
@@ -743,6 +766,9 @@ canvas.cv{width:100%;height:100%}
 </div>
 
 <script>
+
+
+
 
 
 
@@ -1699,6 +1725,23 @@ function setPeriod(d, btn) {
   renderGraphs();
 }
 
+
+function getKcalData() {
+  var all = [];
+  var dates = gall();
+  for (var i = 0; i < dates.length; i++) {
+    var d = dates[i];
+    var rec = gdd(d);
+    var meals = ['breakfast','lunch','snack','dinner'];
+    var total = 0;
+    for (var mi = 0; mi < meals.length; mi++) {
+      var items = rec[meals[mi]] || [];
+      for (var ii = 0; ii < items.length; ii++) total += items[ii].kcal;
+    }
+    if (total > 0) all.push({ date: d, kcal: total });
+  }
+  return all.sort(function(a, b){ return a.date > b.date ? 1 : -1; });
+}
 function getWData() {
   var all = [];
   var dates = gall();
@@ -1951,18 +1994,26 @@ function renderIrrLog() {
   var c = document.getElementById('irrLog');
   if (!c) return;
   if (!a.length) { c.innerHTML = '<div class="no-hist">イレギュラー記録なし</div>'; return; }
+  var CAT_BG = { walk:'rgba(0,180,216,.09)', muscle:'rgba(0,119,182,.09)', stretch:'rgba(82,183,136,.09)', cardio:'rgba(247,127,0,.09)', other:'rgba(255,209,102,.15)' };
+  var CAT_IC = { walk:'🚶', muscle:'💪', stretch:'🧘', cardio:'🏃', other:'⚡' };
   var html = '';
   for (var i = 0; i < Math.min(a.length, 20); i++) {
     var r = a[i];
-    html += '<div class="irre">'
-      + '<span class="icat ' + r.cat + '">' + (CAT[r.cat] || r.cat) + '</span>'
-      + '<div class="ict">'
-      + '<div class="ictnm">' + r.note + '</div>'
-      + (r.detail ? '<div class="ictdt">' + r.detail + '</div>' : '')
-      + '<div class="icttm">' + r.date + (r.min ? ' - ' + r.min + 'min' : '') + '</div>'
+    var bg = CAT_BG[r.cat] || 'rgba(0,119,182,.09)';
+    var ic = CAT_IC[r.cat] || '💪';
+    html += '<div style="background:white;border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow)">'
+      + '<div style="display:flex;align-items:flex-start;gap:10px">'
+      + '<div style="width:36px;height:36px;border-radius:10px;background:' + bg + ';display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">' + ic + '</div>'
+      + '<div style="flex:1;min-width:0">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">'
+      + '<span style="font-size:.82rem;font-weight:800;color:var(--text)">' + r.note + '</span>'
+      + '<span style="font-family:var(--fm);font-size:.62rem;color:var(--muted)">' + r.date.slice(5) + (r.min ? '　' + r.min + '分' : '') + '</span>'
       + '</div>'
-      + '<button class="idel" onclick="delIrr(' + r.id + ')">x</button>'
-      + '</div>';
+      + (r.detail ? '<div style="font-size:.68rem;color:var(--muted);margin-bottom:4px">' + r.detail + '</div>' : '')
+      + '<span style="padding:2px 8px;background:' + bg + ';border-radius:99px;font-size:.6rem;font-weight:800;color:var(--ocean)">' + (CAT[r.cat] || r.cat) + '</span>'
+      + '</div>'
+      + '<button onclick="delIrr(' + r.id + ')" style="width:22px;height:22px;border-radius:6px;background:rgba(230,57,70,.08);color:var(--hibiscus);border:none;cursor:pointer;font-size:.72rem;flex-shrink:0">x</button>'
+      + '</div></div>';
   }
   c.innerHTML = html;
 }
@@ -1975,7 +2026,76 @@ function delIrr(id) {
 var RT_LABEL = { weekday: '平日', sat: '土曜', sun: '日曜' };
 function openRoutineLog() {
   var el = document.getElementById('rtDate'); if (el) el.value = today();
+  var mt = document.getElementById('rtMenuType'); if (mt) mt.value = 'weekday';
+  onRtMenuTypeChange();
   var m = document.getElementById('routineModal'); if (m) m.classList.add('open');
+}
+
+function onRtMenuTypeChange() {
+  var mt = document.getElementById('rtMenuType');
+  if (!mt) return;
+  var val = mt.value;
+  var detail = document.getElementById('rtMenuDetail');
+  var customField = document.getElementById('rtCustomField');
+  if (val === 'custom') {
+    if (detail) detail.innerHTML = '';
+    if (customField) customField.style.display = 'block';
+  } else {
+    if (customField) customField.style.display = 'none';
+    renderRtMenuDetail(val);
+  }
+}
+
+function renderRtMenuDetail(day) {
+  var detail = document.getElementById('rtMenuDetail');
+  if (!detail) return;
+  var eff = getEffectiveTraining();
+  var menu = eff[day];
+  if (!menu) return;
+  var exs = menu.exercises || [];
+  var html = '<div style="font-size:.58rem;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:7px">実施した種目にチェック</div>';
+  for (var i = 0; i < exs.length; i++) {
+    html += '<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(0,119,182,.04);border-radius:9px;margin-bottom:6px;cursor:pointer" onclick="toggleRtCheck(this)">'
+      + '<div style="width:20px;height:20px;border-radius:5px;border:2px solid rgba(0,119,182,.25);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:transparent;flex-shrink:0;transition:all .15s" class="rt-chk-box"></div>'
+      + '<div style="flex:1">'
+      + '<div style="font-size:.82rem;font-weight:700;color:var(--text)">' + exs[i].name + '</div>'
+      + '<div style="font-family:var(--fm);font-size:.58rem;color:var(--ocean)">' + exs[i].spec + '</div>'
+      + '</div></div>';
+  }
+  detail.innerHTML = html;
+}
+
+function toggleRtCheck(el) {
+  var box = el.querySelector('.rt-chk-box');
+  if (!box) return;
+  var checked = el.getAttribute('data-checked') === '1';
+  if (checked) {
+    el.setAttribute('data-checked', '0');
+    box.style.background = '';
+    box.style.borderColor = 'rgba(0,119,182,.25)';
+    box.style.color = 'transparent';
+    box.textContent = '';
+    el.style.background = 'rgba(0,119,182,.04)';
+  } else {
+    el.setAttribute('data-checked', '1');
+    box.style.background = 'linear-gradient(135deg,var(--palm),var(--palm2))';
+    box.style.borderColor = 'transparent';
+    box.style.color = 'white';
+    box.textContent = 'v';
+    el.style.background = 'rgba(45,106,79,.07)';
+  }
+}
+
+function getRtCheckedItems() {
+  var detail = document.getElementById('rtMenuDetail');
+  if (!detail) return [];
+  var items = detail.querySelectorAll('[data-checked="1"]');
+  var names = [];
+  for (var i = 0; i < items.length; i++) {
+    var nameEl = items[i].querySelector('div > div:first-child');
+    if (nameEl) names.push(nameEl.textContent.trim());
+  }
+  return names;
 }
 function closeRoutineModal(e) {
   if (e.target === document.getElementById('routineModal')) document.getElementById('routineModal').classList.remove('open');
@@ -1991,9 +2111,18 @@ function saveRoutineLog() {
   var noteEl = document.getElementById('rtNote');
   var minEl = document.getElementById('rtMin');
   var memoEl = document.getElementById('rtMemo');
+  var menuTypeEl = document.getElementById('rtMenuType');
   var dateVal = dateEl ? (dateEl.value || today()) : today();
+  var menuType = menuTypeEl ? menuTypeEl.value : 'weekday';
+  var note = '';
+  if (menuType === 'custom') {
+    note = noteEl ? noteEl.value.trim() : '';
+  } else {
+    var checked = getRtCheckedItems();
+    note = checked.length > 0 ? checked.join('・') : '';
+  }
   var a = grtl();
-  a.unshift({ id: Date.now(), date: dateVal, day: rtDay, note: noteEl ? noteEl.value.trim() : '', min: parseInt(minEl ? minEl.value : 0) || 0, memo: memoEl ? memoEl.value.trim() : '' });
+  a.unshift({ id: Date.now(), date: dateVal, day: menuType, note: note, min: parseInt(minEl ? minEl.value : 0) || 0, memo: memoEl ? memoEl.value.trim() : '' });
   a.sort(function(x, y){ return y.date > x.date ? 1 : -1; });
   srtl(a);
   var d2 = new Date(dateVal);
@@ -2010,18 +2139,40 @@ function renderRoutineLog() {
   var c = document.getElementById('routineLogList');
   if (!c) return;
   if (!a.length) { c.innerHTML = '<div class="no-hist">ルーティン記録なし</div>'; return; }
+  var MENU_BG = { weekday:'rgba(0,119,182,.09)', sat:'rgba(82,183,136,.09)', sun:'rgba(247,127,0,.09)', custom:'rgba(230,57,70,.08)' };
+  var MENU_TC = { weekday:'var(--ocean)', sat:'var(--palm2)', sun:'var(--sunset)', custom:'var(--hibiscus)' };
+  var MENU_IC = { weekday:'💪', sat:'🚶', sun:'🌿', custom:'⚡' };
   var html = '';
-  for (var i = 0; i < Math.min(a.length, 20); i++) {
+  for (var i = 0; i < Math.min(a.length, 30); i++) {
     var r = a[i];
-    html += '<div class="irre">'
-      + '<span class="icat muscle" style="background:rgba(0,119,182,.12);color:var(--ocean)">' + (RT_LABEL[r.day] || r.day) + '</span>'
-      + '<div class="ict">'
-      + '<div class="ictnm">' + (r.note || 'Routine training') + '</div>'
-      + (r.memo ? '<div class="ictdt">' + r.memo + '</div>' : '')
-      + '<div class="icttm">' + r.date + (r.min ? ' - ' + r.min + 'min' : '') + '</div>'
+    var bg = MENU_BG[r.day] || 'rgba(0,119,182,.09)';
+    var tc = MENU_TC[r.day] || 'var(--ocean)';
+    var ic = MENU_IC[r.day] || '💪';
+    var label = RT_LABEL[r.day] || r.day;
+    var items = r.note ? r.note.split('・') : [];
+    var itemsHtml = '';
+    if (items.length > 0) {
+      itemsHtml = '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">';
+      for (var j = 0; j < items.length; j++) {
+        if (items[j].trim()) {
+          itemsHtml += '<span style="padding:2px 8px;background:rgba(0,119,182,.07);border-radius:99px;font-size:.62rem;color:var(--ocean);font-weight:700">' + items[j].trim() + '</span>';
+        }
+      }
+      itemsHtml += '</div>';
+    }
+    html += '<div style="background:white;border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow)">'
+      + '<div style="display:flex;align-items:flex-start;gap:10px">'
+      + '<div style="width:36px;height:36px;border-radius:10px;background:' + bg + ';display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">' + ic + '</div>'
+      + '<div style="flex:1;min-width:0">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">'
+      + '<span style="font-size:.72rem;font-weight:800;color:' + tc + '">' + label + '</span>'
+      + '<span style="font-family:var(--fm);font-size:.62rem;color:var(--muted)">' + r.date.slice(5) + (r.min ? '　' + r.min + '分' : '') + '</span>'
       + '</div>'
-      + '<button class="idel" onclick="delRtl(' + r.id + ')">x</button>'
-      + '</div>';
+      + (r.memo ? '<div style="font-size:.72rem;color:var(--muted);margin-bottom:4px">' + r.memo + '</div>' : '')
+      + itemsHtml
+      + '</div>'
+      + '<button onclick="delRtl(' + r.id + ')" style="width:22px;height:22px;border-radius:6px;background:rgba(230,57,70,.08);color:var(--hibiscus);border:none;cursor:pointer;font-size:.72rem;flex-shrink:0">x</button>'
+      + '</div></div>';
   }
   c.innerHTML = html;
 }
@@ -2079,12 +2230,14 @@ function renderAnalysis() {
   var lastW = periodW[periodW.length - 1];
   var wChange = firstW && lastW ? (lastW.weight - firstW.weight).toFixed(1) : '--';
   var irrInPeriod = irrData.filter(function(r){ return dates.indexOf(r.date) >= 0; });
+  var rtlData = grtl();
+  var rtlInPeriod = rtlData.filter(function(r){ return dates.indexOf(r.date) >= 0; });
   var sumEl = document.getElementById('analysisSummary');
   if (sumEl) {
     sumEl.innerHTML = '<div class="ss-cell"><div class="ss-lbl">記録日数</div><div class="ss-val">' + daysWithData + '/' + dates.length + '日</div></div>'
       + '<div class="ss-cell"><div class="ss-lbl">平均摂取</div><div class="ss-val">' + (daysWithData > 0 ? Math.round(totalKcal / daysWithData) : 0) + 'kcal</div></div>'
       + '<div class="ss-cell"><div class="ss-lbl">体重変化</div><div class="ss-val" style="color:' + (parseFloat(wChange) < 0 ? 'var(--palm)' : 'var(--hibiscus)') + '">' + wChange + 'kg</div></div>'
-      + '<div class="ss-cell"><div class="ss-lbl">運動回数</div><div class="ss-val">' + irrInPeriod.length + '回</div></div>';
+      + '<div class="ss-cell"><div class="ss-lbl">運動回数</div><div class="ss-val">' + (irrInPeriod.length + rtlInPeriod.length) + '回</div></div>';
   }
   var s = gsets();
   var foodSummary = '';
@@ -2098,7 +2251,13 @@ function renderAnalysis() {
   for (var bi = 0; bi < bpData.length; bi++) {
     if (dates.indexOf(bpData[bi].date) >= 0) bpSummary += '  ' + bpData[bi].date + ': ' + bpData[bi].sys + '/' + bpData[bi].dia + 'mmHg\n';
   }
+  var RT_DAY_LABEL = { weekday: '平日メニュー', sat: '土曜メニュー', sun: '日曜メニュー' };
   var irrSummary = '';
+  for (var rti = 0; rti < rtlInPeriod.length; rti++) {
+    var rt = rtlInPeriod[rti];
+    irrSummary += '  ' + rt.date + '（' + (RT_DAY_LABEL[rt.day] || rt.day) + '）'
+      + (rt.note ? ': ' + rt.note : '') + (rt.min ? ' ' + rt.min + '分' : '') + '\n';
+  }
   for (var ii = 0; ii < irrInPeriod.length; ii++) {
     var ir = irrInPeriod[ii];
     irrSummary += '  ' + ir.date + '（' + (CAT[ir.cat] || ir.cat) + '）: ' + ir.note + (ir.min ? ' ' + ir.min + '分' : '') + '\n';
