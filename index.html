@@ -104,7 +104,8 @@ body{font-family:var(--fb);min-height:100vh;padding-bottom:90px;-webkit-font-smo
 .ekc{font-family:var(--fm);font-size:.64rem;font-weight:700;color:var(--sunset);white-space:nowrap}
 .edel{width:22px;height:22px;border-radius:5px;background:rgba(230,57,70,.1);color:var(--hibiscus);border:none;cursor:pointer;font-size:.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .edel:active{background:var(--hibiscus);color:#fff}
-.no-entry{padding:9px 0;font-size:.68rem;color:var(--muted);font-style:italic}
+.eedit{width:22px;height:22px;border-radius:5px;background:rgba(0,119,182,.1);color:var(--ocean);border:none;cursor:pointer;font-size:.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.eedit:active{background:var(--ocean);color:#fff}.no-entry{padding:9px 0;font-size:.68rem;color:var(--muted);font-style:italic}
 .no-hist{padding:7px 0;font-size:.66rem;color:var(--muted)}
 .madd{display:flex;align-items:center;gap:6px;padding:9px 12px 12px;border-top:1px solid rgba(0,119,182,.07);background:rgba(144,224,239,.06)}
 .mi{flex:1;min-width:0;padding:9px 10px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:#fff;font-family:var(--fb);font-size:.78rem;color:#1a3a4a;outline:none}
@@ -420,22 +421,22 @@ canvas.cv{width:100%;height:100%}
   <div class="mc">
     <div class="mc-hd"><div class="mc-ico" style="background:linear-gradient(135deg,#fff3e0,#ffcc80)">&#127774;</div><div style="flex:1"><div class="mc-nm">朝食</div><div class="mc-tm">7:00〜8:00</div></div><div class="mc-kc"><span id="t-breakfast">0</span></div></div>
     <div class="entries" id="e-breakfast"><div class="no-entry">まだ記録なし</div></div>
-    <div class="madd"><input class="mi" id="fi-breakfast" placeholder="食べたもの"><input class="ki" id="ki-breakfast" type="number" placeholder="kcal"><button class="madd-btn" onclick="addFood('breakfast')">追加</button></div>
+    <div class="madd"><input class="mi" id="fi-breakfast" placeholder="食べたもの"><input class="ki" id="ki-breakfast" type="number" placeholder="kcal"><button class="madd-btn" id="add-btn-breakfast" onclick="addFood('breakfast')">追加</button></div>
   </div>
   <div class="mc">
     <div class="mc-hd"><div class="mc-ico ln">&#127857;</div><div style="flex:1"><div class="mc-nm">昼食</div><div class="mc-tm">12:00</div></div><div class="mc-kc"><span id="t-lunch">0</span></div></div>
     <div class="entries" id="e-lunch"><div class="no-entry">まだ記録なし</div></div>
-    <div class="madd"><input class="mi" id="fi-lunch" placeholder="食べたもの"><input class="ki" id="ki-lunch" type="number" placeholder="kcal"><button class="madd-btn" onclick="addFood('lunch')">追加</button></div>
+    <div class="madd"><input class="mi" id="fi-lunch" placeholder="食べたもの"><input class="ki" id="ki-lunch" type="number" placeholder="kcal"><button class="madd-btn" id="add-btn-lunch" onclick="addFood('lunch')">追加</button></div>
   </div>
   <div class="mc">
     <div class="mc-hd"><div class="mc-ico sn">&#129380;</div><div style="flex:1"><div class="mc-nm">間食</div><div class="mc-tm">15:00 / 帰宅前</div></div><div class="mc-kc"><span id="t-snack">0</span></div></div>
     <div class="entries" id="e-snack"><div class="no-entry">まだ記録なし</div></div>
-    <div class="madd"><input class="mi" id="fi-snack" placeholder="食べたもの"><input class="ki" id="ki-snack" type="number" placeholder="kcal"><button class="madd-btn" onclick="addFood('snack')">追加</button></div>
+    <div class="madd"><input class="mi" id="fi-snack" placeholder="食べたもの"><input class="ki" id="ki-snack" type="number" placeholder="kcal"><button class="madd-btn" id="add-btn-snack" onclick="addFood('snack')">追加</button></div>
   </div>
   <div class="mc">
     <div class="mc-hd"><div class="mc-ico dn">&#127807;</div><div style="flex:1"><div class="mc-nm">夕食</div><div class="mc-tm">21:00〜21:30</div></div><div class="mc-kc"><span id="t-dinner">0</span></div></div>
     <div class="entries" id="e-dinner"><div class="no-entry">まだ記録なし</div></div>
-    <div class="madd"><input class="mi" id="fi-dinner" placeholder="食べたもの"><input class="ki" id="ki-dinner" type="number" placeholder="kcal"><button class="madd-btn" onclick="addFood('dinner')">追加</button></div>
+    <div class="madd"><input class="mi" id="fi-dinner" placeholder="食べたもの"><input class="ki" id="ki-dinner" type="number" placeholder="kcal"><button class="madd-btn" id="add-btn-dinner" onclick="addFood('dinner')">追加</button></div>
   </div>
 </div>
 
@@ -444,7 +445,6 @@ canvas.cv{width:100%;height:100%}
   <div class="shd" style="margin-top:8px"><div class="shd-title">レシピ</div><span class="shd-meta">朝10品 / 昼15品 / 夜15品</span></div>
   <div class="recipe-filters">
     <button class="rf-btn on" onclick="filterR('all',this)">すべて</button>
-    <button class="rf-btn" onclick="filterR('breakfast',this)">朝食向け</button>
     <button class="rf-btn" onclick="filterR('breakfast',this)">朝食向け</button>
     <button class="rf-btn" onclick="filterR('lunch',this)">昼食向け</button>
     <button class="rf-btn" onclick="filterR('dinner',this)">夕食向け</button>
@@ -617,9 +617,9 @@ canvas.cv{width:100%;height:100%}
       種目を追加・編集・削除できます。変更はすぐに反映されます。
     </div>
     <div class="period-sel" style="margin-bottom:12px">
-      <button class="ps-btn on" onclick="setEditDay('weekday',this)">平日</button>
-      <button class="ps-btn" onclick="setEditDay('sat',this)">土曜</button>
-      <button class="ps-btn" onclick="setEditDay('sun',this)">日曜</button>
+      <button id="editDayBtn-weekday" class="ps-btn on" onclick="setEditDay('weekday',this)">平日</button>
+      <button id="editDayBtn-sat" class="ps-btn" onclick="setEditDay('sat',this)">土曜</button>
+      <button id="editDayBtn-sun" class="ps-btn" onclick="setEditDay('sun',this)">日曜</button>
     </div>
     <div id="trainEditList"></div>
     <button class="save-settings-btn" style="margin-top:10px;background:linear-gradient(135deg,var(--palm),var(--palm2))" onclick="addTrainItem()">
@@ -1140,6 +1140,7 @@ var exOpen = {};
 var exChecks = {};
 var weeklyDone = [false,false,false,false,false,false,false];
 var irrCat = 'walk';
+var editMode = null;
 var rFilter = 'all';
 var analysisPeriod = 7;
 var sheetPeriod = 7;
@@ -1303,8 +1304,12 @@ function escHtml(s) {
 
 function setEditDay(day, btn) {
   editDay = day;
-  var tabs = document.querySelectorAll('#trainEditDayTabs .ps-btn');
-  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('on');
+  var btnW = document.getElementById('editDayBtn-weekday');
+  var btnS = document.getElementById('editDayBtn-sat');
+  var btnSu = document.getElementById('editDayBtn-sun');
+  if (btnW) btnW.classList.remove('on');
+  if (btnS) btnS.classList.remove('on');
+  if (btnSu) btnSu.classList.remove('on');
   if (btn) btn.classList.add('on');
   renderTrainEditList();
 }
@@ -1564,6 +1569,20 @@ function shiftDate(delta) {
 }
 
 // ====== FOOD LOG ======
+function editFood(meal, idx) {
+  var data = gdd(logDate);
+  if (!data[meal] || !data[meal][idx]) return;
+  var item = data[meal][idx];
+  var fi = document.getElementById('fi-' + meal);
+  var ki = document.getElementById('ki-' + meal);
+  var btn = document.getElementById('add-btn-' + meal);
+  if (fi) fi.value = item.name;
+  if (ki) ki.value = item.kcal;
+  if (btn) btn.textContent = '更新';
+  editMode = { meal: meal, idx: idx };
+  if (fi) fi.focus();
+}
+
 function addFood(meal) {
   var fi = document.getElementById('fi-' + meal);
   var ki = document.getElementById('ki-' + meal);
@@ -1573,7 +1592,14 @@ function addFood(meal) {
   if (!name) return;
   var data = gdd(logDate);
   if (!data[meal]) data[meal] = [];
-  data[meal].push({ name: name, kcal: kcal });
+  if (editMode && editMode.meal === meal) {
+    data[meal][editMode.idx] = { name: name, kcal: kcal };
+    editMode = null;
+    var btn = document.getElementById('add-btn-' + meal);
+    if (btn) btn.textContent = '追加';
+  } else {
+    data[meal].push({ name: name, kcal: kcal });
+  }
   sdd(logDate, data);
   fi.value = '';
   ki.value = '';
@@ -1619,7 +1645,8 @@ function renderLog() {
         html += '<div class="entry">'
           + '<span class="enm">' + items[ei].name + '</span>'
           + '<span class="ekc">' + items[ei].kcal + 'kcal</span>'
-          + '<button class="edel" onclick="removeFood(\'' + m + '\',' + ei + ')">x</button>'
+          + '<button class="eedit" onclick="editFood(\'' + m + '\',' + ei + ')">&#9998;</button>'
+          + '<button class="edel" onclick="removeFood(\'' + m + '\',' + ei + ')">&#215;</button>'
           + '</div>';
       }
       container.innerHTML = html;
@@ -1661,6 +1688,17 @@ function saveBP() {
   if (document.getElementById('page-graph').classList.contains('active')) renderGraphs();
 }
 
+function deleteBP(idx) {
+  var a = gbp();
+  a.splice(idx, 1);
+  sbp(a);
+  var bd = document.getElementById('bpDisp');
+  if (bd && a.length > 0) bd.textContent = a[0].sys + '/' + a[0].dia;
+  else if (bd) bd.textContent = '--/--';
+  renderBPH();
+  var pg = document.getElementById('page-graph');
+  if (pg && pg.classList.contains('active')) renderGraphs();
+}
 function bpSt(sys) {
   if (sys < 120) return { c: 'good', t: 'Normal' };
   if (sys < 140) return { c: 'warn', t: 'Caution' };
@@ -1685,6 +1723,7 @@ function renderBPH() {
       + '<span class="bpdi">' + r.dia + '</span>'
       + '<span class="bppu">' + r.pulse + 'bpm</span>'
       + '<span class="bpbdg ' + st.c + '">' + st.t + '</span>'
+      + '<button class="idel" onclick="deleteBP(' + i + ')" style="margin-left:auto">&#215;</button>'
       + '</div>';
   }
   c.innerHTML = html;
@@ -1708,6 +1747,18 @@ function saveWeight() {
   if (document.getElementById('page-graph').classList.contains('active')) renderGraphs();
 }
 
+function deleteWeight(date) {
+  var data = gdd(date);
+  delete data.weight;
+  sdd(date, data);
+  if (date === today()) {
+    var wi = document.getElementById('weightIn');
+    if (wi) wi.value = '';
+  }
+  renderWtHist();
+  var pg = document.getElementById('page-graph');
+  if (pg && pg.classList.contains('active')) renderGraphs();
+}
 function renderWtHist() {
   var c = document.getElementById('wtHist');
   if (!c) return;
@@ -1725,7 +1776,8 @@ function renderWtHist() {
     html += '<div class="bp-row">'
       + '<span class="bpdt">' + e.date.slice(5) + '</span>'
       + '<span class="wt-val">' + e.weight.toFixed(1) + ' kg</span>'
-      + '</div>';
+        + '<button class="idel" onclick="deleteWeight(\'' + e.date + '\')" style="margin-left:auto">&#215;</button>'
+        + '</div>';
   }
   c.innerHTML = html;
 }
@@ -2592,15 +2644,7 @@ window.addEventListener('DOMContentLoaded', function() {
     if (v) { sdf(today(), 'weight', v); save(); }
   });
 
-  var meals = ['breakfast', 'lunch', 'snack', 'dinner'];
-  for (var mi = 0; mi < meals.length; mi++) {
-    (function(m){
-      var fi = document.getElementById('fi-' + m);
-      var ki = document.getElementById('ki-' + m);
-      if (fi) fi.addEventListener('keydown', function(e){ if (e.key === 'Enter' && ki) ki.focus(); });
-      if (ki) ki.addEventListener('keydown', function(e){ if (e.key === 'Enter') addFood(m); });
-    })(meals[mi]);
-  }
+  
 
   var dow = new Date().getDay();
   var tabs = document.querySelectorAll('.tdt');
