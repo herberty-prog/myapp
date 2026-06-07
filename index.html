@@ -439,7 +439,19 @@ canvas.cv{width:100%;height:100%}
     <div class="madd"><input class="mi" id="fi-dinner" placeholder="食べたもの"><input class="ki" id="ki-dinner" type="number" placeholder="kcal"><button class="madd-btn" id="add-btn-dinner" onclick="addFood('dinner')">追加</button></div>
   </div>
 </div>
-
+<div class="mc" style="margin-top:4px">
+    <div class="mc-hd">
+      <div class="mc-ico" style="background:linear-gradient(135deg,#e3f2fd,#90caf9)">&#129540;</div>
+      <div style="flex:1"><div class="mc-nm">今日の塩分</div><div class="mc-tm">目標 6.0g以内</div></div>
+      <div style="font-family:var(--fm);font-size:.95rem;font-weight:700;color:var(--hibiscus)"><span id="saltDisp">--</span> / 6.0g</div>
+    </div>
+    <div class="madd">
+      <input class="mi" placeholder="今日の塩分合計を入力" style="flex:1" readonly>
+      <input class="ki" id="saltInput" type="number" step="0.1" placeholder="g">
+      <button class="madd-btn" onclick="saveSalt()">保存</button>
+    </div>
+  </div>
+  
 <!-- RECIPE PAGE -->
 <div id="page-recipe" class="page">
   <div class="shd" style="margin-top:8px"><div class="shd-title">レシピ</div><span class="shd-meta">朝10品 / 昼15品 / 夜15品</span></div>
@@ -499,6 +511,31 @@ canvas.cv{width:100%;height:100%}
   </div>
 
   <!-- Weight Log -->
+  <div class="bp-card">
+    <div style="font-family:var(--fd);font-size:1rem;color:var(--ocean);margin-bottom:10px">体組成の記録</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <div class="bf"><label>記録日</label><input type="date" id="bcDate" style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="bf"><label>体脂肪率 (%)</label><input type="number" step="0.1" id="bcFat" placeholder="例: 28.5" style="width:100%;padding:10px 10px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+        <div class="bf"><label>骨格筋率 (%)</label><input type="number" step="0.1" id="bcMuscle" placeholder="例: 32.0" style="width:100%;padding:10px 10px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+      </div>
+      <button class="rec-btn" style="background:linear-gradient(135deg,var(--ocean),var(--aqua))" onclick="saveBodyComp()">体組成を保存</button>
+    </div>
+    <div class="bp-hist" id="bodyCompHist" style="margin-top:10px"></div>
+  </div>
+  <div class="bp-card">
+    <div style="font-family:var(--fd);font-size:1rem;color:var(--palm2);margin-bottom:10px">周囲径の記録 (cm)</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <div class="bf"><label>記録日</label><input type="date" id="circDate" style="width:100%;padding:10px 12px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div class="bf"><label>ウエスト</label><input type="number" step="0.1" id="circWaist" placeholder="95" style="width:100%;padding:10px 8px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+        <div class="bf"><label>ヒップ</label><input type="number" step="0.1" id="circHip" placeholder="100" style="width:100%;padding:10px 8px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+        <div class="bf"><label>太もも</label><input type="number" step="0.1" id="circThigh" placeholder="58" style="width:100%;padding:10px 8px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:white;font-family:var(--fm);font-size:.85rem;color:#1a3a4a;outline:none"></div>
+      </div>
+      <button class="rec-btn" style="background:linear-gradient(135deg,var(--palm),var(--palm2))" onclick="saveCirc()">周囲径を保存</button>
+    </div>
+    <div class="bp-hist" id="circHist" style="margin-top:10px"></div>
+  </div>
   <div class="bp-card">
     <div style="font-family:var(--fd);font-size:1rem;color:var(--palm);margin-bottom:10px">体重の記録</div>
     <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
@@ -591,6 +628,7 @@ canvas.cv{width:100%;height:100%}
     <button class="copy-btn" onclick="exportCSV()" style="margin-bottom:8px">CSVダウンロード（Excelで開ける）</button>
     <button class="copy-btn" onclick="copySheetData()" style="margin-bottom:8px;background:linear-gradient(135deg,var(--palm),var(--palm2))">Googleスプレッドシート用コピー</button>
     <button class="copy-btn" onclick="openGoogleSheet()" style="background:linear-gradient(135deg,#ea4335,#fbbc04)">Googleスプレッドシートを開く</button>
+    <button class="copy-btn" id="syncBtn" onclick="syncToSheet()" style="margin-top:8px;background:linear-gradient(135deg,var(--palm),var(--palm2))">スプレッドシートに同期</button>
   </div>
 </div>
 
@@ -606,6 +644,7 @@ canvas.cv{width:100%;height:100%}
     <div class="sf"><label>1日の目標カロリー (kcal)</label><input type="number" id="sTargetKcal" placeholder="例: 1600"></div>
     <div class="sf"><label>健康メモ（AI分析用）</label><textarea id="sCondition" placeholder="例: 持病・服薬・食事スタイルなどを入力"></textarea></div>
     <div class="sf"><label>Googleスプレッドシート URL（任意）</label><input type="text" id="sSheetUrl" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
+    <div class="sf"><label>GAS URL（自動同期用・任意）</label><input type="text" id="sGasUrl" placeholder="https://script.google.com/macros/s/..."></div>
     <button class="save-settings-btn" onclick="saveSettings()">設定を保存</button>
     <div class="saved-msg" id="settingsSaved">設定を保存しました！</div>
   </div>
@@ -634,6 +673,21 @@ canvas.cv{width:100%;height:100%}
     </button>
   </div>
 
+  <div class="settings-card" style="margin-top:10px">
+    <div style="font-size:1rem;font-weight:800;color:var(--ocean);margin-bottom:8px">データのバックアップ・復元</div>
+    <div style="font-size:.72rem;color:var(--muted);margin-bottom:12px;line-height:1.6">データをJSONファイルに書き出したり、バックアップから復元できます。</div>
+    <button class="save-settings-btn" onclick="exportJSON()" style="margin-bottom:8px">
+      バックアップをダウンロード（JSON）
+    </button>
+    <div style="margin-bottom:8px">
+      <div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">バックアップから復元（JSONファイルを選択）</div>
+      <input type="file" accept=".json" onchange="importJSON(event)" style="font-size:.78rem;width:100%">
+    </div>
+    <div style="margin-top:8px">
+      <div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">CSVからインポート（日付,体重,血圧上,血圧下,脈拍）</div>
+      <input type="file" accept=".csv,.txt" onchange="importCSV(event)" style="font-size:.78rem;width:100%">
+    </div>
+  </div>
   <div class="settings-card" style="margin-top:10px;border:1.5px solid rgba(230,57,70,.2)">
     <div style="font-size:1rem;font-weight:800;color:var(--hibiscus);margin-bottom:8px">データ管理</div>
     <div style="font-size:.72rem;color:var(--muted);margin-bottom:12px;line-height:1.6">
@@ -1163,6 +1217,8 @@ function loadSettings() {
   if (ht && s.height) ht.value = s.height;
   if (c && s.condition) c.value = s.condition;
   if (u && s.sheetUrl) u.value = s.sheetUrl;
+  var gu2 = document.getElementById('sGasUrl');
+  if (gu2 && s.gasUrl) gu2.value = s.gasUrl;
   updateGoalDisplay();
 }
 
@@ -1182,6 +1238,8 @@ function saveSettings() {
   if (ht) s.height = parseFloat(ht.value) || 0;
   if (c) s.condition = c.value.trim();
   if (u) s.sheetUrl = u.value.trim();
+  var gu = document.getElementById('sGasUrl');
+  if (gu) s.gasUrl = gu.value.trim();
   ssets(s);
   updateGoalDisplay();
   var msg = document.getElementById('settingsSaved');
@@ -1545,7 +1603,7 @@ function switchPage(id, btn) {
   var pg = document.getElementById('page-' + id);
   if (pg) pg.classList.add('active');
   if (btn) btn.classList.add('active');
-  if (id === 'graph') { setTimeout(renderGraphs, 60); }
+  if (id === 'graph') { setTimeout(renderGraphs, 60); renderBodyCompHist(); renderCircHist(); }
   if (id === 'analysis') { renderAnalysis(); }
   if (id === 'sheet') { renderSheetPreview(); }
   if (id === 'settings') { loadSettings(); renderTrainEditList(); }
@@ -1663,8 +1721,228 @@ function renderLog() {
   var circ = 264;
   var rf = document.getElementById('ringFill');
   if (rf) rf.style.strokeDashoffset = circ - (circ * Math.min(total / TARGET, 1));
+  renderSalt();
 }
 
+// ====== JSON BACKUP ======
+function exportJSON() {
+  var data = localStorage.getItem('okz5') || '{}';
+  var blob = new Blob([data], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  var d = new Date();
+  a.href = url;
+  a.download = 'healthokz_' + d.getFullYear() + p2(d.getMonth()+1) + p2(d.getDate()) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importJSON(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var imp = JSON.parse(e.target.result);
+      if (!imp.days && !imp.bp && !imp.irr) { alert('有効なバックアップではありません'); return; }
+      var cur = getM();
+      if (imp.days) {
+        for (var d in imp.days) { if (!cur.days[d]) cur.days[d] = imp.days[d]; }
+      }
+      if (imp.bp && imp.bp.length) {
+        var ek = {};
+        for (var bi = 0; bi < cur.bp.length; bi++) ek[cur.bp[bi].date + cur.bp[bi].time] = true;
+        for (var ni = 0; ni < imp.bp.length; ni++) {
+          var key = imp.bp[ni].date + imp.bp[ni].time;
+          if (!ek[key]) cur.bp.push(imp.bp[ni]);
+        }
+        cur.bp.sort(function(a,b){ return b.date > a.date ? 1 : -1; });
+      }
+      if (imp.irr && imp.irr.length) {
+        var ei = {};
+        for (var ii = 0; ii < cur.irr.length; ii++) ei[cur.irr[ii].id] = true;
+        for (var ni2 = 0; ni2 < imp.irr.length; ni2++) { if (!ei[imp.irr[ni2].id]) cur.irr.push(imp.irr[ni2]); }
+      }
+      if (imp.rtl && imp.rtl.length) {
+        var er = {};
+        for (var ri = 0; ri < cur.rtl.length; ri++) er[cur.rtl[ri].id] = true;
+        for (var nr = 0; nr < imp.rtl.length; nr++) { if (!er[imp.rtl[nr].id]) cur.rtl.push(imp.rtl[nr]); }
+      }
+      saveM(cur);
+      renderLog(); renderBPH();renderBodyCompHist();renderCircHist(); renderWtHist(); renderGraphs(); renderIrrLog(); renderRoutineLog();
+      alert('インポート完了しました');
+    } catch(err) { alert('読み込みエラー: ' + err.message); }
+  };
+  reader.readAsText(file);
+}
+
+function importCSV(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var lines = e.target.result.split('\n');
+      var cur = getM();
+      var count = 0;
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (!line || line.indexOf(',') < 0) continue;
+        var cols = line.split(',');
+        var dt = cols[0] ? cols[0].trim().replace(/\//g, '-') : '';
+        if (!dt.match(/^\d{4}-\d{2}-\d{2}$/)) continue;
+        var wt = cols[1] ? parseFloat(cols[1].trim()) : 0;
+        var sys = cols[2] ? parseInt(cols[2].trim()) : 0;
+        var dia = cols[3] ? parseInt(cols[3].trim()) : 0;
+        var pls = cols[4] ? parseInt(cols[4].trim()) : 0;
+        if (wt > 0) {
+          if (!cur.days[dt]) cur.days[dt] = {breakfast:[],lunch:[],snack:[],dinner:[]};
+          cur.days[dt].weight = wt; count++;
+        }
+        if (sys > 0 && dia > 0) {
+          var found = false;
+          for (var bi2 = 0; bi2 < cur.bp.length; bi2++) { if (cur.bp[bi2].date === dt) { found = true; break; } }
+          if (!found) { cur.bp.push({date:dt, time:'00:00', sys:sys, dia:dia, pulse:pls}); count++; }
+        }
+      }
+      cur.bp.sort(function(a,b){ return b.date > a.date ? 1 : -1; });
+      saveM(cur);
+      renderWtHist(); renderBPH(); renderGraphs();
+      alert(count + '件インポートしました');
+    } catch(err) { alert('CSVエラー: ' + err.message); }
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function syncToSheet() {
+  var s = gsets();
+  if (!s.gasUrl) { alert('SettingsにGAS URLを入力してください'); return; }
+  var rows = buildSheetRows();
+  var btn = document.getElementById('syncBtn');
+  if (btn) btn.textContent = '送信中...';
+  fetch(s.gasUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'text/plain'},
+    body: JSON.stringify(rows)
+  }).then(function() {
+    if (btn) { btn.textContent = '同期完了！'; setTimeout(function(){ btn.textContent = 'スプレッドシートに同期'; }, 3000); }
+  }).catch(function() {
+    if (btn) { btn.textContent = '送信完了'; setTimeout(function(){ btn.textContent = 'スプレッドシートに同期'; }, 3000); }
+  });
+}
+// ====== 体組成 ======
+function gbody() { return getM().body || []; }
+function sbody(a) { var m = getM(); m.body = a; saveM(m); }
+
+function saveBodyComp() {
+  var dateEl = document.getElementById('bcDate');
+  var fatEl = document.getElementById('bcFat');
+  var muscleEl = document.getElementById('bcMuscle');
+  if (!fatEl || !muscleEl) return;
+  var dateVal = dateEl ? (dateEl.value || today()) : today();
+  var fat = parseFloat(fatEl.value) || 0;
+  var muscle = parseFloat(muscleEl ? muscleEl.value : 0) || 0;
+  if (!fat && !muscle) return;
+  var a = gbody();
+  a = a.filter(function(r) { return r.date !== dateVal; });
+  a.unshift({ date: dateVal, fat: fat, muscle: muscle });
+  a.sort(function(x, y) { return y.date > x.date ? 1 : -1; });
+  sbody(a);
+  fatEl.value = ''; if (muscleEl) muscleEl.value = '';
+  renderBodyCompHist();
+}
+
+function deleteBodyComp(idx) {
+  var a = gbody(); a.splice(idx, 1); sbody(a); renderBodyCompHist();
+}
+
+function renderBodyCompHist() {
+  var c = document.getElementById('bodyCompHist'); if (!c) return;
+  var a = gbody();
+  if (!a.length) { c.innerHTML = '<div class="no-hist">記録なし</div>'; return; }
+  var html = '';
+  for (var i = 0; i < Math.min(a.length, 8); i++) {
+    var r = a[i];
+    html += '<div class="bp-row">'
+      + '<span class="bpdt">' + r.date.slice(5) + '</span>'
+      + (r.fat ? '<span style="color:var(--hibiscus);font-weight:700;font-family:var(--fm);font-size:.62rem">脂' + r.fat.toFixed(1) + '%</span>' : '')
+      + (r.muscle ? '<span style="color:var(--palm);font-weight:700;font-family:var(--fm);font-size:.62rem;flex:1">筋' + r.muscle.toFixed(1) + '%</span>' : '<span style="flex:1"></span>')
+      + '<button class="idel" onclick="deleteBodyComp(' + i + ')" style="margin-left:auto">&#215;</button>'
+      + '</div>';
+  }
+  c.innerHTML = html;
+}
+
+// ====== 周囲径 ======
+function gcirc() { return getM().circ || []; }
+function scirc(a) { var m = getM(); m.circ = a; saveM(m); }
+
+function saveCirc() {
+  var dateEl = document.getElementById('circDate');
+  var waistEl = document.getElementById('circWaist');
+  var hipEl = document.getElementById('circHip');
+  var thighEl = document.getElementById('circThigh');
+  if (!waistEl) return;
+  var dateVal = dateEl ? (dateEl.value || today()) : today();
+  var waist = parseFloat(waistEl.value) || 0;
+  var hip = parseFloat(hipEl ? hipEl.value : 0) || 0;
+  var thigh = parseFloat(thighEl ? thighEl.value : 0) || 0;
+  if (!waist && !hip && !thigh) return;
+  var a = gcirc();
+  a = a.filter(function(r) { return r.date !== dateVal; });
+  a.unshift({ date: dateVal, waist: waist, hip: hip, thigh: thigh });
+  a.sort(function(x, y) { return y.date > x.date ? 1 : -1; });
+  scirc(a);
+  waistEl.value = ''; if (hipEl) hipEl.value = ''; if (thighEl) thighEl.value = '';
+  renderCircHist();
+}
+
+function deleteCirc(idx) {
+  var a = gcirc(); a.splice(idx, 1); scirc(a); renderCircHist();
+}
+
+function renderCircHist() {
+  var c = document.getElementById('circHist'); if (!c) return;
+  var a = gcirc();
+  if (!a.length) { c.innerHTML = '<div class="no-hist">記録なし</div>'; return; }
+  var html = '';
+  for (var i = 0; i < Math.min(a.length, 8); i++) {
+    var r = a[i];
+    html += '<div class="bp-row">'
+      + '<span class="bpdt">' + r.date.slice(5) + '</span>'
+      + (r.waist ? '<span style="font-family:var(--fm);font-size:.62rem;color:var(--ocean)">胴' + r.waist + '</span>' : '')
+      + (r.hip ? '<span style="font-family:var(--fm);font-size:.62rem;color:var(--palm)">腰' + r.hip + '</span>' : '')
+      + (r.thigh ? '<span style="font-family:var(--fm);font-size:.62rem;color:var(--sunset);flex:1">腿' + r.thigh + '</span>' : '<span style="flex:1"></span>')
+      + '<button class="idel" onclick="deleteCirc(' + i + ')" style="margin-left:auto">&#215;</button>'
+      + '</div>';
+  }
+  c.innerHTML = html;
+}
+
+// ====== 塩分 ======
+function saveSalt() {
+  var el = document.getElementById('saltInput');
+  if (!el || !el.value) return;
+  sdf(logDate, 'salt', parseFloat(el.value));
+  el.value = ''; renderSalt();
+}
+
+function renderSalt() {
+  var data = gdd(logDate);
+  var disp = document.getElementById('saltDisp');
+  if (!disp) return;
+  if (data.salt) {
+    var salt = data.salt;
+    disp.textContent = salt.toFixed(1) + 'g';
+    disp.style.color = salt > 6 ? 'var(--hibiscus)' : 'var(--palm)';
+  } else {
+    disp.textContent = '--';
+    disp.style.color = 'var(--muted)';
+  }
+}
 // ====== BP ======
 function initBPDate() { var el = document.getElementById('bpDate'); if (el) el.value = today(); }
 
