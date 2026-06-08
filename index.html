@@ -691,7 +691,8 @@ canvas.cv{width:100%;height:100%}
   <div class="settings-card" style="margin-top:10px;border:1.5px solid rgba(230,57,70,.2)">
     <div style="font-size:1rem;font-weight:800;color:var(--hibiscus);margin-bottom:8px">データ管理</div>
     <div style="font-size:.72rem;color:var(--muted);margin-bottom:12px;line-height:1.6">
-      記録した体重・血圧・食事・トレーニングデータをすべて削除します。<br>
+      <div id="storageInfo" style="font-size:.72rem;color:var(--muted);margin-bottom:8px">容量を計算中...</div>
+    記録した体重・血圧・食事・トレーニングデータをすべて削除します。<br>
       <strong style="color:var(--hibiscus)">この操作は元に戻せません。</strong>
     </div>
     <button class="save-settings-btn"
@@ -1270,6 +1271,27 @@ function getTargetKcal() {
   return s.targetKcal || 1600;
 }
 
+function calcStorage() {
+  var el = document.getElementById('storageInfo');
+  if (!el) return;
+  try {
+    var used = 0;
+    for (var k in localStorage) {
+      if (!localStorage.hasOwnProperty(k)) continue;
+      used += (localStorage[k].length + k.length) * 2;
+    }
+    var usedKB = (used / 1024).toFixed(1);
+    var usedMB = (used / 1024 / 1024).toFixed(2);
+    var pct = Math.min(100, Math.round(used / 1024 / 1024 / 5 * 100));
+    var col = pct < 50 ? 'var(--palm)' : pct < 80 ? 'var(--sunset)' : 'var(--hibiscus)';
+    el.innerHTML = 'ストレージ使用量：<strong style="color:' + col + '">' + usedMB + ' MB</strong>（' + usedKB + ' KB / 推定上限 5120 KB）'
+      + '<div style="margin-top:5px;height:6px;background:rgba(0,119,182,.1);border-radius:99px;overflow:hidden">'
+      + '<div style="height:100%;width:' + pct + '%;background:' + col + ';border-radius:99px"></div></div>'
+      + '<div style="margin-top:3px;font-size:.6rem;color:var(--muted)">' + pct + '% 使用中</div>';
+  } catch(e) {
+    el.textContent = '容量の取得に失敗しました';
+  }
+}
 function confirmReset() {
   if (!window.confirm('すべての記録データ（体重・血圧・食事・トレーニング）を削除します。\nよろしいですか？')) return;
   if (!window.confirm('本当に削除しますか？\nこの操作は元に戻せません。')) return;
@@ -1596,6 +1618,7 @@ function updateBPHeader() {
 
 // ====== NAVIGATION ======
 function switchPage(id, btn) {
+  if (id === 'settings') calcStorage();
   var pages = document.querySelectorAll('.page');
   for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
   var nbs = document.querySelectorAll('.nb');
@@ -2604,6 +2627,20 @@ function renderAnalysis() {
   var irrInPeriod = irrData.filter(function(r){ return dates.indexOf(r.date) >= 0; });
   var rtlData = grtl();
   var rtlInPeriod = rtlData.filter(function(r){ return dates.indexOf(r.date) >= 0; });
+  var bcData = gbc();
+  var bcInPeriod = bcData.filter(function(r){ return dates.indexOf(r.date) >= 0; });
+  var circData = gcirc();
+  var circInPeriod = circData.filter(function(r){ return dates.indexOf(r.date) >= 0; });
+  var totalSalt = 0; var saltDays = 0;
+  var saltLog = [];
+  for (var si2 = 0; si2 < dates.length; si2++) {
+    var sr = gdd(dates[si2]);
+    if (sr.salt && sr.salt > 0) {
+      totalSalt += sr.salt;
+      saltDays++;
+      saltLog.push({ date: dates[si2], salt: sr.salt });
+    }
+  }(function(r){ return dates.indexOf(r.date) >= 0; });
   var sumEl = document.getElementById('analysisSummary');
   if (sumEl) {
     sumEl.innerHTML = '<div class="ss-cell"><div class="ss-lbl">記録日数</div><div class="ss-val">' + daysWithData + '/' + dates.length + '日</div></div>'
@@ -2651,7 +2688,13 @@ function renderAnalysis() {
     + (firstW && lastW ? '変化：' + firstW.weight + 'kg → ' + lastW.weight + 'kg（' + wChange + 'kg）\n' : '') + '\n'
     + '【血圧推移】\n'
     + (bpSummary || '  記録なし\n') + '\n'
-    + '【運動記録】\n'
+    + '【塩分摂取】\n'
+    + (saltLog.length ? (function(){ var s=''; for(var i=0;i<saltLog.length;i++) s+='  '+saltLog[i].date+': '+saltLog[i].salt+'g\n'; return s; })() + '平均塩分：' + (saltDays > 0 ? (totalSalt/saltDays).toFixed(1) : '--') + 'g/日（目標6.0g以内）\n' : '  記録なし\n')
+    + '\n【体組成推移】\n'
+    + (bcInPeriod.length ? (function(){ var s=''; for(var i=0;i<bcInPeriod.length;i++) s+='  '+bcInPeriod[i].date+': 体脂肪率'+bcInPeriod[i].fat+'% 骨格筋率'+bcInPeriod[i].muscle+'%\n'; return s; })() : '  記録なし\n')
+    + '\n【周囲径推移】\n'
+    + (circInPeriod.length ? (function(){ var s=''; for(var i=0;i<circInPeriod.length;i++) s+='  '+circInPeriod[i].date+': ウエスト'+circInPeriod[i].waist+'cm ヒップ'+circInPeriod[i].hip+'cm 太もも'+circInPeriod[i].thigh+'cm\n'; return s; })() : '  記録なし\n')
+    + '\n【運動記録】\n'
     + (irrSummary || '  記録なし\n') + '\n'
     + '【分析してほしい内容】\n'
     + '1. カロリー摂取の傾向と問題点\n'
@@ -2660,6 +2703,8 @@ function renderAnalysis() {
     + '4. トレーニング継続状況の評価\n'
     + '5. 今後1週間の具体的な改善アドバイス（食事・運動・生活習慣）\n'
     + '6. 健康メモを踏まえた特に注意すべき点\n'
+    + '7. 塩分摂取の傾向と高血圧への影響\n'
+    + '8. 体組成（体脂肪率・骨格筋率）の変化評価\n'
     + '\nできるだけ具体的な数値や食品名を使って回答してください。\n';
   var pb = document.getElementById('promptBox');
   if (pb) pb.textContent = prompt;
