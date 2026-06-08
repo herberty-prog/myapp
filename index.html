@@ -642,7 +642,8 @@ canvas.cv{width:100%;height:100%}
     <div class="sf"><label>身長 (cm)</label><input type="number" step="0.1" id="sHeight" placeholder="例: 165.0"></div>
     <div class="sf"><label>目標体重 (kg)</label><input type="number" step="0.1" id="sGoalWeight" placeholder="例: 60.0"></div>
     <div class="sf"><label>1日の目標カロリー (kcal)</label><input type="number" id="sTargetKcal" placeholder="例: 1600"></div>
-    <div class="sf"><label>健康メモ（AI分析用）</label><textarea id="sCondition" placeholder="例: 持病・服薬・食事スタイルなどを入力"></textarea></div>
+    <div class="sf"><label>遺伝子プロファイル（AI分析用・任意）</label><textarea id="sGene" placeholder="例: 塩分感受性高い、アルコール代謝低、脂質代謝低下傾向など"></textarea></div>
+<div class="sf"><label>健康メモ（AI分析用）</label><textarea id="sCondition" placeholder="例: 持病・服薬・食事スタイルなどを入力"></textarea></div>
     <div class="sf"><label>Googleスプレッドシート URL（任意）</label><input type="text" id="sSheetUrl" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
     <div class="sf"><label>GAS URL（自動同期用・任意）</label><input type="text" id="sGasUrl" placeholder="https://script.google.com/macros/s/..."></div>
     <button class="save-settings-btn" onclick="saveSettings()">設定を保存</button>
@@ -1217,6 +1218,8 @@ function loadSettings() {
   if (a && s.age) a.value = s.age;
   if (ht && s.height) ht.value = s.height;
   if (c && s.condition) c.value = s.condition;
+  var cg2 = document.getElementById('sGene');
+  if (cg2) cg2.value = s.gene || '';
   if (u && s.sheetUrl) u.value = s.sheetUrl;
   var gu2 = document.getElementById('sGasUrl');
   if (gu2 && s.gasUrl) gu2.value = s.gasUrl;
@@ -1238,6 +1241,8 @@ function saveSettings() {
   if (a) s.age = parseInt(a.value) || 0;
   if (ht) s.height = parseFloat(ht.value) || 0;
   if (c) s.condition = c.value.trim();
+  var cg = document.getElementById('sGene');
+  if (cg) s.gene = cg.value.trim();
   if (u) s.sheetUrl = u.value.trim();
   var gu = document.getElementById('sGasUrl');
   if (gu) s.gasUrl = gu.value.trim();
@@ -2679,7 +2684,8 @@ function renderAnalysis() {
     + '身長：' + (s.height || '--') + 'cm\n'
     + '目標体重：' + (s.goalWeight || '--') + 'kg\n'
     + '1日の目標カロリー：' + (s.targetKcal || 1600) + 'kcal\n'
-    + '健康メモ：' + (s.condition || 'なし') + '\n\n'
+    + '健康メモ：' + (s.condition || 'なし') + '\n'
+    + '遺伝子プロファイル：' + (s.gene || 'なし') + '\n\n'
     + '【食事記録（' + daysWithData + '日分）】\n'
     + (foodSummary || '  記録なし\n')
     + '平均摂取カロリー：' + avgKcal + 'kcal/日\n\n'
