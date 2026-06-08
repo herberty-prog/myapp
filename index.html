@@ -2627,7 +2627,7 @@ function renderAnalysis() {
   var irrInPeriod = irrData.filter(function(r){ return dates.indexOf(r.date) >= 0; });
   var rtlData = grtl();
   var rtlInPeriod = rtlData.filter(function(r){ return dates.indexOf(r.date) >= 0; });
-  var bcData = gbc();
+  var bcData = gbody();
   var bcInPeriod = bcData.filter(function(r){ return dates.indexOf(r.date) >= 0; });
   var circData = gcirc();
   var circInPeriod = circData.filter(function(r){ return dates.indexOf(r.date) >= 0; });
