@@ -787,6 +787,19 @@ canvas.cv{width:100%;height:100%}
   </div>
 </div>
 
+<!-- TRAIN DAY MODAL -->
+<div class="mover" id="trainDayModal" onclick="closeTrainDayModal(event)">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mttl" id="trainDayModalTitle">トレーニング記録</div>
+    <div class="msub" id="trainDayModalSub"></div>
+    <div id="trainDayMenuList" style="margin-bottom:12px"></div>
+    <div class="ifield"><label>追加・変更メモ（任意）</label><input class="iinput" id="trainDayMemo" placeholder="例：懸垂できず、ランニング30分追加"></div>
+    <div class="ifield"><label>時間（分）</label><input class="iinput" id="trainDayMin" type="number" placeholder="45"></div>
+    <button class="isave" onclick="saveTrainDay()">完了で保存</button>
+  </div>
+</div>
+
 <!-- ROUTINE MODAL -->
 <div class="mover" id="routineModal" onclick="closeRoutineModal(event)">
   <div class="msheet">
@@ -2337,7 +2350,29 @@ function renderTraining() {
   c.innerHTML = html;
 }
 
+
+}
+function getWeekMonday() {
+  var d = new Date(); d.setHours(0,0,0,0);
+  var day = d.getDay();
+  var diff = (day === 0) ? -6 : 1 - day;
+  d.setDate(d.getDate() + diff);
+  return d.toISOString().slice(0,10);
+}
+function checkWeekReset() {
+  var m = getM();
+  var lastMon = m.meta ? (m.meta.lastWeekMonday || '') : '';
+  var thisMon = getWeekMonday();
+  if (lastMon !== thisMon) {
+    weeklyDone = [false,false,false,false,false,false,false];
+    if (!m.meta) m.meta = {};
+    m.meta.lastWeekMonday = thisMon;
+    m.meta.weeklyDone = weeklyDone;
+    saveM(m);
+  }
+}
 function renderWeek() {
+  checkWeekReset();
   var labels = ['日','月','火','水','木','金','土'];
   var td = new Date().getDay();
   var c = document.getElementById('weekCells');
@@ -2346,7 +2381,7 @@ function renderWeek() {
   for (var i = 0; i < 7; i++) {
     html += '<div class="wci">'
       + '<span class="wcd">' + labels[i] + '</span>'
-      + '<div class="wdot' + (i === td ? ' today' : '') + (weeklyDone[i] ? ' done' : '') + '" onclick="toggleWD(' + i + ')">'
+      + '<div class="wdot' + (i === td ? ' today' : '') + (weeklyDone[i] ? ' done' : '') + '" onclick="openTrainDayModal(' + i + ')">'
       + (weeklyDone[i] ? 'v' : '')
       + '</div></div>';
   }
@@ -2354,6 +2389,83 @@ function renderWeek() {
 }
 function toggleWD(i) { weeklyDone[i] = !weeklyDone[i]; save(); renderWeek(); }
 
+// ====== TRAIN DAY MODAL ======
+var trainDayTargetDay = -1;
+var DAY_TO_MENU = [2, 0, 0, 0, 0, 0, 1];
+var MENU_KEYS = ['weekday', 'sat', 'sun'];
+var MENU_NAMES = ['\u5e73\u65e5\u30e1\u30cb\u30e5\u30fc', '\u571f\u66dc\u30e1\u30cb\u30e5\u30fc', '\u65e5\u66dc\u30e1\u30cb\u30e5\u30fc'];
+function openTrainDayModal(dayIdx) {
+  trainDayTargetDay = dayIdx;
+  var labels = ['\u65e5','\u6708','\u706b','\u6c34','\u6728','\u91d1','\u571f'];
+  var menuKey = MENU_KEYS[DAY_TO_MENU[dayIdx]];
+  var menuName = MENU_NAMES[DAY_TO_MENU[dayIdx]];
+  var title = document.getElementById('trainDayModalTitle');
+  var sub = document.getElementById('trainDayModalSub');
+  var list = document.getElementById('trainDayMenuList');
+  var memoEl = document.getElementById('trainDayMemo');
+  var minEl = document.getElementById('trainDayMin');
+  if (title) title.textContent = labels[dayIdx] + '\u66dc\u306e\u30c8\u30ec\u30fc\u30cb\u30f3\u30b0';
+  if (sub) sub.textContent = menuName;
+  if (memoEl) memoEl.value = '';
+  if (minEl) minEl.value = '';
+  var custom = getCustomTraining();
+  var effective = custom || TRAINING;
+  var menu = effective[menuKey];
+  var exs = (menu && menu.exercises) ? menu.exercises : [];
+  var html = '';
+  if (exs.length) {
+    html += '<div style="font-size:.64rem;font-weight:800;color:var(--muted);letter-spacing:1px;margin-bottom:6px">TODAY\'S MENU</div>';
+    for (var i = 0; i < exs.length; i++) {
+      html += '<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(0,119,182,.07)">'
+        + '<span style="font-size:.82rem;font-weight:800;color:var(--text);flex:1">' + escHtml(exs[i].name || '') + '</span>'
+        + (exs[i].spec ? '<span style="font-size:.7rem;color:var(--ocean);font-weight:700">' + escHtml(exs[i].spec) + '</span>' : '')
+        + '</div>';
+    }
+  } else {
+    html = '<div style="font-size:.75rem;color:var(--muted)">\u30e1\u30cb\u30e5\u30fc\u672a\u8a2d\u5b9a</div>';
+  }
+  if (list) list.innerHTML = html;
+  var modal = document.getElementById('trainDayModal');
+  if (modal) modal.classList.add('open');
+}
+function closeTrainDayModal(e) {
+  if (e.target === document.getElementById('trainDayModal')) {
+    document.getElementById('trainDayModal').classList.remove('open');
+  }
+}
+function saveTrainDay() {
+  var dayIdx = trainDayTargetDay;
+  if (dayIdx < 0) return;
+  var menuKey = MENU_KEYS[DAY_TO_MENU[dayIdx]];
+  var custom = getCustomTraining();
+  var effective = custom || TRAINING;
+  var menu = effective[menuKey];
+  var exs = (menu && menu.exercises) ? menu.exercises : [];
+  var snapshot = [];
+  for (var i = 0; i < exs.length; i++) {
+    snapshot.push({ name: exs[i].name || '', spec: exs[i].spec || '' });
+  }
+  var memoEl = document.getElementById('trainDayMemo');
+  var minEl = document.getElementById('trainDayMin');
+  var memo = memoEl ? memoEl.value.trim() : '';
+  var min = parseInt(minEl ? minEl.value : 0) || 0;
+  var labels = ['\u65e5','\u6708','\u706b','\u6c34','\u6728','\u91d1','\u571f'];
+  var d = new Date();
+  var diff = dayIdx - d.getDay();
+  d.setDate(d.getDate() + diff);
+  var dateStr = d.toISOString().slice(0,10);
+  var a = grtl();
+  a = a.filter(function(r){ return !(r.date === dateStr && r.day === menuKey); });
+  a.unshift({ id: Date.now(), date: dateStr, day: menuKey, note: snapshot.map(function(e){ return e.name; }).join('\u30fb'), min: min, memo: memo, menuSnapshot: snapshot });
+  a.sort(function(x,y){ return y.date > x.date ? 1 : -1; });
+  srtl(a);
+  weeklyDone[dayIdx] = true;
+  save();
+  renderWeek();
+  renderRoutineLog();
+  var modal = document.getElementById('trainDayModal');
+  if (modal) modal.classList.remove('open');
+}
 // ====== IRREGULAR ======
 function openIrr() {
   var el = document.getElementById('iDate'); if (el) el.value = today();
