@@ -1744,8 +1744,8 @@ function renderLog() {
         html += '<div class="entry">'
           + '<span class="enm">' + items[ei].name + '</span>'
           + '<span class="ekc">' + items[ei].kcal + 'kcal</span>'
-          + '<button class="eedit" onclick="editFood(\'' + m + '\',' + ei + ')">&#9998;</button>'
-          + '<button class="edel" onclick="removeFood(\'' + m + '\',' + ei + ')">&#215;</button>'
+          + '<button class="eedit" onclick="editFood(' + "'" + m + "'" + ',' + ei + ')">&#9998;</button>'
+          + '<button class="edel" onclick="removeFood(' + "'" + m + "'" + ',' + ei + ')">&#215;</button>'
           + '</div>';
       }
       container.innerHTML = html;
