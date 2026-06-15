@@ -1397,7 +1397,7 @@ function getEffectiveTraining() {
 }
 
 function escHtml(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 function setEditDay(day, btn) {
@@ -3036,7 +3036,7 @@ function printRecipe(id) {
   for (var ii = 0; ii < r.ingr.length; ii++) html += '<div class="i"><span>' + r.ingr[ii].n + '</span><span class="a">' + r.ingr[ii].a + '</span></div>';
   html += '<h2>Steps</h2>';
   for (var si = 0; si < r.steps.length; si++) html += '<div class="s"><div class="sn">' + (si+1) + '</div><span>' + r.steps[si] + '</span></div>';
-  html += '<div class="t">' + r.tip + '</div></body></html>';
+  html += '<div class=\'t\'>' + r.tip + '</div></body></html>';
   w.document.write(html);
   w.document.close();
   setTimeout(function(){ w.print(); }, 500);
