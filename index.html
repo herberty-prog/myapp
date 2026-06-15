@@ -565,7 +565,6 @@ canvas.cv{width:100%;height:100%}
 <div id="page-train" class="page">
   <div class="shd" style="margin-top:8px">
     <div class="shd-title">トレーニング</div>
-    <button onclick="openIrr()" style="padding:6px 12px;border-radius:99px;background:linear-gradient(135deg,var(--palm),var(--palm2));border:none;color:white;font-size:.68rem;font-weight:800;cursor:pointer">+ イレギュラー</button>
   </div>
   <div class="whm">
     <div class="whm-lbl">THIS WEEK</div>
@@ -577,12 +576,6 @@ canvas.cv{width:100%;height:100%}
     <button class="tdt" onclick="setTD('sun',this)">日曜</button>
   </div>
   <div id="trainContent"></div>
-  <div style="margin-top:6px">
-    <div class="shd">
-      <div class="shd-title" style="font-size:1.05rem">イレギュラートレーニング</div>
-    </div>
-    <div class="irr-log-list" id="irrLog"></div>
-  </div>
   <div style="margin-top:6px">
     <div class="shd">
       <div class="shd-title" style="font-size:1.05rem">ルーティン記録</div>
@@ -2796,8 +2789,19 @@ function renderAnalysis() {
   var irrSummary = '';
   for (var rti = 0; rti < rtlInPeriod.length; rti++) {
     var rt = rtlInPeriod[rti];
-    irrSummary += '  ' + rt.date + '（' + (RT_DAY_LABEL[rt.day] || rt.day) + '）'
-      + (rt.note ? ': ' + rt.note : '') + (rt.min ? ' ' + rt.min + '分' : '') + '\n';
+    irrSummary += '  ' + rt.date + '（' + (RT_DAY_LABEL[rt.day] || rt.day) + '）' + (rt.min ? ' ' + rt.min + '分' : '') + '\n';
+    if (rt.menuSnapshot && rt.menuSnapshot.length) {
+      irrSummary += '    実施：';
+      var exParts = [];
+      for (var msi = 0; msi < rt.menuSnapshot.length; msi++) {
+        var ms = rt.menuSnapshot[msi];
+        exParts.push(ms.name + (ms.spec ? '（' + ms.spec + '）' : ''));
+      }
+      irrSummary += exParts.join('・') + '\n';
+    } else if (rt.note) {
+      irrSummary += '    実施：' + rt.note + '\n';
+    }
+    if (rt.memo) irrSummary += '    メモ：' + rt.memo + '\n';
   }
   for (var ii = 0; ii < irrInPeriod.length; ii++) {
     var ir = irrInPeriod[ii];
