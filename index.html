@@ -2394,6 +2394,7 @@ var MENU_KEYS = ['weekday', 'sat', 'sun'];
 var MENU_NAMES = ['\u5e73\u65e5\u30e1\u30cb\u30e5\u30fc', '\u571f\u66dc\u30e1\u30cb\u30e5\u30fc', '\u65e5\u66dc\u30e1\u30cb\u30e5\u30fc'];
 function openTrainDayModal(dayIdx) {
   trainDayTargetDay = dayIdx;
+  trainExState = {};
   var labels = ['\u65e5','\u6708','\u706b','\u6c34','\u6728','\u91d1','\u571f'];
   var menuKey = MENU_KEYS[DAY_TO_MENU[dayIdx]];
   var menuName = MENU_NAMES[DAY_TO_MENU[dayIdx]];
@@ -2412,9 +2413,10 @@ function openTrainDayModal(dayIdx) {
   var exs = (menu && menu.exercises) ? menu.exercises : [];
   var html = '';
   if (exs.length) {
-    html += '<div style="font-size:.64rem;font-weight:800;color:var(--muted);letter-spacing:1px;margin-bottom:6px">TODAY\'S MENU</div>';
+   html += '<div style="font-size:.64rem;font-weight:800;color:var(--muted);letter-spacing:1px;margin-bottom:6px">TODAY\'S MENU（\u3084\u3063\u305f\u7a2e\u76ee\u3092\u9078\u629e）</div>';
     for (var i = 0; i < exs.length; i++) {
-      html += '<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(0,119,182,.07)">'
+      html += '<div onclick="toggleTrainEx(' + i + ')" id="trainEx-' + i + '" style="display:flex;align-items:center;gap:8px;padding:9px 8px;margin-bottom:4px;border-radius:8px;cursor:pointer;background:rgba(45,106,79,.08);border:1.5px solid var(--palm)">'
+        + '<span id="trainExChk-' + i + '" style="font-size:.9rem;color:var(--palm);font-weight:800">\u2714</span>'
         + '<span style="font-size:.82rem;font-weight:800;color:var(--text);flex:1">' + escHtml(exs[i].name || '') + '</span>'
         + (exs[i].spec ? '<span style="font-size:.7rem;color:var(--ocean);font-weight:700">' + escHtml(exs[i].spec) + '</span>' : '')
         + '</div>';
@@ -2425,6 +2427,19 @@ function openTrainDayModal(dayIdx) {
   if (list) list.innerHTML = html;
   var modal = document.getElementById('trainDayModal');
   if (modal) modal.classList.add('open');
+}
+var trainExState = {};
+function toggleTrainEx(i) {
+  trainExState[i] = !trainExState[i];
+  var row = document.getElementById('trainEx-' + i);
+  var chk = document.getElementById('trainExChk-' + i);
+  if (trainExState[i]) {
+    if (row) { row.style.background = 'rgba(150,150,150,.1)'; row.style.borderColor = 'rgba(150,150,150,.3)'; }
+    if (chk) { chk.textContent = '\u2715'; chk.style.color = 'var(--muted)'; }
+  } else {
+    if (row) { row.style.background = 'rgba(45,106,79,.08)'; row.style.borderColor = 'var(--palm)'; }
+    if (chk) { chk.textContent = '\u2714'; chk.style.color = 'var(--palm)'; }
+  }
 }
 function closeTrainDayModal(e) {
   if (e.target === document.getElementById('trainDayModal')) {
@@ -2441,7 +2456,9 @@ function saveTrainDay() {
   var exs = (menu && menu.exercises) ? menu.exercises : [];
   var snapshot = [];
   for (var i = 0; i < exs.length; i++) {
-    snapshot.push({ name: exs[i].name || '', spec: exs[i].spec || '' });
+    if (!trainExState[i]) {
+      snapshot.push({ name: exs[i].name || '', spec: exs[i].spec || '' });
+    }
   }
   var memoEl = document.getElementById('trainDayMemo');
   var minEl = document.getElementById('trainDayMin');
