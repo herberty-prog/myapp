@@ -102,16 +102,19 @@ body{font-family:var(--fb);min-height:100vh;padding-bottom:90px;-webkit-font-smo
 .entry:last-child{border-bottom:none}
 .enm{flex:1;font-size:.76rem;font-weight:600}
 .ekc{font-family:var(--fm);font-size:.64rem;font-weight:700;color:var(--sunset);white-space:nowrap}
+.esalt{font-family:var(--fm);font-size:.6rem;font-weight:700;color:var(--hibiscus);white-space:nowrap}
 .edel{width:22px;height:22px;border-radius:5px;background:rgba(230,57,70,.1);color:var(--hibiscus);border:none;cursor:pointer;font-size:.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .edel:active{background:var(--hibiscus);color:#fff}
 .eedit{width:22px;height:22px;border-radius:5px;background:rgba(0,119,182,.1);color:var(--ocean);border:none;cursor:pointer;font-size:.76rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .eedit:active{background:var(--ocean);color:#fff}.no-entry{padding:9px 0;font-size:.68rem;color:var(--muted);font-style:italic}
 .no-hist{padding:7px 0;font-size:.66rem;color:var(--muted)}
-.madd{display:flex;align-items:center;gap:6px;padding:9px 12px 12px;border-top:1px solid rgba(0,119,182,.07);background:rgba(144,224,239,.06)}
+.madd{display:flex;align-items:center;gap:6px;padding:9px 12px 12px;border-top:1px solid rgba(0,119,182,.07);background:rgba(144,224,239,.06);flex-wrap:wrap}
 .mi{flex:1;min-width:0;padding:9px 10px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:#fff;font-family:var(--fb);font-size:.78rem;color:#1a3a4a;outline:none}
 .mi:focus{border-color:var(--aqua)}
 .ki{width:68px;flex-shrink:0;padding:9px 7px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:#fff;font-family:var(--fm);font-size:.76rem;color:#c04a00;outline:none}
 .ki:focus{border-color:var(--lemon)}
+.si{width:60px;flex-shrink:0;padding:9px 6px;border:1.5px solid rgba(0,119,182,.18);border-radius:9px;background:#fff;font-family:var(--fm);font-size:.72rem;color:var(--hibiscus);outline:none}
+.si:focus{border-color:var(--hibiscus)}
 .madd-btn{flex-shrink:0;padding:9px 14px;background:linear-gradient(135deg,var(--ocean),var(--aqua));color:white;border:none;border-radius:9px;font-family:var(--fb);font-size:.82rem;font-weight:800;cursor:pointer;white-space:nowrap}
 .madd-btn:active{transform:scale(.94)}
 /* GRAPH */
@@ -421,22 +424,22 @@ canvas.cv{width:100%;height:100%}
   <div class="mc">
     <div class="mc-hd"><div class="mc-ico" style="background:linear-gradient(135deg,#fff3e0,#ffcc80)">&#127774;</div><div style="flex:1"><div class="mc-nm">朝食</div><div class="mc-tm">7:00〜8:00</div></div><div class="mc-kc"><span id="t-breakfast">0</span></div></div>
     <div class="entries" id="e-breakfast"><div class="no-entry">まだ記録なし</div></div>
-    <div class="madd"><input class="mi" id="fi-breakfast" placeholder="食べたもの"><input class="ki" id="ki-breakfast" type="number" placeholder="kcal"><button class="madd-btn" id="add-btn-breakfast" onclick="addFood('breakfast')">追加</button></div>
+    <div class="madd"><input class="mi" id="fi-breakfast" placeholder="食べたもの"><input class="ki" id="ki-breakfast" type="number" placeholder="kcal"><input class="si" id="si-breakfast" type="number" step="0.1" placeholder="塩分g"><button class="madd-btn" id="add-btn-breakfast" onclick="addFood('breakfast')">追加</button></div>
   </div>
   <div class="mc">
     <div class="mc-hd"><div class="mc-ico ln">&#127857;</div><div style="flex:1"><div class="mc-nm">昼食</div><div class="mc-tm">12:00</div></div><div class="mc-kc"><span id="t-lunch">0</span></div></div>
     <div class="entries" id="e-lunch"><div class="no-entry">まだ記録なし</div></div>
-    <div class="madd"><input class="mi" id="fi-lunch" placeholder="食べたもの"><input class="ki" id="ki-lunch" type="number" placeholder="kcal"><button class="madd-btn" id="add-btn-lunch" onclick="addFood('lunch')">追加</button></div>
+    <div class="madd"><input class="mi" id="fi-lunch" placeholder="食べたもの"><input class="ki" id="ki-lunch" type="number" placeholder="kcal"><input class="si" id="si-lunch" type="number" step="0.1" placeholder="塩分g"><button class="madd-btn" id="add-btn-lunch" onclick="addFood('lunch')">追加</button></div>
   </div>
   <div class="mc">
     <div class="mc-hd"><div class="mc-ico sn">&#129380;</div><div style="flex:1"><div class="mc-nm">間食</div><div class="mc-tm">15:00 / 帰宅前</div></div><div class="mc-kc"><span id="t-snack">0</span></div></div>
     <div class="entries" id="e-snack"><div class="no-entry">まだ記録なし</div></div>
-    <div class="madd"><input class="mi" id="fi-snack" placeholder="食べたもの"><input class="ki" id="ki-snack" type="number" placeholder="kcal"><button class="madd-btn" id="add-btn-snack" onclick="addFood('snack')">追加</button></div>
+    <div class="madd"><input class="mi" id="fi-snack" placeholder="食べたもの"><input class="ki" id="ki-snack" type="number" placeholder="kcal"><input class="si" id="si-snack" type="number" step="0.1" placeholder="塩分g"><button class="madd-btn" id="add-btn-snack" onclick="addFood('snack')">追加</button></div>
   </div>
   <div class="mc">
     <div class="mc-hd"><div class="mc-ico dn">&#127807;</div><div style="flex:1"><div class="mc-nm">夕食</div><div class="mc-tm">21:00〜21:30</div></div><div class="mc-kc"><span id="t-dinner">0</span></div></div>
     <div class="entries" id="e-dinner"><div class="no-entry">まだ記録なし</div></div>
-    <div class="madd"><input class="mi" id="fi-dinner" placeholder="食べたもの"><input class="ki" id="ki-dinner" type="number" placeholder="kcal"><button class="madd-btn" id="add-btn-dinner" onclick="addFood('dinner')">追加</button></div>
+    <div class="madd"><input class="mi" id="fi-dinner" placeholder="食べたもの"><input class="ki" id="ki-dinner" type="number" placeholder="kcal"><input class="si" id="si-dinner" type="number" step="0.1" placeholder="塩分g"><button class="madd-btn" id="add-btn-dinner" onclick="addFood('dinner')">追加</button></div>
 </div>
 <div class="mc" style="margin-top:4px">
     <div class="mc-hd">
@@ -444,11 +447,7 @@ canvas.cv{width:100%;height:100%}
       <div style="flex:1"><div class="mc-nm">今日の塩分</div><div class="mc-tm">目標 6.0g以内</div></div>
       <div style="font-family:var(--fm);font-size:.95rem;font-weight:700;color:var(--hibiscus)"><span id="saltDisp">--</span> / 6.0g</div>
     </div>
-    <div class="madd">
-      <input class="mi" placeholder="今日の塩分合計を入力" style="flex:1" readonly>
-      <input class="ki" id="saltInput" type="number" step="0.1" placeholder="g">
-      <button class="madd-btn" onclick="saveSalt()">保存</button>
-   </div>
+    <div style="padding:0 14px 12px;font-size:.62rem;color:var(--muted)">各食事の塩分(g)入力から自動で合計されます</div>
   </div>
 </div>
 
@@ -1667,9 +1666,11 @@ function editFood(meal, idx) {
   var item = data[meal][idx];
   var fi = document.getElementById('fi-' + meal);
   var ki = document.getElementById('ki-' + meal);
+  var si = document.getElementById('si-' + meal);
   var btn = document.getElementById('add-btn-' + meal);
   if (fi) fi.value = item.name;
   if (ki) ki.value = item.kcal;
+  if (si) si.value = item.salt || '';
   if (btn) btn.textContent = '更新';
   editMode = { meal: meal, idx: idx };
   if (fi) fi.focus();
@@ -1678,23 +1679,26 @@ function editFood(meal, idx) {
 function addFood(meal) {
   var fi = document.getElementById('fi-' + meal);
   var ki = document.getElementById('ki-' + meal);
+  var si = document.getElementById('si-' + meal);
   if (!fi || !ki) return;
   var name = fi.value.trim();
   var kcal = parseInt(ki.value) || 0;
+  var salt = si ? (parseFloat(si.value) || 0) : 0;
   if (!name) return;
   var data = gdd(logDate);
   if (!data[meal]) data[meal] = [];
   if (editMode && editMode.meal === meal) {
-    data[meal][editMode.idx] = { name: name, kcal: kcal };
+    data[meal][editMode.idx] = { name: name, kcal: kcal, salt: salt };
     editMode = null;
     var btn = document.getElementById('add-btn-' + meal);
     if (btn) btn.textContent = '追加';
   } else {
-    data[meal].push({ name: name, kcal: kcal });
+    data[meal].push({ name: name, kcal: kcal, salt: salt });
   }
   sdd(logDate, data);
   fi.value = '';
   ki.value = '';
+  if (si) si.value = '';
   renderLog();
 }
 
@@ -1734,9 +1738,11 @@ function renderLog() {
     } else {
       var html = '';
       for (var ei = 0; ei < items.length; ei++) {
+        var itSalt = parseFloat(items[ei].salt);
         html += '<div class="entry">'
           + '<span class="enm">' + items[ei].name + '</span>'
           + '<span class="ekc">' + items[ei].kcal + 'kcal</span>'
+          + '<span class="esalt">' + (!isNaN(itSalt) && itSalt > 0 ? itSalt + 'g' : '') + '</span>'
           + '<button class="eedit" onclick="editFood(' + "'" + m + "'" + ',' + ei + ')">&#9998;</button>'
           + '<button class="edel" onclick="removeFood(' + "'" + m + "'" + ',' + ei + ')">&#215;</button>'
           + '</div>';
@@ -1957,19 +1963,27 @@ function renderCircHist() {
 }
 
 // ====== 塩分 ======
-function saveSalt() {
-  var el = document.getElementById('saltInput');
-  if (!el || !el.value) return;
-  sdf(logDate, 'salt', parseFloat(el.value));
-  el.value = ''; renderSalt();
+function calcDailySalt(data) {
+  var meals = ['breakfast', 'lunch', 'snack', 'dinner'];
+  var sum = 0;
+  for (var mi = 0; mi < meals.length; mi++) {
+    var items = data[meals[mi]] || [];
+    for (var ii = 0; ii < items.length; ii++) {
+      var v = parseFloat(items[ii].salt);
+      if (!isNaN(v)) sum += v;
+    }
+  }
+  return sum;
 }
 
 function renderSalt() {
   var data = gdd(logDate);
   var disp = document.getElementById('saltDisp');
   if (!disp) return;
-  if (data.salt) {
-    var salt = data.salt;
+  var salt = calcDailySalt(data);
+  data.salt = salt;
+  sdd(logDate, data);
+  if (salt > 0) {
     disp.textContent = salt.toFixed(1) + 'g';
     disp.style.color = salt > 6 ? 'var(--hibiscus)' : 'var(--palm)';
   } else {
@@ -2760,12 +2774,13 @@ function renderAnalysis() {
   var saltLog = [];
   for (var si2 = 0; si2 < dates.length; si2++) {
     var sr = gdd(dates[si2]);
-    if (sr.salt && sr.salt > 0) {
-      totalSalt += sr.salt;
+    var srSalt = calcDailySalt(sr);
+    if (srSalt > 0) {
+      totalSalt += srSalt;
       saltDays++;
-      saltLog.push({ date: dates[si2], salt: sr.salt });
+      saltLog.push({ date: dates[si2], salt: srSalt });
     }
-  }(function(r){ return dates.indexOf(r.date) >= 0; });
+  }
   var sumEl = document.getElementById('analysisSummary');
   if (sumEl) {
     sumEl.innerHTML = '<div class="ss-cell"><div class="ss-lbl">記録日数</div><div class="ss-val">' + daysWithData + '/' + dates.length + '日</div></div>'
@@ -3089,10 +3104,14 @@ window.addEventListener('DOMContentLoaded', function() {
     (function(m) {
       var fi = document.getElementById('fi-' + m);
       var ki = document.getElementById('ki-' + m);
+      var si = document.getElementById('si-' + m);
       if (fi) fi.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && ki) ki.focus();
       });
       if (ki) ki.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') { if (si) si.focus(); else addFood(m); }
+      });
+      if (si) si.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') addFood(m);
       });
     })(mealList[mi]);
