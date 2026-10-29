@@ -3095,7 +3095,9 @@ function openRecipe(id) {
   for (var ii = 0; ii < r.ingr.length; ii++) ingr += '<div class="rm-ingr"><span>' + r.ingr[ii].n + '</span><span class="rm-amt">' + r.ingr[ii].a + '</span></div>';
   var steps = '';
   for (var si = 0; si < r.steps.length; si++) steps += '<div class="rm-step"><div class="rm-sn">' + (si+1) + '</div><div class="rm-st">' + r.steps[si] + '</div></div>';
-  modal.innerHTML = '<div class="mhandle"></div>'
+  modal.innerHTML = '<div style="position:sticky;top:-18px;z-index:2;display:flex;justify-content:flex-end;margin:-18px -18px 6px;padding:10px 12px 6px;background:var(--sand2)">'
+    + '<button onclick="closeRecipe()" style="padding:7px 14px;border-radius:99px;background:white;border:1.5px solid rgba(0,119,182,.25);color:var(--ocean);font-family:var(--fb);font-size:.78rem;font-weight:800;cursor:pointer">✕ 閉じる</button>'
+    + '</div>'
     + '<div style="background:' + r.bg + ';border-radius:12px;padding:14px;margin-bottom:12px">'
     + '<div style="font-size:2rem;margin-bottom:4px">' + r.emoji + '</div>'
     + '<div style="font-family:var(--fd);font-size:1.1rem;color:var(--text)">' + r.name + '</div>'
@@ -3104,12 +3106,18 @@ function openRecipe(id) {
     + '<div class="exsl">材料</div>' + ingr
     + '<div class="exsl" style="margin-top:12px">作り方</div>' + steps
     + '<div class="rm-tip">' + r.tip + '</div>'
-    + '<button class="print-btn" onclick="printRecipe(' + r.id + ')">印刷 / PDF保存</button>';
+    + '<button class="print-btn" onclick="printRecipe(' + r.id + ')">印刷 / PDF保存</button>'
+    + '<button class="print-btn" onclick="closeRecipe()" style="background:white;color:var(--ocean);border:1.5px solid rgba(0,119,182,.25)">レシピ一覧に戻る</button>';
+  modal.scrollTop = 0;
   var m = document.getElementById('recipeModal');
   if (m) m.classList.add('open');
 }
+function closeRecipe() {
+  var m = document.getElementById('recipeModal');
+  if (m) m.classList.remove('open');
+}
 function closeRM(e) {
-  if (e.target === document.getElementById('recipeModal')) document.getElementById('recipeModal').classList.remove('open');
+  if (e.target === document.getElementById('recipeModal')) closeRecipe();
 }
 function printRecipe(id) {
   var r = null;
