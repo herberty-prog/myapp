@@ -1803,7 +1803,7 @@ function importJSON(event) {
   reader.onload = function(e) {
     try {
       var imp = JSON.parse(e.target.result);
-      if (!imp.days && !imp.bp && !imp.irr) { alert('有効なバックアップではありません'); return; }
+      if (!imp.days && !imp.bp && !imp.irr && !imp.body) { alert('有効なバックアップではありません'); return; }
       var cur = getM();
       if (imp.days) {
         for (var d in imp.days) { if (!cur.days[d]) cur.days[d] = imp.days[d]; }
@@ -1826,6 +1826,21 @@ function importJSON(event) {
         var er = {};
         for (var ri = 0; ri < cur.rtl.length; ri++) er[cur.rtl[ri].id] = true;
         for (var nr = 0; nr < imp.rtl.length; nr++) { if (!er[imp.rtl[nr].id]) cur.rtl.push(imp.rtl[nr]); }
+      }
+      // 体組成・周囲径も取り込む（同じ日付があれば今のデータを優先）
+      if (imp.body && imp.body.length) {
+        if (!cur.body) cur.body = [];
+        var eb = {};
+        for (var bi2 = 0; bi2 < cur.body.length; bi2++) eb[cur.body[bi2].date] = true;
+        for (var nb = 0; nb < imp.body.length; nb++) { if (!eb[imp.body[nb].date]) cur.body.push(imp.body[nb]); }
+        cur.body.sort(function(a,b){ return b.date > a.date ? 1 : -1; });
+      }
+      if (imp.circ && imp.circ.length) {
+        if (!cur.circ) cur.circ = [];
+        var ec = {};
+        for (var ci = 0; ci < cur.circ.length; ci++) ec[cur.circ[ci].date] = true;
+        for (var nc = 0; nc < imp.circ.length; nc++) { if (!ec[imp.circ[nc].date]) cur.circ.push(imp.circ[nc]); }
+        cur.circ.sort(function(a,b){ return b.date > a.date ? 1 : -1; });
       }
       saveM(cur);
       renderLog(); renderBPH();renderBodyCompHist();renderCircHist(); renderWtHist(); renderGraphs(); renderIrrLog(); renderRoutineLog();
