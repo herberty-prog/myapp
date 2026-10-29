@@ -444,8 +444,8 @@ canvas.cv{width:100%;height:100%}
 <div class="mc" style="margin-top:4px">
     <div class="mc-hd">
       <div class="mc-ico" style="background:linear-gradient(135deg,#e3f2fd,#90caf9)">&#129540;</div>
-      <div style="flex:1"><div class="mc-nm">今日の塩分</div><div class="mc-tm">目標 6.0g以内</div></div>
-      <div style="font-family:var(--fm);font-size:.95rem;font-weight:700;color:var(--hibiscus)"><span id="saltDisp">--</span> / 6.0g</div>
+      <div style="flex:1"><div class="mc-nm">今日の塩分</div><div class="mc-tm" id="saltGoalLbl">目標 6.0g以内</div></div>
+      <div style="font-family:var(--fm);font-size:.95rem;font-weight:700;color:var(--hibiscus)"><span id="saltDisp">--</span> / <span id="saltGoalNum">6.0</span>g</div>
     </div>
     <div style="padding:0 14px 12px;font-size:.62rem;color:var(--muted)">各食事の塩分(g)入力から自動で合計されます</div>
   </div>
@@ -634,6 +634,9 @@ canvas.cv{width:100%;height:100%}
     <div class="sf"><label>身長 (cm)</label><input type="number" step="0.1" id="sHeight" placeholder="例: 165.0"></div>
     <div class="sf"><label>目標体重 (kg)</label><input type="number" step="0.1" id="sGoalWeight" placeholder="例: 60.0"></div>
     <div class="sf"><label>1日の目標カロリー (kcal)</label><input type="number" id="sTargetKcal" placeholder="例: 1600"></div>
+    <div class="sf"><label>塩分目標・夏 (g/日)</label><input type="number" step="0.1" id="sSaltSummer" placeholder="7.0"></div>
+    <div class="sf"><label>塩分目標・冬 (g/日)</label><input type="number" step="0.1" id="sSaltWinter" placeholder="6.0"></div>
+    <div class="sf"><label>夏の目標を使う月（はじめ〜おわり）</label><div style="display:flex;gap:8px;align-items:center"><input type="number" min="1" max="12" id="sSummerFrom" placeholder="6" style="flex:1"><span>月〜</span><input type="number" min="1" max="12" id="sSummerTo" placeholder="9" style="flex:1"><span>月</span></div></div>
     <div class="sf"><label>遺伝子プロファイル（AI分析用・任意）</label><textarea id="sGene" placeholder="例: 塩分感受性高い、アルコール代謝低、脂質代謝低下傾向など"></textarea></div>
 <div class="sf"><label>健康メモ（AI分析用）</label><textarea id="sCondition" placeholder="例: 持病・服薬・食事スタイルなどを入力"></textarea></div>
     <div class="sf"><label>Googleスプレッドシート URL（任意）</label><input type="text" id="sSheetUrl" placeholder="https://docs.google.com/spreadsheets/d/..."></div>
@@ -1226,6 +1229,11 @@ function loadSettings() {
   var cg2 = document.getElementById('sGene');
   if (cg2) cg2.value = s.gene || '';
   if (u && s.sheetUrl) u.value = s.sheetUrl;
+  var sc = getSaltConf();
+  var ss1 = document.getElementById('sSaltSummer'); if (ss1) ss1.value = sc.summer.toFixed(1);
+  var ss2 = document.getElementById('sSaltWinter'); if (ss2) ss2.value = sc.winter.toFixed(1);
+  var ss3 = document.getElementById('sSummerFrom'); if (ss3) ss3.value = sc.from;
+  var ss4 = document.getElementById('sSummerTo'); if (ss4) ss4.value = sc.to;
   var gu2 = document.getElementById('sGasUrl');
   if (gu2 && s.gasUrl) gu2.value = s.gasUrl;
   updateGoalDisplay();
@@ -1251,8 +1259,17 @@ function saveSettings() {
   if (u) s.sheetUrl = u.value.trim();
   var gu = document.getElementById('sGasUrl');
   if (gu) s.gasUrl = gu.value.trim();
+  var sv1 = parseFloat((document.getElementById('sSaltSummer') || {}).value);
+  var sv2 = parseFloat((document.getElementById('sSaltWinter') || {}).value);
+  var sv3 = parseInt((document.getElementById('sSummerFrom') || {}).value, 10);
+  var sv4 = parseInt((document.getElementById('sSummerTo') || {}).value, 10);
+  if (sv1 > 0) s.saltSummer = sv1;
+  if (sv2 > 0) s.saltWinter = sv2;
+  if (sv3 >= 1 && sv3 <= 12) s.summerFrom = sv3;
+  if (sv4 >= 1 && sv4 <= 12) s.summerTo = sv4;
   ssets(s);
   updateGoalDisplay();
+  renderSalt();
   var msg = document.getElementById('settingsSaved');
   if (msg) { msg.style.display = 'block'; setTimeout(function(){ msg.style.display = 'none'; }, 2000); }
 }
@@ -1963,6 +1980,26 @@ function renderCircHist() {
 }
 
 // ====== 塩分 ======
+// 塩分目標は季節で切り替える（夏：初期値7.0g／冬：初期値6.0g、夏＝6〜9月）。設定画面で変更でき、settings に保存される。
+function getSaltConf() {
+  var s = gsets();
+  return {
+    summer: s.saltSummer > 0 ? s.saltSummer : 7.0,
+    winter: s.saltWinter > 0 ? s.saltWinter : 6.0,
+    from: s.summerFrom >= 1 && s.summerFrom <= 12 ? s.summerFrom : 6,
+    to: s.summerTo >= 1 && s.summerTo <= 12 ? s.summerTo : 9
+  };
+}
+function isSummerDate(dateStr) {
+  var c = getSaltConf();
+  var mo = parseInt(String(dateStr).slice(5, 7), 10);
+  if (c.from <= c.to) return mo >= c.from && mo <= c.to;
+  return mo >= c.from || mo <= c.to;
+}
+function getSaltTarget(dateStr) {
+  var c = getSaltConf();
+  return isSummerDate(dateStr) ? c.summer : c.winter;
+}
 function calcDailySalt(data) {
   var meals = ['breakfast', 'lunch', 'snack', 'dinner'];
   var sum = 0;
@@ -1983,9 +2020,14 @@ function renderSalt() {
   var salt = calcDailySalt(data);
   data.salt = salt;
   sdd(logDate, data);
+  var goal = getSaltTarget(logDate);
+  var gl = document.getElementById('saltGoalLbl');
+  if (gl) gl.textContent = '目標 ' + goal.toFixed(1) + 'g以内（' + (isSummerDate(logDate) ? '夏' : '冬') + '）';
+  var gn = document.getElementById('saltGoalNum');
+  if (gn) gn.textContent = goal.toFixed(1);
   if (salt > 0) {
     disp.textContent = salt.toFixed(1) + 'g';
-    disp.style.color = salt > 6 ? 'var(--hibiscus)' : 'var(--palm)';
+    disp.style.color = salt > goal ? 'var(--hibiscus)' : 'var(--palm)';
   } else {
     disp.textContent = '--';
     disp.style.color = 'var(--muted)';
@@ -2716,6 +2758,13 @@ function delRtl(id) {
 }
 
 // ====== ANALYSIS ======
+function saltGoalText(dates) {
+  var c = getSaltConf();
+  var hasS = false, hasW = false;
+  for (var i = 0; i < dates.length; i++) { if (isSummerDate(dates[i])) hasS = true; else hasW = true; }
+  if (hasS && hasW) return '夏' + c.summer.toFixed(1) + 'g・冬' + c.winter.toFixed(1) + 'g以内';
+  return (hasS ? c.summer : c.winter).toFixed(1) + 'g以内';
+}
 function setAnalysisPeriod(d, btn) {
   analysisPeriod = d;
   var tabs = document.querySelectorAll('.ps-btn');
@@ -2841,7 +2890,7 @@ function renderAnalysis() {
     + '【血圧推移】\n'
     + (bpSummary || '  記録なし\n') + '\n'
     + '【塩分摂取】\n'
-    + (saltLog.length ? (function(){ var s=''; for(var i=0;i<saltLog.length;i++) s+='  '+saltLog[i].date+': '+saltLog[i].salt+'g\n'; return s; })() + '平均塩分：' + (saltDays > 0 ? (totalSalt/saltDays).toFixed(1) : '--') + 'g/日（目標6.0g以内）\n' : '  記録なし\n')
+    + (saltLog.length ? (function(){ var s=''; for(var i=0;i<saltLog.length;i++) s+='  '+saltLog[i].date+': '+saltLog[i].salt+'g\n'; return s; })() + '平均塩分：' + (saltDays > 0 ? (totalSalt/saltDays).toFixed(1) : '--') + 'g/日（目標' + saltGoalText(dates) + '）\n' : '  記録なし\n')
     + '\n【体組成推移】\n'
     + (bcInPeriod.length ? (function(){ var s=''; for(var i=0;i<bcInPeriod.length;i++) s+='  '+bcInPeriod[i].date+': 体脂肪率'+bcInPeriod[i].fat+'% 骨格筋率'+bcInPeriod[i].muscle+'%\n'; return s; })() : '  記録なし\n')
     + '\n【周囲径推移】\n'
