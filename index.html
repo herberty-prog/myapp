@@ -2767,7 +2767,7 @@ function saltGoalText(dates) {
 }
 function setAnalysisPeriod(d, btn) {
   analysisPeriod = d;
-  var tabs = document.querySelectorAll('.ps-btn');
+  var tabs = document.querySelectorAll('#page-analysis .ps-btn');
   for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('on');
   if (btn) btn.classList.add('on');
   renderAnalysis();
@@ -2839,9 +2839,9 @@ function renderAnalysis() {
   }
   var s = gsets();
   var foodSummary = '';
-  for (var fi = 0; fi < Math.min(foodLog.length, 7); fi++) {
+  for (var fi = 0; fi < foodLog.length; fi++) {
     var fl = foodLog[fi];
-    foodSummary += '  ' + fl.date + '（' + fl.kcal + 'kcal）: ' + fl.items.slice(0, 4).join('、') + (fl.items.length > 4 ? '他' : '') + '\n';
+    foodSummary += '  ' + fl.date + '（' + fl.kcal + 'kcal）: ' + fl.items.join('、') + '\n';
   }
   var wSummary = '';
   for (var wi = 0; wi < periodW.length; wi++) wSummary += '  ' + periodW[wi].date + ': ' + periodW[wi].weight + 'kg\n';
