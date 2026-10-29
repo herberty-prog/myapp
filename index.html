@@ -1796,6 +1796,25 @@ function exportJSON() {
   URL.revokeObjectURL(url);
 }
 
+// 記録の配列を id で突き合わせて取り込む。同じidは置き換え、del:true の項目は削除、それ以外は追加
+function mergeLogById(curArr, impArr) {
+  var out = [];
+  var imap = {};
+  for (var i = 0; i < impArr.length; i++) imap[impArr[i].id] = impArr[i];
+  var seen = {};
+  for (var j = 0; j < curArr.length; j++) {
+    var c = curArr[j];
+    var n = imap[c.id];
+    seen[c.id] = true;
+    if (!n) out.push(c);
+    else if (!n.del) out.push(n);
+  }
+  for (var k = 0; k < impArr.length; k++) {
+    if (!seen[impArr[k].id] && !impArr[k].del) out.push(impArr[k]);
+  }
+  out.sort(function(a, b){ return a.date === b.date ? 0 : (b.date > a.date ? 1 : -1); });
+  return out;
+}
 function importJSON(event) {
   var file = event.target.files[0];
   if (!file) return;
@@ -1803,7 +1822,7 @@ function importJSON(event) {
   reader.onload = function(e) {
     try {
       var imp = JSON.parse(e.target.result);
-      if (!imp.days && !imp.bp && !imp.irr && !imp.body) { alert('有効なバックアップではありません'); return; }
+      if (!imp.days && !imp.bp && !imp.irr && !imp.rtl && !imp.body) { alert('有効なバックアップではありません'); return; }
       var cur = getM();
       if (imp.days) {
         for (var d in imp.days) { if (!cur.days[d]) cur.days[d] = imp.days[d]; }
@@ -1817,16 +1836,9 @@ function importJSON(event) {
         }
         cur.bp.sort(function(a,b){ return b.date > a.date ? 1 : -1; });
       }
-      if (imp.irr && imp.irr.length) {
-        var ei = {};
-        for (var ii = 0; ii < cur.irr.length; ii++) ei[cur.irr[ii].id] = true;
-        for (var ni2 = 0; ni2 < imp.irr.length; ni2++) { if (!ei[imp.irr[ni2].id]) cur.irr.push(imp.irr[ni2]); }
-      }
-      if (imp.rtl && imp.rtl.length) {
-        var er = {};
-        for (var ri = 0; ri < cur.rtl.length; ri++) er[cur.rtl[ri].id] = true;
-        for (var nr = 0; nr < imp.rtl.length; nr++) { if (!er[imp.rtl[nr].id]) cur.rtl.push(imp.rtl[nr]); }
-      }
+      // 運動記録・ルーティン記録は同じidなら読み込んだ内容で置き換える（del:true は削除）。日付の新しい順に並べ直す
+      if (imp.irr && imp.irr.length) cur.irr = mergeLogById(cur.irr, imp.irr);
+      if (imp.rtl && imp.rtl.length) cur.rtl = mergeLogById(cur.rtl, imp.rtl);
       // 体組成・周囲径も取り込む（同じ日付があれば今のデータを優先）
       if (imp.body && imp.body.length) {
         if (!cur.body) cur.body = [];
