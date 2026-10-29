@@ -578,7 +578,7 @@ canvas.cv{width:100%;height:100%}
   <div style="margin-top:6px">
     <div class="shd">
       <div class="shd-title" style="font-size:1.05rem">ルーティン記録</div>
-      <button onclick="openRoutineLog()" style="padding:6px 12px;border-radius:99px;background:linear-gradient(135deg,var(--ocean),var(--aqua));border:none;color:white;font-size:.68rem;font-weight:800;cursor:pointer">+ 過去記録</button>
+      <button onclick="openRoutineLog()" style="margin-bottom:6px;padding:6px 12px;border-radius:99px;background:linear-gradient(135deg,var(--ocean),var(--aqua));border:none;color:white;font-size:.68rem;font-weight:800;cursor:pointer">+ 過去記録</button>
     </div>
     <div id="routineLogList"></div>
   </div>
@@ -2747,12 +2747,26 @@ function renderRoutineLog() {
       + (r.memo ? '<div style="font-size:.72rem;color:var(--muted);margin-bottom:4px">' + r.memo + '</div>' : '')
       + itemsHtml
       + '</div>'
-      + '<button onclick="delRtl(' + r.id + ')" style="width:22px;height:22px;border-radius:6px;background:rgba(230,57,70,.08);color:var(--hibiscus);border:none;cursor:pointer;font-size:.72rem;flex-shrink:0">x</button>'
+      + '</div>'
+      + '<div style="display:flex;justify-content:flex-end;margin-top:10px">'
+      + '<button onclick="delRtl(' + r.id + ', this)" style="padding:5px 12px;border-radius:99px;background:rgba(230,57,70,.08);color:var(--hibiscus);border:1px solid rgba(230,57,70,.2);cursor:pointer;font-size:.62rem;font-weight:800">削除</button>'
       + '</div></div>';
   }
   c.innerHTML = html;
 }
-function delRtl(id) {
+// 誤タップ防止：1回目のタップでは消さず「もう一度タップで削除」に変わる。3秒以内にもう一度タップで削除。
+// （iOS のホーム画面アプリでは window.confirm が使えないため、2回タップ方式にしている）
+var rtlDelArmed = null;
+function delRtl(id, btn) {
+  if (btn && rtlDelArmed !== id) {
+    rtlDelArmed = id;
+    btn.textContent = 'もう一度タップで削除';
+    btn.style.background = 'var(--hibiscus)';
+    btn.style.color = 'white';
+    setTimeout(function(){ if (rtlDelArmed === id) { rtlDelArmed = null; renderRoutineLog(); } }, 3000);
+    return;
+  }
+  rtlDelArmed = null;
   var a = grtl().filter(function(r){ return r.id !== id; });
   srtl(a); renderRoutineLog();
 }
