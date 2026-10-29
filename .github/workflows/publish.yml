@@ -1,0 +1,48 @@
+# ===========================================================================
+# 自動公開：作業用の dev ブランチに push すると、GitHub が自動で
+#   ① index.html の構文チェック（ES5 の決まりも含む）
+#   ② OK なら main に反映 → GitHub Pages で公開（herberty-prog.github.io/myapp/）
+# までやります。構文エラーがあれば ② に進まず、毎日使っている公開中の画面は壊れません。
+# ===========================================================================
+name: publish
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: 依存関係のインストール
+        run: npm ci
+
+      - name: 構文チェック
+        run: npm run check
+
+      - name: main に反映（＝公開）
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            echo "::error::main に dev にない変更があります（GitHub上で直接アップロードした等）。dev に main を取り込んでから push し直してください。"
+            exit 1
+          fi
+          git push origin HEAD:main

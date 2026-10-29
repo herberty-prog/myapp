@@ -1,0 +1,12 @@
+{
+  "name": "health-okz",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Health OKZ — 構文チェック用の設定。アプリ本体は index.html の1ファイルです。",
+  "scripts": {
+    "check": "node tools/check.mjs index.html"
+  },
+  "devDependencies": {
+    "acorn": "8.12.1"
+  }
+}
