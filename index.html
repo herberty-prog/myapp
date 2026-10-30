@@ -329,6 +329,13 @@ canvas.cv{width:100%;height:100%}
 </style>
 </head>
 <body>
+<div id="backupBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#fff4e5;border-bottom:2px solid #f39c12;padding:calc(env(safe-area-inset-top) + 10px) 14px 10px;box-shadow:0 2px 8px rgba(0,0,0,.15)">
+  <div id="backupBannerMsg" style="font-size:.8rem;font-weight:700;color:#7a4b00;line-height:1.5;margin-bottom:8px"></div>
+  <div style="display:flex;gap:8px">
+    <button onclick="exportJSON()" style="flex:1;padding:9px;border:none;border-radius:10px;background:#f39c12;color:#fff;font-weight:800;font-size:.8rem">今すぐバックアップ</button>
+    <button onclick="snoozeBackup()" style="padding:9px 14px;border:1px solid #d9b77a;border-radius:10px;background:#fff;color:#7a4b00;font-size:.78rem">今日はあとで</button>
+  </div>
+</div>
 <div class="ocean-bg"></div>
 
 <!-- HERO -->
@@ -672,6 +679,7 @@ canvas.cv{width:100%;height:100%}
   <div class="settings-card" style="margin-top:10px">
     <div style="font-size:1rem;font-weight:800;color:var(--ocean);margin-bottom:8px">データのバックアップ・復元</div>
     <div style="font-size:.72rem;color:var(--muted);margin-bottom:12px;line-height:1.6">データをJSONファイルに書き出したり、バックアップから復元できます。</div>
+    <div id="lastBackupInfo" style="font-size:.78rem;font-weight:700;color:var(--ocean);margin-bottom:10px"></div>
     <button class="save-settings-btn" onclick="exportJSON()" style="margin-bottom:8px">
       バックアップをダウンロード（JSON）
     </button>
@@ -1794,6 +1802,67 @@ function exportJSON() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+  try { localStorage.setItem(BACKUP_KEY, today()); } catch (e) {}
+  updateBackupInfo();
+  var bb = document.getElementById('backupBanner');
+  if (bb) bb.style.display = 'none';
+}
+
+// ---- バックアップのお知らせ（最後の書き出しから BACKUP_DAYS 日たったら起動時にバナーを出す）----
+// 記録データ(okz5)とは別のキーに保存する。古いバックアップを読み込んでも日付が巻き戻らないように。
+var BACKUP_KEY = 'okz5_lastBackup';
+var BACKUP_SNOOZE_KEY = 'okz5_backupSnooze';
+var BACKUP_DAYS = 7;
+function getLastBackup() {
+  try { return localStorage.getItem(BACKUP_KEY) || ''; } catch (e) { return ''; }
+}
+function daysSinceDate(ds) {
+  var p = ds.split('-');
+  var then = new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10));
+  var t = today().split('-');
+  var now = new Date(parseInt(t[0], 10), parseInt(t[1], 10) - 1, parseInt(t[2], 10));
+  return Math.round((now - then) / 86400000);
+}
+function updateBackupInfo() {
+  var el = document.getElementById('lastBackupInfo');
+  if (!el) return;
+  var last = getLastBackup();
+  if (!last) { el.textContent = '最終バックアップ：まだありません'; el.style.color = 'var(--hibiscus)'; return; }
+  var n = daysSinceDate(last);
+  el.textContent = '最終バックアップ：' + last.replace(/-/g, '/') + '（' + (n <= 0 ? '今日' : n + '日前') + '）';
+  el.style.color = n >= BACKUP_DAYS ? 'var(--hibiscus)' : 'var(--ocean)';
+}
+function hasAnyRecord() {
+  var m = getM();
+  var days = m.days || {};
+  for (var k in days) {
+    if (!days.hasOwnProperty(k)) continue;
+    var v = days[k];
+    if (v.weight || (v.breakfast && v.breakfast.length) || (v.lunch && v.lunch.length) || (v.snack && v.snack.length) || (v.dinner && v.dinner.length)) return true;
+  }
+  return (m.bp && m.bp.length) || (m.rtl && m.rtl.length) ? true : false;
+}
+function checkBackupReminder() {
+  var bb = document.getElementById('backupBanner');
+  if (!bb || !hasAnyRecord()) return;
+  var snooze = '';
+  try { snooze = localStorage.getItem(BACKUP_SNOOZE_KEY) || ''; } catch (e) {}
+  if (snooze === today()) return;
+  var last = getLastBackup();
+  var msg;
+  if (!last) msg = 'まだバックアップがありません。記録を守るために、今すぐファイルに保存しておきましょう。';
+  else {
+    var n = daysSinceDate(last);
+    if (n < BACKUP_DAYS) return;
+    msg = '最後のバックアップから' + n + '日たちました（' + last.replace(/-/g, '/') + '）。記録を守るために保存しておきましょう。';
+  }
+  document.getElementById('backupBannerMsg').textContent = msg;
+  bb.style.display = 'block';
+}
+function snoozeBackup() {
+  try { localStorage.setItem(BACKUP_SNOOZE_KEY, today()); } catch (e) {}
+  var bb = document.getElementById('backupBanner');
+  if (bb) bb.style.display = 'none';
 }
 
 // 記録の配列を id で突き合わせて取り込む。同じidは置き換え、del:true の項目は削除、それ以外は追加
@@ -3195,6 +3264,8 @@ window.addEventListener('DOMContentLoaded', function() {
   renderRoutineLog();
   updateBPHeader();
   updateGoalDisplay();
+  updateBackupInfo();
+  checkBackupReminder();
 
   // EnterキーでフォームをナビゲートADD実行
   var mealList = ['breakfast', 'lunch', 'snack', 'dinner'];
