@@ -1812,7 +1812,7 @@ function exportJSON() {
 // 記録データ(okz5)とは別のキーに保存する。古いバックアップを読み込んでも日付が巻き戻らないように。
 var BACKUP_KEY = 'okz5_lastBackup';
 var BACKUP_SNOOZE_KEY = 'okz5_backupSnooze';
-var BACKUP_DAYS = 7;
+var BACKUP_DAYS = 14;
 function getLastBackup() {
   try { return localStorage.getItem(BACKUP_KEY) || ''; } catch (e) { return ''; }
 }
